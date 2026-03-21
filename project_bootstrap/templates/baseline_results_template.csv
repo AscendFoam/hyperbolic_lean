@@ -1,0 +1,4 @@
+run_id,date,task,graph_scope,split_name,split_strategy,model_family,model_name,geometry,input_features,dim,params_m,seed,epochs,best_metric_name,best_metric_value,mrr,hits_at_1,hits_at_10,map,auroc,macro_f1,recall_at_10,ndcg_at_10,useful_hit_rate,checkpoint_path,notes
+,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,

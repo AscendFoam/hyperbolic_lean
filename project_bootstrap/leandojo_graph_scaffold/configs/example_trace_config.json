@@ -1,0 +1,8 @@
+{
+  "source_commit": "TODO_MATHLIB_COMMIT",
+  "trace_version": "TODO_TRACE_VERSION",
+  "normalized_trace_path": "data/interim/normalized_trace/normalized_declarations.jsonl",
+  "output_root": "data/processed/declaration_graph",
+  "edge_type": "uses",
+  "drop_self_edges": true
+}
