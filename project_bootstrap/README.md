@@ -19,12 +19,16 @@
 - [leandojo_graph_scaffold/README.md](d:\Codes\Math\hyperbolic_lean\project_bootstrap\leandojo_graph_scaffold\README.md)
   LeanDojo 抽图脚手架说明。
 
+- [baseline_scaffold/README.md](d:\Codes\Math\hyperbolic_lean\project_bootstrap\baseline_scaffold\README.md)
+  Node2Vec / GCN baseline 的第一版骨架。
+
 ## 推荐使用顺序
 
 1. 先看第 1 个月执行清单，明确当前 4 周要交付什么。
 2. 再看数据 schema，避免后续抽图后字段对不上。
 3. 跑 LeanDojo 抽图脚手架，先拿到 inventory，再接 normalized trace。
-4. 从 baseline 表模板开始记录实验，不要等实验做多了再补。
+4. 初始化 `data/` 和 `artifacts/` 后，用 baseline scaffold 先跑 dry-run。
+5. 从 baseline 表模板开始记录实验，不要等实验做多了再补。
 
 ## 当前定位
 

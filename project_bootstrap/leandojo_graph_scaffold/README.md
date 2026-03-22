@@ -3,7 +3,8 @@
 这个目录提供一个**两段式脚手架**：
 
 1. 先对 trace 目录做 inventory，弄清楚导出了什么
-2. 再把“规范化后的 trace”转成 declaration graph 的 CSV
+2. 再把原始 trace 归一化成 JSONL
+3. 最后把“规范化后的 trace”转成 declaration graph 的 CSV
 
 之所以做成两段式，是因为不同 LeanDojo / Mathlib 版本的导出格式可能不同。  
 如果一开始就把脚本写死到某个具体字段上，很容易在版本切换时全部失效。
@@ -13,8 +14,14 @@
 - [configs/example_trace_config.json](d:\Codes\Math\hyperbolic_lean\project_bootstrap\leandojo_graph_scaffold\configs\example_trace_config.json)
   示例配置文件
 
+- [configs/example_normalize_config.json](d:\Codes\Math\hyperbolic_lean\project_bootstrap\leandojo_graph_scaffold\configs\example_normalize_config.json)
+  trace 归一化配置示例
+
 - [src/inventory_trace_dir.py](d:\Codes\Math\hyperbolic_lean\project_bootstrap\leandojo_graph_scaffold\src\inventory_trace_dir.py)
   对 trace 目录做文件清点和后缀统计
+
+- [src/normalize_leandojo_trace.py](d:\Codes\Math\hyperbolic_lean\project_bootstrap\leandojo_graph_scaffold\src\normalize_leandojo_trace.py)
+  将原始 trace 尽量归一化成 declaration-level JSONL
 
 - [src/extract_decl_graph.py](d:\Codes\Math\hyperbolic_lean\project_bootstrap\leandojo_graph_scaffold\src\extract_decl_graph.py)
   将“规范化后的 JSONL trace”转换为 `declarations.csv` 和 `edges.csv`
@@ -38,8 +45,10 @@ python .\project_bootstrap\leandojo_graph_scaffold\src\inventory_trace_dir.py `
 
 ## 第二步：把原始 trace 适配成 normalized JSONL
 
-这一步目前**故意没有写死到某个 LeanDojo 版本**。  
-你需要先根据 inventory 和样本文件，写一个适配器，把原始 trace 归一化成下面这种结构：
+现在已经提供了一个**通用适配器骨架**，但仍然故意没有写死到某个 LeanDojo 版本。  
+你需要先根据 inventory 和样本文件，调整配置中的 key 候选或补充专用 adapter。
+
+归一化后的目标结构如下：
 
 ```json
 {
@@ -57,7 +66,14 @@ python .\project_bootstrap\leandojo_graph_scaffold\src\inventory_trace_dir.py `
 }
 ```
 
-`extract_decl_graph.py` 读取的是这种规范化后的 JSONL。
+可以先这样运行：
+
+```powershell
+python .\project_bootstrap\leandojo_graph_scaffold\src\normalize_leandojo_trace.py `
+  --config .\project_bootstrap\leandojo_graph_scaffold\configs\example_normalize_config.json
+```
+
+`extract_decl_graph.py` 读取的就是这种规范化后的 JSONL。
 
 ## 第三步：从 normalized trace 抽 declaration graph
 

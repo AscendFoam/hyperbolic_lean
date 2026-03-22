@@ -1,0 +1,39 @@
+{
+  "source_commit": "TODO_MATHLIB_COMMIT",
+  "trace_version": "TODO_TRACE_VERSION",
+  "input_root": "data/raw/leandojo_trace",
+  "input_glob": "**/*.json",
+  "input_format": "json",
+  "output_path": "data/interim/normalized_trace/normalized_declarations.jsonl",
+  "skip_report_path": "artifacts/logs/normalize_trace_skips.json",
+  "adapter": {
+    "name": "generic_json",
+    "decl_name_keys": [
+      "decl_name",
+      "full_name",
+      "name",
+      "declaration_name"
+    ],
+    "decl_kind_keys": [
+      "decl_kind",
+      "kind",
+      "declaration_kind"
+    ],
+    "module_name_keys": [
+      "module_name",
+      "module",
+      "namespace"
+    ],
+    "file_path_keys": [
+      "file_path",
+      "path",
+      "source_path"
+    ],
+    "dependency_keys": [
+      "dependencies",
+      "deps",
+      "references",
+      "constants"
+    ]
+  }
+}
