@@ -1,0 +1,20 @@
+{
+  "val": {
+    "auroc": null,
+    "average_precision": null,
+    "accuracy": 1.0,
+    "f1": 0.0,
+    "num_examples": 1,
+    "num_positive": 0,
+    "num_negative": 1
+  },
+  "test": {
+    "auroc": 0.0,
+    "average_precision": 0.5,
+    "accuracy": 0.5,
+    "f1": 0.0,
+    "num_examples": 2,
+    "num_positive": 1,
+    "num_negative": 1
+  }
+}

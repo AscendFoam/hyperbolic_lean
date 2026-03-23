@@ -1,0 +1,13 @@
+split,src_id,dst_id,label
+train,fixture_commit::Example.baz,fixture_commit::Example.foo,1
+train,fixture_commit::Example.baz,fixture_commit::Nat.succ,1
+train,fixture_commit::Example.qux,fixture_commit::Example.bar,1
+train,fixture_commit::Example.qux,fixture_commit::Nat.mul_comm,1
+train,fixture_commit::Example.bar,fixture_commit::Nat.add_comm,1
+train,fixture_commit::Example.qux,fixture_commit::Example.baz,1
+train,fixture_commit::Example.foo,fixture_commit::Example.qux,0
+train,fixture_commit::Example.foo,fixture_commit::Example.baz,0
+train,fixture_commit::Example.baz,fixture_commit::Example.qux,0
+train,fixture_commit::Example.bar,fixture_commit::Example.qux,0
+train,fixture_commit::Example.qux,fixture_commit::Example.foo,0
+train,fixture_commit::Example.bar,fixture_commit::Example.baz,0

@@ -1,0 +1,12 @@
+{
+  "source_commit": "fixture_commit",
+  "num_declarations": 4,
+  "num_edges": 8,
+  "decl_kind_counts": {
+    "def": 2,
+    "theorem": 2
+  },
+  "edge_type_counts": {
+    "uses": 8
+  }
+}

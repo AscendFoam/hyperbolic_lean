@@ -1,0 +1,12 @@
+{
+  "source_commit": "fixture_commit",
+  "trace_version": "fixture_trace_v1",
+  "input_root": "project_bootstrap/leandojo_graph_scaffold/fixtures/lean4_example",
+  "input_glob": "**/*.trace.xml",
+  "input_format": "xml",
+  "output_path": "artifacts/logs/fixture_normalized_declarations.jsonl",
+  "skip_report_path": "artifacts/logs/fixture_normalize_trace_xml_skips.json",
+  "adapter": {
+    "name": "leandojo_trace_xml"
+  }
+}

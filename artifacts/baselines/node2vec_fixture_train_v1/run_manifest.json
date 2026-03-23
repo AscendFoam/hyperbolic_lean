@@ -1,0 +1,27 @@
+{
+  "run_id": "node2vec_fixture_train_v1",
+  "task": "link_prediction",
+  "graph_root": "artifacts/graphs/fixture_declaration_graph",
+  "artifacts_root": "artifacts/baselines/node2vec_fixture_train_v1",
+  "seed": 42,
+  "dry_run": false,
+  "graph_summary": {
+    "num_declarations": 4,
+    "num_edges": 8,
+    "num_covered_nodes": 8,
+    "isolated_node_count": 0,
+    "decl_kind_counts": {
+      "def": 2,
+      "theorem": 2
+    },
+    "edge_type_counts": {
+      "uses": 8
+    }
+  },
+  "dependency_status": {
+    "networkx": true,
+    "numpy": true,
+    "torch": true,
+    "sklearn": true
+  }
+}

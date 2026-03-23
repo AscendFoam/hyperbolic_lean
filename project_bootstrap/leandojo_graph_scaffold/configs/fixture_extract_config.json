@@ -1,0 +1,8 @@
+{
+  "source_commit": "fixture_commit",
+  "trace_version": "fixture_trace_v1",
+  "normalized_trace_path": "artifacts/logs/fixture_normalized_declarations.jsonl",
+  "output_root": "artifacts/graphs/fixture_declaration_graph",
+  "edge_type": "uses",
+  "drop_self_edges": true
+}

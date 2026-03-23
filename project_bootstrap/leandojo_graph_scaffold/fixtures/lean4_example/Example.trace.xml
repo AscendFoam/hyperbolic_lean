@@ -1,0 +1,28 @@
+<TracedFile path="Example.lean" md5="dummy">
+  <FileNode start="(1, 1)" end="(10, 1)">
+    <CommandDeclarationNode start="(1, 1)" end="(1, 20)" name="foo" full_name="Example.foo">
+      <AtomNode val="def" />
+      <IdentNode raw_val="foo" val="foo" full_name="Example.foo" mod_name="Example" />
+      <IdentNode raw_val="Nat" val="Nat" full_name="Nat" mod_name="Init" />
+    </CommandDeclarationNode>
+    <CommandTheoremNode start="(3, 1)" end="(5, 20)" name="bar" full_name="Example.bar">
+      <AtomNode val="theorem" />
+      <IdentNode raw_val="bar" val="bar" full_name="Example.bar" mod_name="Example" />
+      <IdentNode raw_val="foo" val="foo" full_name="Example.foo" mod_name="Example" />
+      <IdentNode raw_val="Nat.add_comm" val="Nat.add_comm" full_name="Nat.add_comm" mod_name="Init" />
+    </CommandTheoremNode>
+    <CommandDeclarationNode start="(6, 1)" end="(6, 24)" name="baz" full_name="Example.baz">
+      <AtomNode val="def" />
+      <IdentNode raw_val="baz" val="baz" full_name="Example.baz" mod_name="Example" />
+      <IdentNode raw_val="Example.foo" val="Example.foo" full_name="Example.foo" mod_name="Example" />
+      <IdentNode raw_val="Nat.succ" val="Nat.succ" full_name="Nat.succ" mod_name="Init" />
+    </CommandDeclarationNode>
+    <CommandTheoremNode start="(8, 1)" end="(9, 24)" name="qux" full_name="Example.qux">
+      <AtomNode val="theorem" />
+      <IdentNode raw_val="qux" val="qux" full_name="Example.qux" mod_name="Example" />
+      <IdentNode raw_val="Example.baz" val="Example.baz" full_name="Example.baz" mod_name="Example" />
+      <IdentNode raw_val="Example.bar" val="Example.bar" full_name="Example.bar" mod_name="Example" />
+      <IdentNode raw_val="Nat.mul_comm" val="Nat.mul_comm" full_name="Nat.mul_comm" mod_name="Init" />
+    </CommandTheoremNode>
+  </FileNode>
+</TracedFile>

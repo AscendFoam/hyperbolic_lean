@@ -1,0 +1,5 @@
+declaration_id,decl_name,decl_kind,module_name,file_path,namespace,line_start,line_end,signature_text,body_text,docstring,ast_size,token_count,dependency_depth,source_commit,trace_version
+fixture_commit::Example.foo,Example.foo,def,Example,Example.lean,Example,1,1,def foo Nat,,,,,,fixture_commit,fixture_trace_v1
+fixture_commit::Example.bar,Example.bar,theorem,Example,Example.lean,Example,3,5,theorem bar foo Nat.add_comm,,,,,,fixture_commit,fixture_trace_v1
+fixture_commit::Example.baz,Example.baz,def,Example,Example.lean,Example,6,6,def baz Example.foo Nat.succ,,,,,,fixture_commit,fixture_trace_v1
+fixture_commit::Example.qux,Example.qux,theorem,Example,Example.lean,Example,8,9,theorem qux Example.baz Example.bar Nat.mul_comm,,,,,,fixture_commit,fixture_trace_v1

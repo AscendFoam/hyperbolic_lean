@@ -1,0 +1,9 @@
+edge_id,src_id,dst_id,edge_type,evidence_source,weight,is_direct,source_commit
+fixture_commit::Example.foo--uses--fixture_commit::Nat,fixture_commit::Example.foo,fixture_commit::Nat,uses,normalized_trace,1.0,True,fixture_commit
+fixture_commit::Example.bar--uses--fixture_commit::Example.foo,fixture_commit::Example.bar,fixture_commit::Example.foo,uses,normalized_trace,1.0,True,fixture_commit
+fixture_commit::Example.bar--uses--fixture_commit::Nat.add_comm,fixture_commit::Example.bar,fixture_commit::Nat.add_comm,uses,normalized_trace,1.0,True,fixture_commit
+fixture_commit::Example.baz--uses--fixture_commit::Example.foo,fixture_commit::Example.baz,fixture_commit::Example.foo,uses,normalized_trace,1.0,True,fixture_commit
+fixture_commit::Example.baz--uses--fixture_commit::Nat.succ,fixture_commit::Example.baz,fixture_commit::Nat.succ,uses,normalized_trace,1.0,True,fixture_commit
+fixture_commit::Example.qux--uses--fixture_commit::Example.baz,fixture_commit::Example.qux,fixture_commit::Example.baz,uses,normalized_trace,1.0,True,fixture_commit
+fixture_commit::Example.qux--uses--fixture_commit::Example.bar,fixture_commit::Example.qux,fixture_commit::Example.bar,uses,normalized_trace,1.0,True,fixture_commit
+fixture_commit::Example.qux--uses--fixture_commit::Nat.mul_comm,fixture_commit::Example.qux,fixture_commit::Nat.mul_comm,uses,normalized_trace,1.0,True,fixture_commit

@@ -1,0 +1,8 @@
+{
+  "input_root": "project_bootstrap\\leandojo_graph_scaffold\\fixtures\\lean4_example",
+  "input_glob": "**/*.trace.xml",
+  "input_format": "xml",
+  "adapter_name": "leandojo_trace_xml",
+  "normalized_count": 4,
+  "skipped": {}
+}

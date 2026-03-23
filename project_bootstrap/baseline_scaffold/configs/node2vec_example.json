@@ -7,5 +7,17 @@
   "test_ratio": 0.1,
   "seed": 42,
   "negative_ratio": 1.0,
-  "dry_run": true
+  "dry_run": true,
+  "symmetrize_graph": true,
+  "embedding_dim": 64,
+  "walk_length": 20,
+  "num_walks_per_node": 10,
+  "window_size": 5,
+  "num_negative_samples": 5,
+  "epochs": 3,
+  "batch_size": 256,
+  "learning_rate": 0.01,
+  "p": 1.0,
+  "q": 1.0,
+  "eval_operator": "hadamard"
 }

@@ -17,6 +17,9 @@
 - [configs/example_normalize_config.json](d:\Codes\Math\hyperbolic_lean\project_bootstrap\leandojo_graph_scaffold\configs\example_normalize_config.json)
   trace 归一化配置示例
 
+- [configs/example_normalize_leandojo_xml_config.json](d:\Codes\Math\hyperbolic_lean\project_bootstrap\leandojo_graph_scaffold\configs\example_normalize_leandojo_xml_config.json)
+  针对真实 LeanDojo traced repo 布局的 XML 适配配置示例
+
 - [src/inventory_trace_dir.py](d:\Codes\Math\hyperbolic_lean\project_bootstrap\leandojo_graph_scaffold\src\inventory_trace_dir.py)
   对 trace 目录做文件清点和后缀统计
 
@@ -25,6 +28,9 @@
 
 - [src/extract_decl_graph.py](d:\Codes\Math\hyperbolic_lean\project_bootstrap\leandojo_graph_scaffold\src\extract_decl_graph.py)
   将“规范化后的 JSONL trace”转换为 `declarations.csv` 和 `edges.csv`
+
+- [src/trace_repo_with_leandojo.py](d:\Codes\Math\hyperbolic_lean\project_bootstrap\leandojo_graph_scaffold\src\trace_repo_with_leandojo.py)
+  安装好 LeanDojo 后，直接 trace 一个真实 Lean 仓库
 
 ## 推荐工作流
 
@@ -45,8 +51,14 @@ python .\project_bootstrap\leandojo_graph_scaffold\src\inventory_trace_dir.py `
 
 ## 第二步：把原始 trace 适配成 normalized JSONL
 
-现在已经提供了一个**通用适配器骨架**，但仍然故意没有写死到某个 LeanDojo 版本。  
-你需要先根据 inventory 和样本文件，调整配置中的 key 候选或补充专用 adapter。
+现在已经提供了两类 adapter：
+
+1. `generic_json`
+   面向通用 JSON/JSONL 导出
+2. `leandojo_trace_xml`
+   面向 LeanDojo traced repo 中真实常见的 `*.trace.xml + *.dep_paths` 结构
+
+如果你拿到的是标准 traced repo，优先用后者。
 
 归一化后的目标结构如下：
 
@@ -70,10 +82,40 @@ python .\project_bootstrap\leandojo_graph_scaffold\src\inventory_trace_dir.py `
 
 ```powershell
 python .\project_bootstrap\leandojo_graph_scaffold\src\normalize_leandojo_trace.py `
-  --config .\project_bootstrap\leandojo_graph_scaffold\configs\example_normalize_config.json
+  --config .\project_bootstrap\leandojo_graph_scaffold\configs\example_normalize_leandojo_xml_config.json
 ```
 
 `extract_decl_graph.py` 读取的就是这种规范化后的 JSONL。
+
+## 如何得到真实 trace 样本
+
+最简单的方式是按 LeanDojo 官方文档的例子先 trace 一个小仓库，而不是一开始就上全量 Mathlib。
+
+例如：
+
+```powershell
+conda run -n DLEnv python .\project_bootstrap\leandojo_graph_scaffold\src\trace_repo_with_leandojo.py `
+  --repo-url https://github.com/yangky11/lean4-example `
+  --commit 7b6ecb9ad4829e4e73600a3329baeb3b5df8d23f `
+  --dst-dir data/raw/real_trace_samples/traced_lean4_example
+```
+
+trace 成功后，你会在输出目录里看到类似：
+
+- `*.dep_paths`
+- `*.ast.json`
+- `*.trace.xml`
+
+其中 `*.trace.xml` 是当前 adapter 最关注的文件。
+
+## fixture
+
+目录里还放了一个最小 fixture：
+
+- `fixtures/lean4_example/Example.trace.xml`
+- `fixtures/lean4_example/Example.dep_paths`
+
+它不是完整 LeanDojo 输出，只是为了帮助快速验证 XML adapter 的逻辑是否通顺。
 
 ## 第三步：从 normalized trace 抽 declaration graph
 

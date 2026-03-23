@@ -1,0 +1,3 @@
+split,src_id,dst_id,label
+val,fixture_commit::Example.foo,fixture_commit::Nat,1
+val,fixture_commit::Example.qux,fixture_commit::Example.foo,0

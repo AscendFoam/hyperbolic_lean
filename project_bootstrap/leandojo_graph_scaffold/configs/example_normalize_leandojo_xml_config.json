@@ -1,0 +1,12 @@
+{
+  "source_commit": "TODO_MATHLIB_COMMIT",
+  "trace_version": "TODO_TRACE_VERSION",
+  "input_root": "data/raw/leandojo_trace",
+  "input_glob": "**/*.trace.xml",
+  "input_format": "xml",
+  "output_path": "data/interim/normalized_trace/normalized_declarations_from_xml.jsonl",
+  "skip_report_path": "artifacts/logs/normalize_trace_xml_skips.json",
+  "adapter": {
+    "name": "leandojo_trace_xml"
+  }
+}

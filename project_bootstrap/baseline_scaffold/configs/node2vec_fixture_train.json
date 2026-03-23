@@ -1,0 +1,23 @@
+{
+  "run_id": "node2vec_fixture_train_v1",
+  "task": "link_prediction",
+  "graph_root": "artifacts/graphs/fixture_declaration_graph",
+  "artifacts_root": "artifacts/baselines/node2vec_fixture_train_v1",
+  "val_ratio": 0.2,
+  "test_ratio": 0.2,
+  "seed": 42,
+  "negative_ratio": 1.0,
+  "dry_run": false,
+  "symmetrize_graph": true,
+  "embedding_dim": 16,
+  "walk_length": 8,
+  "num_walks_per_node": 6,
+  "window_size": 2,
+  "num_negative_samples": 2,
+  "epochs": 2,
+  "batch_size": 16,
+  "learning_rate": 0.02,
+  "p": 1.0,
+  "q": 1.0,
+  "eval_operator": "hadamard"
+}

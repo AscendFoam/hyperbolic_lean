@@ -1,0 +1,3 @@
+split,src_id,dst_id,label
+test,fixture_commit::Example.bar,fixture_commit::Example.foo,1
+test,fixture_commit::Example.bar,fixture_commit::Example.qux,0
