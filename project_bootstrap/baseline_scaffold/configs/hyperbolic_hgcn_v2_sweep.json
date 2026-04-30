@@ -1,0 +1,33 @@
+{
+  "base_config": "hyperbolic_hgcn_v2_example.json",
+  "output_root": "artifacts/baselines/hyperbolic_sweeps/hgcn_v2_scan_v1",
+  "shared_overrides": {
+    "epochs": 40,
+    "eval_every": 5,
+    "early_stopping_patience": 4,
+    "learning_rate": 0.001,
+    "weight_decay": 0.0001,
+    "grad_clip_norm": 1.0,
+    "decoder_hidden_dim": 64
+  },
+  "per_variant_overrides": {
+    "hgcn_residual_v2": {
+      "dropout": 0.15
+    }
+  },
+  "model_variants": [
+    "hgcn_residual_v2"
+  ],
+  "dimensions": [
+    16,
+    32
+  ],
+  "curvatures": [
+    0.5,
+    1.0,
+    2.0
+  ],
+  "dim_mode": "wide_hidden",
+  "sort_by": "val_average_precision",
+  "run_name_template": "{variant}_dim{dim}_c{curvature}"
+}

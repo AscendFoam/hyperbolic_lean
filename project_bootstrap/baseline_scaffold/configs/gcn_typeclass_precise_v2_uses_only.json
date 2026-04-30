@@ -1,0 +1,23 @@
+{
+  "run_id": "gcn_lean4_example_typeclass_precise_v2_uses_only",
+  "task": "link_prediction",
+  "graph_root": "data/processed/declaration_graph/lean4_example_typeclass_precise_v2_uses_only",
+  "artifacts_root": "artifacts/baselines/gcn_lean4_example_typeclass_precise_v2_uses_only",
+  "val_ratio": 0.1,
+  "test_ratio": 0.1,
+  "seed": 42,
+  "negative_ratio": 1.0,
+  "negative_strategy": "same_module",
+  "negative_fallback_strategy": "random",
+  "dry_run": false,
+  "symmetrize_graph": true,
+  "input_dim": 16,
+  "hidden_dim": 16,
+  "output_dim": 16,
+  "dropout": 0.2,
+  "epochs": 60,
+  "eval_every": 5,
+  "early_stopping_patience": 6,
+  "learning_rate": 0.01,
+  "weight_decay": 0.0001
+}

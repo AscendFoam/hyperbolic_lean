@@ -1,0 +1,7 @@
+{
+  "repo_url": "https://github.com/leanprover-community/batteries",
+  "commit": "7a0d63fbf8fd350e891868a06d9927efa545ac1e",
+  "dst_dir": "data/raw/leandojo_trace/traced_batteries_v420_small",
+  "build_deps": false,
+  "num_procs": 2
+}

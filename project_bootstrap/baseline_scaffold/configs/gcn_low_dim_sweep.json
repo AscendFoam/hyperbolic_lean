@@ -1,0 +1,19 @@
+{
+  "base_config": "gcn_example.json",
+  "output_root": "artifacts/baselines/gcn_sweeps/low_dim_scan_v1",
+  "shared_overrides": {
+    "epochs": 40,
+    "eval_every": 5,
+    "early_stopping_patience": 4,
+    "learning_rate": 0.01,
+    "weight_decay": 0.0001,
+    "dropout": 0.2
+  },
+  "dimensions": [
+    8,
+    16,
+    32
+  ],
+  "dim_mode": "tie_all",
+  "sort_by": "val_average_precision"
+}

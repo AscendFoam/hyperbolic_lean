@@ -1,0 +1,22 @@
+{
+  "source_commit": "7b6ecb9ad4829e4e73600a3329baeb3b5df8d23f",
+  "trace_version": "leandojo-4.20.0-lean4-example-real-trace-v2-index-backfill",
+  "input_root": "data/raw/leandojo_trace/traced_lean4_example_wsl",
+  "input_glob": "**/*.trace.xml",
+  "input_format": "xml",
+  "output_path": "data/interim/normalized_trace/lean4_example_normalized_declarations_from_xml_v2.jsonl",
+  "declaration_index_path": "data/interim/normalized_trace/lean4_example_declaration_index.tsv",
+  "skip_report_path": "artifacts/logs/lean4_example_normalize_trace_xml_v2_skips.json",
+  "declaration_index_backfill": {
+    "enabled": true,
+    "include_decl_kinds": [
+      "class",
+      "instance",
+      "structure"
+    ],
+    "require_line_start": true
+  },
+  "adapter": {
+    "name": "leandojo_trace_xml"
+  }
+}

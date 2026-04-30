@@ -1,0 +1,43 @@
+{
+  "run_id": "relation_gcn_mathlib_algebra_order_precise_ancestor_ranking_v1",
+  "task": "ancestor_ranking",
+  "graph_root": "data/processed/declaration_graph/mathlib_algebra_order_precise_v1",
+  "artifacts_root": "artifacts/baselines/relation_gcn_mathlib_algebra_order_precise_ancestor_ranking_v1",
+  "val_ratio": 0.1,
+  "test_ratio": 0.1,
+  "seed": 42,
+  "negative_ratio": 1.0,
+  "negative_strategy": "same_module",
+  "negative_fallback_strategy": "random",
+  "target_relation_types": [
+    "extends",
+    "instance_of"
+  ],
+  "message_relation_types": [
+    "uses",
+    "instance_of",
+    "extends"
+  ],
+  "hierarchy_relation_types": [
+    "extends",
+    "instance_of"
+  ],
+  "ancestor_label_mode": "source_kind",
+  "ancestor_min_hops": 1,
+  "class_like_decl_kinds": [
+    "class",
+    "structure"
+  ],
+  "exclude_held_out_direct_edges": true,
+  "dry_run": false,
+  "symmetrize_graph": true,
+  "input_dim": 16,
+  "hidden_dim": 16,
+  "output_dim": 16,
+  "dropout": 0.2,
+  "epochs": 60,
+  "eval_every": 5,
+  "early_stopping_patience": 6,
+  "learning_rate": 0.01,
+  "weight_decay": 0.0001
+}

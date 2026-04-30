@@ -1,0 +1,197 @@
+⣾ [8303/8305] Running Mathlib.NumberTheory.Mo⣷ [8303/8305] Running Mathlib.NumberTheory.Mo⣯ [8303/8305] Running Mathlib.NumberTheory.MoBuild completed successfully (8305 jobs).
+  0%|             | 0/10586 [00:00<?, ?it/s]ExtractData.lean:10:18: warning: `Substring` has been deprecated: Use `Substring.Raw` instead
+ExtractData.lean:11:23: warning: `Substring.toString` has been deprecated: Use `Substring.Raw.toString` instead
+
+Note: The updated constant is in a different namespace. Dot notation may need to be changed (e.g., from `x.toString` to `Substring.Raw.toString x`).
+ExtractData.lean:11:21: error: Invalid field notation: Function `Substring.toString` does not have a usable parameter of type `Substring` for which to substitute `s`
+
+Note: Such a parameter must be explicit, or implicit with a unique name, to be used by field notation
+ExtractData.lean:13:18: error: Application type mismatch: The argument
+  String.Pos
+has type
+  String → Type
+but is expected to have type
+  Type
+in the application
+  ToJson String.Pos
+ExtractData.lean:16:18: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+  ToJson String.Pos.Raw
+
+Hint: Adding the command `deriving instance Lean.ToJson for String.Pos.Raw` may allow Lean to derive the missing instance.
+ExtractData.lean:16:18: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+  ToJson String.Pos.Raw
+
+Hint: Adding the command `deriving instance Lean.ToJson for String.Pos.Raw` may allow Lean to derive the missing instance.
+ExtractData.lean:16:18: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+  ToJson String.Pos.Raw
+
+Hint: Adding the command `deriving instance Lean.ToJson for String.Pos.Raw` may allow Lean to derive the missing instance.
+ExtractData.lean:16:18: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+  ToJson String.Pos.Raw
+
+Hint: Adding the command `deriving instance Lean.ToJson for String.Pos.Raw` may allow Lean to derive the missing instance.
+ExtractData.lean:31:7: error: type expected, got
+  (String.Pos : String → Type)
+ExtractData.lean:57:9: error: typeclass instance problem is stuck
+  ToJson (Array ?m.15)
+
+Note: Lean will not try to resolve this typeclass instance problem because the type argument to `ToJson` contains metavariables. This argument must be fully determined before Lean will try to resolve the typeclass.
+
+Hint: Adding type annotations and supplying implicit arguments to functions can give Lean more information for typeclass resolution. For example, if you have a variable `x` that you intend to be a `Nat`, but Lean reports it as having an unresolved type like `?m`, replacing `x` with `(x : Nat)` can get typeclass resolution un-stuck.
+ExtractData.lean:60:30: error: Application type mismatch: The argument
+  MetaM
+has type
+  Type → Type
+of sort `Type 1` but is expected to have type
+  Type 1 → Type ?u.2929
+of sort `Type (max (?u.2929 + 1) 2)` in the application
+  StateT Trace MetaM
+ExtractData.lean:133:26: warning: `String.trim` has been deprecated: Use `String.trimAscii` instead
+
+Note: The updated constant has a different type:
+  String → String.Slice
+instead of
+  String → String
+ExtractData.lean:278:95: error: Application type mismatch: The argument
+  Unit
+has type
+  Type
+of sort `Type 1` but is expected to have type
+  Type 1
+of sort `Type 2` in the application
+  TraceM Unit
+ExtractData.lean:324:71: error: Application type mismatch: The argument
+  Unit
+has type
+  Type
+of sort `Type 1` but is expected to have type
+  Type 1
+of sort `Type 2` in the application
+  TraceM Unit
+ExtractData.lean:366:102: error: Application type mismatch: The argument
+  Unit
+has type
+  Type
+of sort `Type 1` but is expected to have type
+  Type 1
+of sort `Type 2` in the application
+  TraceM Unit
+ExtractData.lean:374:49: error: Application type mismatch: The argument
+  Unit
+has type
+  Type
+of sort `Type 1` but is expected to have type
+  Type 1
+of sort `Type 2` in the application
+  TraceM Unit
+ExtractData.lean:387:80: error: Application type mismatch: The argument
+  Unit
+has type
+  Type
+of sort `Type 1` but is expected to have type
+  Type 1
+of sort `Type 2` in the application
+  TraceM Unit
+ExtractData.lean:399:82: error: invalid `do` notation, expected type is not a monad application
+  TraceM Trace
+You can use the `do` notation in pure code by writing `Id.run do` instead of `do`, where `Id` is the identity monad.
+ExtractData.lean:439:11: warning: `String.trim` has been deprecated: Use `String.trimAscii` instead
+
+Note: The updated constant has a different type:
+  String → String.Slice
+instead of
+  String → String
+ExtractData.lean:467:2: error: Invalid match expression: The type of pattern variable 'trace' contains metavariables:
+  ?m.245 x✝¹ input x✝ __discr✝² header parserState messages✝ __discr✝¹ env✝ messages y✝ __do_lift✝ s
+  0%|             | 0/10586 [00:20<?, ?it/s]Traceback (most recent call last):
+  File "C:\ProgramData\anaconda3\envs\LeanDojoEnv\Lib\site-packages\lean_dojo\utils.py", line 50, in working_directory
+    yield path
+  File "C:\ProgramData\anaconda3\envs\LeanDojoEnv\Lib\site-packages\lean_dojo\data_extraction\trace.py", line 213, in get_traced_repo_path
+    _trace(repo, build_deps)
+  File "C:\ProgramData\anaconda3\envs\LeanDojoEnv\Lib\site-packages\lean_dojo\data_extraction\trace.py", line 161, in _trace
+    execute(cmd)
+  File "C:\ProgramData\anaconda3\envs\LeanDojoEnv\Lib\site-packages\lean_dojo\utils.py", line 110, in execute
+    res = subprocess.run(cmd, shell=True, capture_output=capture_output, check=True)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\ProgramData\anaconda3\envs\LeanDojoEnv\Lib\subprocess.py", line 571, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command 'lake env lean --threads 24 --run ExtractData.lean' returned non-zero exit status 1.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\ProgramData\anaconda3\envs\LeanDojoEnv\Lib\shutil.py", line 636, in _rmtree_unsafe
+    os.rmdir(path)
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'C:\\Users\\26410\\AppData\\Local\\Temp\\tmpx5lslc62\\mathlib4'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\ProgramData\anaconda3\envs\LeanDojoEnv\Lib\tempfile.py", line 893, in onerror
+    _os.unlink(path)
+PermissionError: [WinError 5] 拒绝访问。: 'C:\\Users\\26410\\AppData\\Local\\Temp\\tmpx5lslc62\\mathlib4'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\ProgramData\anaconda3\envs\LeanDojoEnv\Lib\shutil.py", line 636, in _rmtree_unsafe
+    os.rmdir(path)
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'C:\\Users\\26410\\AppData\\Local\\Temp\\tmpx5lslc62\\mathlib4'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\ProgramData\anaconda3\envs\LeanDojoEnv\Lib\tempfile.py", line 893, in onerror
+    _os.unlink(path)
+PermissionError: [WinError 5] 拒绝访问。: 'C:\\Users\\26410\\AppData\\Local\\Temp\\tmpx5lslc62\\mathlib4'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Codes\Math\hyperbolic_lean\project_bootstrap\leandojo_graph_scaffold\src\trace_repo_with_leandojo.py", line 55, in <module>
+    main()
+  File "D:\Codes\Math\hyperbolic_lean\project_bootstrap\leandojo_graph_scaffold\src\trace_repo_with_leandojo.py", line 50, in main
+    trace(repo, dst_dir=str(dst_dir))
+  File "C:\ProgramData\anaconda3\envs\LeanDojoEnv\Lib\site-packages\lean_dojo\data_extraction\trace.py", line 247, in trace
+    cached_path = get_traced_repo_path(repo, build_deps)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\ProgramData\anaconda3\envs\LeanDojoEnv\Lib\site-packages\lean_dojo\data_extraction\trace.py", line 211, in get_traced_repo_path
+    with working_directory() as tmp_dir:
+  File "C:\ProgramData\anaconda3\envs\LeanDojoEnv\Lib\contextlib.py", line 158, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "C:\ProgramData\anaconda3\envs\LeanDojoEnv\Lib\site-packages\lean_dojo\utils.py", line 54, in working_directory
+    tmp_dir.__exit__(None, None, None)
+  File "C:\ProgramData\anaconda3\envs\LeanDojoEnv\Lib\tempfile.py", line 943, in __exit__
+    self.cleanup()
+  File "C:\ProgramData\anaconda3\envs\LeanDojoEnv\Lib\tempfile.py", line 947, in cleanup
+    self._rmtree(self.name, ignore_errors=self._ignore_cleanup_errors)
+  File "C:\ProgramData\anaconda3\envs\LeanDojoEnv\Lib\tempfile.py", line 929, in _rmtree
+    _shutil.rmtree(name, onerror=onerror)
+  File "C:\ProgramData\anaconda3\envs\LeanDojoEnv\Lib\shutil.py", line 787, in rmtree
+    return _rmtree_unsafe(path, onerror)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\ProgramData\anaconda3\envs\LeanDojoEnv\Lib\shutil.py", line 629, in _rmtree_unsafe
+    _rmtree_unsafe(fullname, onerror)
+  File "C:\ProgramData\anaconda3\envs\LeanDojoEnv\Lib\shutil.py", line 638, in _rmtree_unsafe
+    onerror(os.rmdir, path, sys.exc_info())
+  File "C:\ProgramData\anaconda3\envs\LeanDojoEnv\Lib\tempfile.py", line 919, in onerror
+    cls._rmtree(path, ignore_errors=ignore_errors,
+  File "C:\ProgramData\anaconda3\envs\LeanDojoEnv\Lib\tempfile.py", line 929, in _rmtree
+    _shutil.rmtree(name, onerror=onerror)
+  File "C:\ProgramData\anaconda3\envs\LeanDojoEnv\Lib\shutil.py", line 787, in rmtree
+    return _rmtree_unsafe(path, onerror)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\ProgramData\anaconda3\envs\LeanDojoEnv\Lib\shutil.py", line 638, in _rmtree_unsafe
+    onerror(os.rmdir, path, sys.exc_info())
+  File "C:\ProgramData\anaconda3\envs\LeanDojoEnv\Lib\tempfile.py", line 919, in onerror
+    cls._rmtree(path, ignore_errors=ignore_errors,
+  File "C:\ProgramData\anaconda3\envs\LeanDojoEnv\Lib\tempfile.py", line 929, in _rmtree
+    _shutil.rmtree(name, onerror=onerror)
+  File "C:\ProgramData\anaconda3\envs\LeanDojoEnv\Lib\shutil.py", line 787, in rmtree
+    return _rmtree_unsafe(path, onerror)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\ProgramData\anaconda3\envs\LeanDojoEnv\Lib\shutil.py", line 638, in _rmtree_unsafe
+    onerror(os.rmdir, path, sys.exc_info())
+  File "C:\ProgramData\anaconda3\envs\LeanDojoEnv\Lib\shutil.py", line 636, in _rmtree_unsafe
+    os.rmdir(path)
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'C:\\Users\\26410\\AppData\\Local\\Temp\\tmpx5lslc62\\mathlib4'

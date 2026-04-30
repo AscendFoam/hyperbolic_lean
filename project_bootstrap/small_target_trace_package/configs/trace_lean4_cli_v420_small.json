@@ -1,0 +1,7 @@
+{
+  "repo_url": "https://github.com/leanprover/lean4-cli",
+  "commit": "f9e25dcbed001489c53bceeb1f1d50bbaf7451d4",
+  "dst_dir": "data/raw/leandojo_trace/traced_lean4_cli_v420_small",
+  "build_deps": false,
+  "num_procs": 2
+}

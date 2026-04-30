@@ -1,0 +1,6 @@
+{
+  "graph_root": "data/processed/declaration_graph/lean4_example_typeclass_precise_v2",
+  "output_root": "data/processed/declaration_graph/lean4_example_typeclass_precise_v2_uses_only",
+  "keep_edge_types": ["uses"],
+  "drop_isolated_nodes": true
+}

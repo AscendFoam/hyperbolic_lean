@@ -1,0 +1,12 @@
+{
+  "source_commit": "2ac43674e92a695e96caac19f4002b25434636da",
+  "trace_version": "leandojo-4.20.0-plausible-small-v1",
+  "input_root": "data/raw/leandojo_trace/traced_plausible_v420_small",
+  "input_glob": "**/*.trace.xml",
+  "input_format": "xml",
+  "output_path": "data/interim/normalized_trace/plausible_normalized_declarations_from_xml_v1.jsonl",
+  "skip_report_path": "artifacts/logs/plausible_normalize_trace_xml_v1_skips.json",
+  "adapter": {
+    "name": "leandojo_trace_xml"
+  }
+}

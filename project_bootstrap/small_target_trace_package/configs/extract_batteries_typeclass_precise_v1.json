@@ -1,0 +1,18 @@
+{
+  "graph_root": "data/processed/declaration_graph/batteries_closed_world_v1",
+  "output_root": "data/processed/declaration_graph/batteries_typeclass_precise_v1",
+  "source_commit": "7a0d63fbf8fd350e891868a06d9927efa545ac1e",
+  "include_decl_kinds": ["class", "instance", "structure"],
+  "class_like_decl_kinds": ["class", "structure"],
+  "keep_edge_types": ["uses"],
+  "keep_induced_uses": true,
+  "relation_edges_path": "data/interim/lean_meta_relations/batteries_precise_hierarchy_v1/relations.tsv",
+  "relation_format": "tsv",
+  "prefer_exact_relations": true,
+  "add_exact_extends_edges": true,
+  "add_exact_instance_of_edges": true,
+  "exact_extends_edge_type": "extends",
+  "exact_instance_of_edge_type": "instance_of",
+  "add_extends_inferred_edges": false,
+  "add_instance_of_inferred_edges": false
+}

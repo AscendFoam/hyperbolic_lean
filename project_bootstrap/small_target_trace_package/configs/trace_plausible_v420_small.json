@@ -1,0 +1,7 @@
+{
+  "repo_url": "https://github.com/leanprover-community/plausible",
+  "commit": "2ac43674e92a695e96caac19f4002b25434636da",
+  "dst_dir": "data/raw/leandojo_trace/traced_plausible_v420_small",
+  "build_deps": false,
+  "num_procs": 2
+}

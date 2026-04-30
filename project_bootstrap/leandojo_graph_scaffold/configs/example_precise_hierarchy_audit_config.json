@@ -1,0 +1,10 @@
+{
+  "closed_world_graph_root": "data/processed/declaration_graph/lean4_example_closed_world",
+  "precise_graph_root": "data/processed/declaration_graph/lean4_example_typeclass_precise_v1",
+  "relation_edges_path": "data/interim/lean_meta_relations/lean4_example_precise_hierarchy_v1/relations.tsv",
+  "relation_nodes_path": "data/interim/lean_meta_relations/lean4_example_precise_hierarchy_v1/nodes.tsv",
+  "declaration_index_path": "data/interim/normalized_trace/lean4_example_declaration_index.tsv",
+  "normalized_trace_path": "data/interim/normalized_trace/lean4_example_normalized_declarations_from_xml.jsonl",
+  "output_root": "artifacts/diagnostics/lean4_example_precise_hierarchy_audit_v1",
+  "max_examples_per_reason": 12
+}

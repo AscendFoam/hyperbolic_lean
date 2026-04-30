@@ -12,6 +12,7 @@ from common import (
     load_config,
     load_declaration_graph,
     sample_negative_edges,
+    split_seed_offset,
     split_edges,
     summarize_graph,
     write_edge_split_csv,
@@ -320,14 +321,21 @@ def main() -> None:
     node_ids = [row["declaration_id"] for row in declarations]
     positive_pairs = set(split["train"] + split["val"] + split["test"])
     negative_ratio = float(config.get("negative_ratio", 1.0))
+    negative_strategy = str(config.get("negative_strategy", "same_module"))
+    negative_fallback_strategy = str(config.get("negative_fallback_strategy", "random"))
+    negative_sampling_stats: dict[str, dict] = {}
 
     for split_name, positive_edges in split.items():
-        negatives = sample_negative_edges(
+        negatives, sampling_stats = sample_negative_edges(
             node_ids=node_ids,
+            declarations=declarations,
             positive_pairs=positive_pairs,
             num_samples=int(len(positive_edges) * negative_ratio),
-            seed=int(config["seed"]) + hash(split_name) % 10000,
+            seed=int(config["seed"]) + split_seed_offset(split_name),
+            negative_strategy=negative_strategy,
+            negative_fallback_strategy=negative_fallback_strategy,
         )
+        negative_sampling_stats[split_name] = sampling_stats
         write_edge_split_csv(
             path=artifacts_root / f"{split_name}_edges.csv",
             split_name=split_name,
@@ -343,6 +351,7 @@ def main() -> None:
     }
     manifest = build_run_manifest(config, graph_summary, dependency_status)
     write_json(artifacts_root / "run_manifest.json", manifest)
+    write_json(artifacts_root / "negative_sampling_stats.json", negative_sampling_stats)
 
     if config.get("dry_run", False) or not all(dependency_status.values()):
         notes = {

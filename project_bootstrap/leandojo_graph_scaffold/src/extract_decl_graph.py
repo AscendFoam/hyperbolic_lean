@@ -50,6 +50,9 @@ def normalize_record(record: dict, source_commit: str) -> dict:
     return {
         "declaration_id": make_declaration_id(source_commit, decl_name),
         "decl_name": decl_name,
+        "decl_short_name": record.get("decl_short_name", decl_name.split(".")[-1]),
+        "raw_decl_name": record.get("raw_decl_name", decl_name),
+        "name_qualification_source": record.get("name_qualification_source", ""),
         "decl_kind": record["decl_kind"],
         "module_name": record["module_name"],
         "file_path": record["file_path"],
@@ -64,20 +67,34 @@ def normalize_record(record: dict, source_commit: str) -> dict:
         "dependency_depth": record.get("dependency_depth", ""),
         "source_commit": source_commit,
         "trace_version": record.get("trace_version", ""),
+        "source_trace_file": record.get("source_trace_file", ""),
     }
 
 
-def build_rows(records: list[dict], source_commit: str, edge_type: str, drop_self_edges: bool) -> tuple[list[dict], list[dict], dict]:
+def build_rows(
+    records: list[dict],
+    source_commit: str,
+    edge_type: str,
+    drop_self_edges: bool,
+    closed_world: bool,
+) -> tuple[list[dict], list[dict], dict]:
     declarations: list[dict] = []
     edges: list[dict] = []
     decl_kind_counter: Counter[str] = Counter()
     edge_type_counter: Counter[str] = Counter()
+    dropped_external_edges = 0
+    dropped_self_edges = 0
+    missing_dependency_names: set[str] = set()
+    duplicate_declaration_rows_dropped = 0
 
     seen_decls: set[str] = set()
     seen_edges: set[str] = set()
 
     for record in records:
         decl_row = normalize_record(record, source_commit)
+        if decl_row["declaration_id"] in seen_decls:
+            duplicate_declaration_rows_dropped += 1
+            continue
         declarations.append(decl_row)
         seen_decls.add(decl_row["declaration_id"])
         decl_kind_counter[decl_row["decl_kind"]] += 1
@@ -87,6 +104,11 @@ def build_rows(records: list[dict], source_commit: str, edge_type: str, drop_sel
         for dep_name in record["dependencies"]:
             dst_id = make_declaration_id(source_commit, dep_name)
             if drop_self_edges and src_id == dst_id:
+                dropped_self_edges += 1
+                continue
+            if closed_world and dst_id not in seen_decls:
+                dropped_external_edges += 1
+                missing_dependency_names.add(dep_name)
                 continue
             edge_id = f"{src_id}--{edge_type}--{dst_id}"
             if edge_id in seen_edges:
@@ -108,10 +130,15 @@ def build_rows(records: list[dict], source_commit: str, edge_type: str, drop_sel
 
     stats = {
         "source_commit": source_commit,
+        "closed_world": closed_world,
         "num_declarations": len(declarations),
         "num_edges": len(edges),
         "decl_kind_counts": dict(sorted(decl_kind_counter.items())),
         "edge_type_counts": dict(sorted(edge_type_counter.items())),
+        "dropped_self_edges": dropped_self_edges,
+        "dropped_external_edges": dropped_external_edges,
+        "missing_dependency_count": len(missing_dependency_names),
+        "duplicate_declaration_rows_dropped": duplicate_declaration_rows_dropped,
     }
     return declarations, edges, stats
 
@@ -141,6 +168,7 @@ def main() -> None:
     source_commit = config["source_commit"]
     edge_type = config.get("edge_type", "uses")
     drop_self_edges = bool(config.get("drop_self_edges", True))
+    closed_world = bool(config.get("closed_world", False))
 
     output_root.mkdir(parents=True, exist_ok=True)
 
@@ -154,11 +182,15 @@ def main() -> None:
         source_commit=source_commit,
         edge_type=edge_type,
         drop_self_edges=drop_self_edges,
+        closed_world=closed_world,
     )
 
     decl_fields = [
         "declaration_id",
         "decl_name",
+        "decl_short_name",
+        "raw_decl_name",
+        "name_qualification_source",
         "decl_kind",
         "module_name",
         "file_path",
@@ -173,6 +205,7 @@ def main() -> None:
         "dependency_depth",
         "source_commit",
         "trace_version",
+        "source_trace_file",
     ]
     edge_fields = [
         "edge_id",

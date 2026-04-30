@@ -58,6 +58,46 @@ def count_by_key(rows: Iterable[dict], key: str) -> dict[str, int]:
     return dict(sorted(counts.items()))
 
 
+def build_declaration_metadata(declarations: list[dict]) -> tuple[dict[str, dict], dict[str, dict[str, list[str]]]]:
+    metadata: dict[str, dict] = {}
+    buckets = {
+        "same_module": {},
+        "same_namespace": {},
+        "same_decl_kind": {},
+    }
+    strategy_to_key = {
+        "same_module": "module_name",
+        "same_namespace": "namespace",
+        "same_decl_kind": "decl_kind",
+    }
+
+    for row in declarations:
+        node_id = row["declaration_id"]
+        metadata[node_id] = {
+            "module_name": row.get("module_name", ""),
+            "namespace": row.get("namespace", ""),
+            "decl_kind": row.get("decl_kind", ""),
+        }
+        for strategy, key in strategy_to_key.items():
+            value = row.get(key, "")
+            if not value:
+                continue
+            buckets[strategy].setdefault(value, []).append(node_id)
+
+    return metadata, buckets
+
+
+def split_seed_offset(split_name: str) -> int:
+    offsets = {
+        "train": 101,
+        "val": 202,
+        "test": 303,
+    }
+    if split_name not in offsets:
+        raise ValueError(f"Unsupported split_name: {split_name}")
+    return offsets[split_name]
+
+
 def unique_edge_pairs(edges: list[dict]) -> list[tuple[str, str]]:
     seen: set[tuple[str, str]] = set()
     pairs: list[tuple[str, str]] = []
@@ -93,19 +133,61 @@ def split_edges(
 
 def sample_negative_edges(
     node_ids: list[str],
+    declarations: list[dict],
     positive_pairs: set[tuple[str, str]],
     num_samples: int,
     seed: int,
-) -> list[tuple[str, str]]:
+    negative_strategy: str = "random",
+    negative_fallback_strategy: str = "random",
+) -> tuple[list[tuple[str, str]], dict]:
+    allowed_strategies = {"random", "same_module", "same_namespace", "same_decl_kind"}
+    if negative_strategy not in allowed_strategies:
+        raise ValueError(f"Unsupported negative_strategy: {negative_strategy}")
+    if negative_fallback_strategy not in allowed_strategies:
+        raise ValueError(f"Unsupported negative_fallback_strategy: {negative_fallback_strategy}")
+
     rng = random.Random(seed)
     negatives: set[tuple[str, str]] = set()
+    metadata, buckets = build_declaration_metadata(declarations)
+    strategy_usage = {strategy: 0 for strategy in allowed_strategies}
+
     if len(node_ids) < 2:
-        return []
+        return [], {
+            "requested": num_samples,
+            "sampled": 0,
+            "negative_strategy": negative_strategy,
+            "negative_fallback_strategy": negative_fallback_strategy,
+            "strategy_usage": strategy_usage,
+        }
+
+    strategy_to_key = {
+        "same_module": "module_name",
+        "same_namespace": "namespace",
+        "same_decl_kind": "decl_kind",
+    }
+
+    def get_candidate_pool(src_id: str, strategy: str) -> list[str]:
+        if strategy == "random":
+            return node_ids
+        key = strategy_to_key[strategy]
+        value = metadata.get(src_id, {}).get(key, "")
+        if not value:
+            return []
+        return buckets[strategy].get(value, [])
+
     max_attempts = max(1000, num_samples * 20)
     attempts = 0
     while len(negatives) < num_samples and attempts < max_attempts:
         src = rng.choice(node_ids)
-        dst = rng.choice(node_ids)
+        candidate_pool = get_candidate_pool(src, negative_strategy)
+        used_strategy = negative_strategy
+        if len(candidate_pool) < 2:
+            candidate_pool = get_candidate_pool(src, negative_fallback_strategy)
+            used_strategy = negative_fallback_strategy
+        if len(candidate_pool) < 2:
+            attempts += 1
+            continue
+        dst = rng.choice(candidate_pool)
         attempts += 1
         if src == dst:
             continue
@@ -113,7 +195,15 @@ def sample_negative_edges(
         if pair in positive_pairs or pair in negatives:
             continue
         negatives.add(pair)
-    return list(negatives)
+        strategy_usage[used_strategy] += 1
+
+    return list(negatives), {
+        "requested": num_samples,
+        "sampled": len(negatives),
+        "negative_strategy": negative_strategy,
+        "negative_fallback_strategy": negative_fallback_strategy,
+        "strategy_usage": strategy_usage,
+    }
 
 
 def write_json(path: Path, obj: dict) -> None:
@@ -138,6 +228,25 @@ def build_run_manifest(config: dict, graph_summary: dict, dependency_status: dic
         "artifacts_root": config["artifacts_root"],
         "seed": config["seed"],
         "dry_run": config.get("dry_run", False),
+        "config_snapshot": config,
         "graph_summary": graph_summary,
         "dependency_status": dependency_status,
     }
+
+
+def set_global_random_seed(seed: int, np=None, torch=None) -> dict[str, bool]:
+    random.seed(seed)
+    status = {
+        "python_random": True,
+        "numpy": False,
+        "torch": False,
+    }
+    if np is not None:
+        np.random.seed(seed)
+        status["numpy"] = True
+    if torch is not None:
+        torch.manual_seed(seed)
+        if torch.cuda.is_available():
+            torch.cuda.manual_seed_all(seed)
+        status["torch"] = True
+    return status

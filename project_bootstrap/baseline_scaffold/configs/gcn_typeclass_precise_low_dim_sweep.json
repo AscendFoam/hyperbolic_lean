@@ -1,0 +1,19 @@
+{
+  "base_config": "gcn_typeclass_precise_v1.json",
+  "output_root": "artifacts/baselines/gcn_sweeps/typeclass_precise_low_dim_v1",
+  "shared_overrides": {
+    "epochs": 60,
+    "eval_every": 5,
+    "early_stopping_patience": 6,
+    "learning_rate": 0.01,
+    "weight_decay": 0.0001,
+    "dropout": 0.2
+  },
+  "dimensions": [
+    8,
+    16,
+    32
+  ],
+  "dim_mode": "tie_all",
+  "sort_by": "val_average_precision"
+}

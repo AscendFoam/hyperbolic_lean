@@ -1,0 +1,11 @@
+{
+  "input_path": "data/interim/normalized_trace/lean4_example_normalized_declarations_from_xml_v2.jsonl",
+  "output_path": "data/interim/normalized_trace/lean4_example_filtered_modules_v1.jsonl",
+  "stats_path": "artifacts/logs/lean4_example_filtered_modules_v1_stats.json",
+  "include_module_prefixes": [
+    "Lean",
+    "Lean.Meta",
+    "Lean.Elab"
+  ],
+  "keep_only_internal_dependencies": true
+}

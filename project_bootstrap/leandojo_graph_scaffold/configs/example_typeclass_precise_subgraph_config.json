@@ -1,0 +1,27 @@
+{
+  "graph_root": "data/processed/declaration_graph/lean4_example_closed_world",
+  "output_root": "data/processed/declaration_graph/lean4_example_typeclass_precise_v1",
+  "source_commit": "7b6ecb9ad4829e4e73600a3329baeb3b5df8d23f",
+  "include_decl_kinds": [
+    "class",
+    "instance",
+    "structure"
+  ],
+  "class_like_decl_kinds": [
+    "class",
+    "structure"
+  ],
+  "keep_edge_types": [
+    "uses"
+  ],
+  "keep_induced_uses": true,
+  "relation_edges_path": "data/interim/lean_meta_relations/lean4_example_precise_hierarchy_v1/relations.tsv",
+  "relation_format": "tsv",
+  "prefer_exact_relations": true,
+  "add_exact_extends_edges": true,
+  "add_exact_instance_of_edges": true,
+  "exact_extends_edge_type": "extends",
+  "exact_instance_of_edge_type": "instance_of",
+  "add_extends_inferred_edges": false,
+  "add_instance_of_inferred_edges": false
+}

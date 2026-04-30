@@ -1,8 +1,8 @@
 {
-  "source_commit": "TODO_MATHLIB_COMMIT",
-  "trace_version": "TODO_TRACE_VERSION",
-  "normalized_trace_path": "data/interim/normalized_trace/normalized_declarations.jsonl",
-  "output_root": "data/processed/declaration_graph",
+  "source_commit": "7b6ecb9ad4829e4e73600a3329baeb3b5df8d23f",
+  "trace_version": "leandojo-4.20.0-lean4-example-real-trace",
+  "normalized_trace_path": "data/interim/normalized_trace/lean4_example_normalized_declarations_from_xml.jsonl",
+  "output_root": "data/processed/declaration_graph/lean4_example",
   "edge_type": "uses",
   "drop_self_edges": true
 }

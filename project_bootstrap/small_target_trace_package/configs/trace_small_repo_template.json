@@ -1,0 +1,7 @@
+{
+  "repo_url": "https://github.com/yangky11/lean4-example",
+  "commit": "7b6ecb9ad4829e4e73600a3329baeb3b5df8d23f",
+  "dst_dir": "data/raw/leandojo_trace/traced_small_repo",
+  "build_deps": false,
+  "num_procs": 2
+}

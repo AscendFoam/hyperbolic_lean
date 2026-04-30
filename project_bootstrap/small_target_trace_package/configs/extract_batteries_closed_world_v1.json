@@ -1,0 +1,9 @@
+{
+  "source_commit": "7a0d63fbf8fd350e891868a06d9927efa545ac1e",
+  "trace_version": "leandojo-4.20.0-batteries-small-v1",
+  "normalized_trace_path": "data/interim/normalized_trace/batteries_normalized_declarations_from_xml_v1.jsonl",
+  "output_root": "data/processed/declaration_graph/batteries_closed_world_v1",
+  "edge_type": "uses",
+  "drop_self_edges": true,
+  "closed_world": true
+}

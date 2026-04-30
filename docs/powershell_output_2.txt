@@ -1,0 +1,51 @@
+(base) PS D:\Codes\Math\hyperbolic_lean> $env:PATH="C:\Users\26410\.elan\bin;$env:PATH"
+(base) PS D:\Codes\Math\hyperbolic_lean> $env:PYTHONPATH='project_bootstrap/leandojo_graph_scaffold/src'
+(base) PS D:\Codes\Math\hyperbolic_lean>
+(base) PS D:\Codes\Math\hyperbolic_lean> & 'C:\ProgramData\anaconda3\envs\LeanDojoEnv\python.exe' `
+>>   'project_bootstrap/leandojo_graph_scaffold/src/trace_repo_with_leandojo.py' `
+>>   --config 'project_bootstrap/mathlib_minimal_trace_package/configs/trace_mathlib_algebra_order_minimal.json'
+2026-04-22 12:45:09.814 | INFO     | lean_dojo.data_extraction.trace:get_traced_repo_path:210 - Tracing LeanGitRepo(url='https://github.com/leanprover-community/mathlib4', commit='c211948581bde9846a99e32d97a03f0d5307c31e')
+info: plausible: cloning https://github.com/leanprover-community/plausible
+info: plausible: checking out revision '2ac43674e92a695e96caac19f4002b25434636da'
+info: LeanSearchClient: cloning https://github.com/leanprover-community/LeanSearchClient
+info: LeanSearchClient: checking out revision '6c62474116f525d2814f0157bb468bf3a4f9f120'
+info: importGraph: cloning https://github.com/leanprover-community/import-graph
+info: importGraph: checking out revision 'a11bcb5238149ae5d8a0aa5e2f8eddf8a3a9b27d'
+info: proofwidgets: cloning https://github.com/leanprover-community/ProofWidgets4
+info: proofwidgets: checking out revision '21e6a0522cd2ae6cf88e9da99a1dd010408ab306'
+info: aesop: cloning https://github.com/leanprover-community/aesop
+info: aesop: checking out revision 'ddfca7829bf8aa4083cdf9633935dddbb28b7b2a'
+info: Qq: cloning https://github.com/leanprover-community/quote4
+info: Qq: checking out revision '2865ea099ab1dd8d6fc93381d77a4ac87a85527a'
+info: batteries: cloning https://github.com/leanprover-community/batteries
+info: batteries: checking out revision '7a0d63fbf8fd350e891868a06d9927efa545ac1e'
+info: Cli: cloning https://github.com/leanprover/lean4-cli
+info: Cli: checking out revision 'f9e25dcbed001489c53bceeb1f1d50bbaf7451d4'
+⚠ [20/6790] Ran proofwidgets:extraDep
+warning: building from source; failed to fetch GitHub release (run with '-v' for details)
+Build completed successfully.
+  0%|                                                                                                                                                                                   | 0/8315 [00:00<?, ?it/s]Extracting data at C:\Users\26410\AppData\Local\Temp\tmpsplgai6e\mathlib4
+  0%|                                                                                                                                                                         | 2/8315 [00:25<5:47:37,  2.51s/it]WARNING: Failed to process C:\Users\26410\AppData\Local\Temp\tmpsplgai6e\mathlib4\.lake\packages\aesop\Aesop\BaseM.lean
+WARNING: Failed to process C:\Users\26410\AppData\Local\Temp\tmpsplgai6e\mathlib4\.lake\packages\aesop\Aesop\Builder\Apply.lean
+WARNING: Failed to process C:\Users\26410\AppData\Local\Temp\tmpsplgai6e\mathlib4\.lake\packages\aesop\Aesop\Builder\Basic.lean
+WARNING: Failed to process C:\Users\26410\AppData\Local\Temp\tmpsplgai6e\mathlib4\.lake\packages\aesop\Aesop\Builder\Cases.lean
+WARNING: Failed to process C:\Users\26410\AppData\Local\Temp\tmpsplgai6e\mathlib4\.lake\packages\aesop\Aesop\Builder\Constructors.lean
+WARNING: Failed to process C:\Users\26410\AppData\Local\Temp\tmpsplgai6e\mathlib4\.lake\packages\aesop\Aesop\Builder\Default.lean
+WARNING: Failed to process C:\Users\26410\AppData\Local\Temp\tmpsplgai6e\mathlib4\.lake\packages\aesop\Aesop\Builder\Forward.lean
+WARNING: Failed to process C:\Users\26410\AppData\Local\Temp\tmpsplgai6e\mathlib4\.lake\packages\aesop\Aesop\Builder\NormSimp.lean
+WARNING: Failed to process C:\Users\26410\AppData\Local\Temp\tmpsplgai6e\mathlib4\.lake\packages\aesop\Aesop\Builder\Tactic.lean
+WARNING: Failed to process C:\Users\26410\AppData\Local\Temp\tmpsplgai6e\mathlib4\.lake\packages\aesop\Aesop\Builder\Unfold.lean
+WARNING: Failed to process C:\Users\26410\AppData\Local\Temp\tmpsplgai6e\mathlib4\.lake\packages\aesop\Aesop\BuiltinRules\ApplyHyps.lean
+WARNING: Failed to process C:\Users\26410\AppData\Local\Temp\tmpsplgai6e\mathlib4\.lake\packages\aesop\Aesop\BuiltinRules\Assumption.lean
+WARNING: Failed to process C:\Users\26410\AppData\Local\Temp\tmpsplgai6e\mathlib4\.lake\packages\aesop\Aesop\BuiltinRules\DestructProducts.lean
+WARNING: Failed to process C:\Users\26410\AppData\Local\Temp\tmpsplgai6e\mathlib4\.lake\packages\aesop\Aesop\BuiltinRules\Ext.lean
+WARNING: Failed to process C:\Users\26410\AppData\Local\Temp\tmpsplgai6e\mathlib4\.lake\packages\aesop\Aesop\BuiltinRules\Intros.lean
+WARNING: Failed to process C:\Users\26410\AppData\Local\Temp\tmpsplgai6e\mathlib4\.lake\packages\aesop\Aesop\BuiltinRules\Rfl.lean
+WARNING: Failed to process C:\Users\26410\AppData\Local\Temp\tmpsplgai6e\mathlib4\.lake\packages\aesop\Aesop\BuiltinRules\Split.lean
+WARNING: Failed to process C:\Users\26410\AppData\Local\Temp\tmpsplgai6e\mathlib4\.lake\packages\aesop\Aesop\BuiltinRules\Subst.lean
+WARNING: Failed to process C:\Users\26410\AppData\Local\Temp\tmpsplgai6e\mathlib4\.lake\packages\aesop\Aesop\BuiltinRules.lean
+WARNING: Failed to process C:\Users\26410\AppData\Local\Temp\tmpsplgai6e\mathlib4\.lake\packages\aesop\Aesop\Constants.lean
+  0%|▏                                                                                                                                                                       | 8/8315 [01:15<16:30:13,  7.15s/it]WARNING: Failed to process C:\Users\26410\AppData\Local\Temp\tmpsplgai6e\mathlib4\.lake\packages\aesop\Aesop\Forward\Match\Types.lean
+WARNING: Failed to process C:\Users\26410\AppData\Local\Temp\tmpsplgai6e\mathlib4\.lake\packages\aesop\Aesop\Forward\Match.lean
+WARNING: Failed to process C:\Users\26410\AppData\Local\Temp\tmpsplgai6e\mathlib4\.lake\packages\aesop\Aesop\Forward\RuleInfo.lean
+WARNING: Failed to process C:\Users\26410\AppData\Local\Temp\tmpsplgai6e\mathlib4\.lake\packages\aesop\Aesop\Forward\State\ApplyGoalDiff.lean

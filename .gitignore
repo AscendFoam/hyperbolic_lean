@@ -1,0 +1,35 @@
+# Python caches and build byproducts
+__pycache__/
+*.py[cod]
+*.pyd
+
+# Local virtual environments
+.venv/
+.venvs/
+env/
+ENV/
+
+# Editor / OS noise
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Generated experiment artifacts
+/artifacts/baselines/
+/artifacts/checkpoints/
+/artifacts/diagnostics/
+/artifacts/inventories/
+/artifacts/logs/
+/artifacts/tmp_repo_probe/
+/artifacts/graphs/*/
+
+# Generated trace / processed data
+/data/raw/leandojo_trace/traced_*/
+/data/interim/inventories/*/
+/data/interim/lean_meta_relations/*/
+/data/interim/normalized_trace/*.jsonl
+/data/interim/normalized_trace/*.tsv
+/data/interim/normalized_trace/*.csv
+/data/processed/declaration_graph/*/
+/data/processed/proof_graph/*/
