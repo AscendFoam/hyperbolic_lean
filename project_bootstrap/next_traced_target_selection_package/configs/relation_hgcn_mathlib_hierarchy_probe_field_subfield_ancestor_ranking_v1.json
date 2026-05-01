@@ -1,0 +1,49 @@
+{
+  "run_id": "rel_hgcn_mathlib_field_subfield_anc_v1",
+  "task": "ancestor_ranking",
+  "graph_root": "artifacts/diagnostics/module_hierarchy_scan_mathlib_algebra_order_index_v1/candidate_graphs/02_d4_Mathlib_Algebra_Field_Subfield",
+  "artifacts_root": "artifacts/baselines/rel_hgcn_mathlib_field_subfield_anc_v1",
+  "val_ratio": 0.15,
+  "test_ratio": 0.15,
+  "seed": 42,
+  "negative_ratio": 1.0,
+  "negative_strategy": "same_module",
+  "negative_fallback_strategy": "random",
+  "target_relation_types": [
+    "extends",
+    "instance_of"
+  ],
+  "message_relation_types": [
+    "instance_of",
+    "extends"
+  ],
+  "hierarchy_relation_types": [
+    "extends",
+    "instance_of"
+  ],
+  "ancestor_label_mode": "source_kind",
+  "ancestor_min_hops": 2,
+  "class_like_decl_kinds": [
+    "class",
+    "structure"
+  ],
+  "exclude_held_out_direct_edges": true,
+  "dry_run": false,
+  "symmetrize_graph": true,
+  "model_variant": "relation_hgcn_residual_v3",
+  "distance_signal_mode": "log1p_running_zscore_tanh",
+  "distance_stat_momentum": 0.1,
+  "residual_gate_init": 1.0,
+  "input_dim": 16,
+  "hidden_dim": 16,
+  "output_dim": 16,
+  "decoder_hidden_dim": 16,
+  "dropout": 0.15,
+  "curvature": 1.0,
+  "epochs": 80,
+  "eval_every": 5,
+  "early_stopping_patience": 8,
+  "learning_rate": 0.001,
+  "weight_decay": 0.0001,
+  "grad_clip_norm": 1.0
+}

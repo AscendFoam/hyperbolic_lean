@@ -1,0 +1,21 @@
+{
+  "base_config": "relation_hgcn_mathlib_hierarchy_probe_field_subfield_parent_prediction_v1.json",
+  "output_root": "artifacts/baselines/relation_sweeps/mathlib_field_subfield_hgcn_tgt_v1",
+  "base_run_id_override": "mathlib_field_subfield_hgcn_pp_v1",
+  "run_id_template": "{base_run_id}_{variant}_d{dim}_c{curvature}",
+  "model_variants": [
+    "relation_hgcn_residual_v3"
+  ],
+  "dimensions": [8, 16, 32],
+  "curvatures": [0.25, 0.5, 1.0, 2.0, 4.0],
+  "dim_mode": "tie_all",
+  "decoder_hidden_mode": "double_output_dim",
+  "min_decoder_hidden_dim": 32,
+  "shared_overrides": {
+    "epochs": 120,
+    "eval_every": 5,
+    "early_stopping_patience": 10
+  },
+  "sort_by": "val_average_precision",
+  "run_name_template": "{variant}_dim{dim}_c{curvature}"
+}

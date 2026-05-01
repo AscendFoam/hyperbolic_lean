@@ -1,0 +1,49 @@
+{
+  "output_root": "artifacts/diagnostics/hierarchy_focus_v1",
+  "seed": 42,
+  "distance_sample_sources": 16,
+  "hyperbolicity_landmarks": 12,
+  "max_hyperbolicity_quadruples": 256,
+  "graphs": [
+    {
+      "name": "lean4_example_typeclass_precise_v2",
+      "graph_root": "data/processed/declaration_graph/lean4_example_typeclass_precise_v2",
+      "relation_edge_types": [
+        "extends",
+        "instance_of"
+      ]
+    },
+    {
+      "name": "lean4_example_typeclass_precise_v2_hierarchy_only",
+      "graph_root": "data/processed/declaration_graph/lean4_example_typeclass_precise_v2_hierarchy_only",
+      "relation_edge_types": [
+        "extends",
+        "instance_of"
+      ]
+    },
+    {
+      "name": "plausible_typeclass_precise_v1",
+      "graph_root": "data/processed/declaration_graph/plausible_typeclass_precise_v1",
+      "relation_edge_types": [
+        "extends",
+        "instance_of"
+      ]
+    },
+    {
+      "name": "batteries_typeclass_precise_coverage_v1",
+      "graph_root": "data/processed/declaration_graph/batteries_typeclass_precise_coverage_v1",
+      "relation_edge_types": [
+        "extends",
+        "instance_of"
+      ]
+    },
+    {
+      "name": "batteries_hierarchy_only_precise_coverage_v1",
+      "graph_root": "data/processed/declaration_graph/batteries_hierarchy_only_precise_coverage_v1",
+      "relation_edge_types": [
+        "extends",
+        "instance_of"
+      ]
+    }
+  ]
+}

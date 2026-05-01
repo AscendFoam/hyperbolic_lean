@@ -1,0 +1,312 @@
+{
+  "trace_root": "data\\raw\\leandojo_trace\\traced_plausible_v420_small",
+  "total_files": 5518,
+  "total_dirs": 493,
+  "suffix_counts": {
+    ".a": 14,
+    ".ast.json": 8,
+    ".builtins.a": 1,
+    ".c": 9,
+    ".c.hash": 9,
+    ".crtbegin.o": 1,
+    ".crtend.o": 1,
+    ".dep_paths": 8,
+    ".expected.lean": 2,
+    ".h": 32,
+    ".idx": 1,
+    ".ilean": 1526,
+    ".ilean.hash": 9,
+    ".json": 1,
+    ".lean": 1654,
+    ".lld": 1,
+    ".md": 5,
+    ".mk": 1,
+    ".modules.json": 1,
+    ".o": 6,
+    ".olean": 1526,
+    ".olean.hash": 9,
+    ".olean.private": 302,
+    ".olean.server": 302,
+    ".pack": 1,
+    ".sample": 13,
+    ".so": 20,
+    ".so.1": 6,
+    ".so.1.0": 3,
+    ".so.1.2.0": 1,
+    ".so.1.2.11": 1,
+    ".so.19.1": 2,
+    ".toml": 1,
+    ".trace": 9,
+    ".trace.xml": 8,
+    ".yml": 1,
+    "<no_suffix>": 23
+  },
+  "depth_counts": {
+    "2": 9,
+    "3": 14,
+    "4": 16,
+    "5": 12,
+    "6": 89,
+    "7": 105,
+    "8": 402,
+    "9": 1574,
+    "10": 2107,
+    "11": 701,
+    "12": 150,
+    "13": 195,
+    "14": 36,
+    "15": 108
+  },
+  "sample_files": [
+    {
+      "relative_path": "plausible\\.gitignore",
+      "suffix": "<no_suffix>",
+      "size_bytes": 7
+    },
+    {
+      "relative_path": "plausible\\lake-manifest.json",
+      "suffix": ".json",
+      "size_bytes": 115
+    },
+    {
+      "relative_path": "plausible\\lakefile.toml",
+      "suffix": ".toml",
+      "size_bytes": 182
+    },
+    {
+      "relative_path": "plausible\\lean-toolchain",
+      "suffix": "<no_suffix>",
+      "size_bytes": 25
+    },
+    {
+      "relative_path": "plausible\\Lean4Repl.lean",
+      "suffix": ".lean",
+      "size_bytes": 11223
+    },
+    {
+      "relative_path": "plausible\\LICENSE",
+      "suffix": "<no_suffix>",
+      "size_bytes": 11357
+    },
+    {
+      "relative_path": "plausible\\Plausible.lean",
+      "suffix": ".lean",
+      "size_bytes": 325
+    },
+    {
+      "relative_path": "plausible\\README.md",
+      "suffix": ".md",
+      "size_bytes": 1330
+    },
+    {
+      "relative_path": "plausible\\Test.lean",
+      "suffix": ".lean",
+      "size_bytes": 193
+    },
+    {
+      "relative_path": "plausible\\.git\\config",
+      "suffix": "<no_suffix>",
+      "size_bytes": 270
+    },
+    {
+      "relative_path": "plausible\\.git\\description",
+      "suffix": "<no_suffix>",
+      "size_bytes": 73
+    },
+    {
+      "relative_path": "plausible\\.git\\HEAD",
+      "suffix": "<no_suffix>",
+      "size_bytes": 41
+    },
+    {
+      "relative_path": "plausible\\.git\\index",
+      "suffix": "<no_suffix>",
+      "size_bytes": 1707
+    },
+    {
+      "relative_path": "plausible\\.git\\packed-refs",
+      "suffix": "<no_suffix>",
+      "size_bytes": 7895
+    },
+    {
+      "relative_path": "plausible\\Plausible\\Attr.lean",
+      "suffix": ".lean",
+      "size_bytes": 512
+    },
+    {
+      "relative_path": "plausible\\Plausible\\Functions.lean",
+      "suffix": ".lean",
+      "size_bytes": 6216
+    },
+    {
+      "relative_path": "plausible\\Plausible\\Gen.lean",
+      "suffix": ".lean",
+      "size_bytes": 3721
+    },
+    {
+      "relative_path": "plausible\\Plausible\\Random.lean",
+      "suffix": ".lean",
+      "size_bytes": 6854
+    },
+    {
+      "relative_path": "plausible\\Plausible\\Sampleable.lean",
+      "suffix": ".lean",
+      "size_bytes": 16108
+    },
+    {
+      "relative_path": "plausible\\Plausible\\Tactic.lean",
+      "suffix": ".lean",
+      "size_bytes": 8608
+    },
+    {
+      "relative_path": "plausible\\Plausible\\Testable.lean",
+      "suffix": ".lean",
+      "size_bytes": 22516
+    },
+    {
+      "relative_path": "plausible\\Test\\Tactic.lean",
+      "suffix": ".lean",
+      "size_bytes": 4161
+    },
+    {
+      "relative_path": "plausible\\Test\\Testable.lean",
+      "suffix": ".lean",
+      "size_bytes": 841
+    },
+    {
+      "relative_path": "plausible\\.git\\hooks\\applypatch-msg.sample",
+      "suffix": ".sample",
+      "size_bytes": 478
+    },
+    {
+      "relative_path": "plausible\\.git\\hooks\\commit-msg.sample",
+      "suffix": ".sample",
+      "size_bytes": 896
+    },
+    {
+      "relative_path": "plausible\\.git\\hooks\\fsmonitor-watchman.sample",
+      "suffix": ".sample",
+      "size_bytes": 4655
+    },
+    {
+      "relative_path": "plausible\\.git\\hooks\\post-update.sample",
+      "suffix": ".sample",
+      "size_bytes": 189
+    },
+    {
+      "relative_path": "plausible\\.git\\hooks\\pre-applypatch.sample",
+      "suffix": ".sample",
+      "size_bytes": 424
+    },
+    {
+      "relative_path": "plausible\\.git\\hooks\\pre-commit.sample",
+      "suffix": ".sample",
+      "size_bytes": 1643
+    },
+    {
+      "relative_path": "plausible\\.git\\hooks\\pre-merge-commit.sample",
+      "suffix": ".sample",
+      "size_bytes": 416
+    },
+    {
+      "relative_path": "plausible\\.git\\hooks\\pre-push.sample",
+      "suffix": ".sample",
+      "size_bytes": 1374
+    },
+    {
+      "relative_path": "plausible\\.git\\hooks\\pre-rebase.sample",
+      "suffix": ".sample",
+      "size_bytes": 4898
+    },
+    {
+      "relative_path": "plausible\\.git\\hooks\\pre-receive.sample",
+      "suffix": ".sample",
+      "size_bytes": 544
+    },
+    {
+      "relative_path": "plausible\\.git\\hooks\\prepare-commit-msg.sample",
+      "suffix": ".sample",
+      "size_bytes": 1492
+    },
+    {
+      "relative_path": "plausible\\.git\\hooks\\push-to-checkout.sample",
+      "suffix": ".sample",
+      "size_bytes": 2783
+    },
+    {
+      "relative_path": "plausible\\.git\\hooks\\update.sample",
+      "suffix": ".sample",
+      "size_bytes": 3650
+    },
+    {
+      "relative_path": "plausible\\.git\\info\\exclude",
+      "suffix": "<no_suffix>",
+      "size_bytes": 240
+    },
+    {
+      "relative_path": "plausible\\.git\\logs\\HEAD",
+      "suffix": "<no_suffix>",
+      "size_bytes": 387
+    },
+    {
+      "relative_path": "plausible\\.git\\logs\\refs\\heads\\main",
+      "suffix": "<no_suffix>",
+      "size_bytes": 189
+    },
+    {
+      "relative_path": "plausible\\.git\\logs\\refs\\remotes\\origin\\HEAD",
+      "suffix": "<no_suffix>",
+      "size_bytes": 189
+    },
+    {
+      "relative_path": "plausible\\.git\\objects\\pack\\pack-21b00867c9093c14ce052e00819d055a08666572.idx",
+      "suffix": ".idx",
+      "size_bytes": 18488
+    },
+    {
+      "relative_path": "plausible\\.git\\objects\\pack\\pack-21b00867c9093c14ce052e00819d055a08666572.pack",
+      "suffix": ".pack",
+      "size_bytes": 202705
+    },
+    {
+      "relative_path": "plausible\\.git\\refs\\heads\\main",
+      "suffix": "<no_suffix>",
+      "size_bytes": 41
+    },
+    {
+      "relative_path": "plausible\\.git\\refs\\remotes\\origin\\HEAD",
+      "suffix": "<no_suffix>",
+      "size_bytes": 30
+    },
+    {
+      "relative_path": "plausible\\.github\\workflows\\lean_action_ci.yml",
+      "suffix": ".yml",
+      "size_bytes": 200
+    },
+    {
+      "relative_path": "plausible\\.lake\\build\\ir\\Lean4Repl.c",
+      "suffix": ".c",
+      "size_bytes": 432339
+    },
+    {
+      "relative_path": "plausible\\.lake\\build\\ir\\Lean4Repl.c.hash",
+      "suffix": ".c.hash",
+      "size_bytes": 19
+    },
+    {
+      "relative_path": "plausible\\.lake\\build\\ir\\Plausible.ast.json",
+      "suffix": ".ast.json",
+      "size_bytes": 5587
+    },
+    {
+      "relative_path": "plausible\\.lake\\build\\ir\\Plausible.c",
+      "suffix": ".c",
+      "size_bytes": 2480
+    },
+    {
+      "relative_path": "plausible\\.lake\\build\\ir\\Plausible.c.hash",
+      "suffix": ".c.hash",
+      "size_bytes": 20
+    }
+  ]
+}

@@ -33,21 +33,27 @@ def collectConstantNames (env : Environment) : Array Name :=
   (env.constants.fold (fun names name _ => names.push name) #[]).qsort Name.quickLt
 
 def inferInstanceTarget? (declName : Name) : CoreM (Option Name) := do
-  let info ← getConstInfo declName
+  let env <- getEnv
+  let info <- getConstInfo declName
   MetaM.run' do
-    forallTelescopeReducing info.type fun _ type => do
+    forallTelescopeReducing info.type fun _ targetType => do
       withReducible do
-        let type ← whnf type
-        match type.getAppFn with
+        let targetType <- whnf targetType
+        match targetType.getAppFn with
         | Expr.const className _ =>
-            if isClass (← getEnv) className then
+            if isClass env className then
               return some className
-            return none
+            else
+              return none
         | _ =>
             return none
 
-def collectRows : CoreM (Array NodeRow × Array RelationRow) := do
-  let env ← getEnv
+structure HierarchyRows where
+  nodeRows : Array NodeRow
+  relationRows : Array RelationRow
+
+def collectRows : CoreM HierarchyRows := do
+  let env <- getEnv
   let mut nodeRows : Array NodeRow := #[]
   let mut relationRows : Array RelationRow := #[]
 
@@ -55,13 +61,13 @@ def collectRows : CoreM (Array NodeRow × Array RelationRow) := do
     let structInfo? := getStructureInfo? env declName
     let isStructure := structInfo?.isSome
     let isClassDecl := isClass env declName
-    let isInstanceDecl ← Meta.isInstance declName
+    let isInstanceDecl <- Meta.isInstance declName
     let parents :=
-      if isStructure then
-        (getStructureParentInfo env declName).map (·.structName)
+      if let some structInfo := structInfo? then
+        structInfo.parentInfo.map (fun (parentInfo : Lean.StructureParentInfo) => parentInfo.structName)
       else
         #[]
-    let instanceTarget? ←
+    let instanceTarget? <-
       if isInstanceDecl then
         inferInstanceTarget? declName
       else
@@ -91,19 +97,20 @@ def collectRows : CoreM (Array NodeRow × Array RelationRow) := do
         relationType := "instance_of"
       }
 
-  return (nodeRows, relationRows)
+  return {
+    nodeRows := nodeRows
+    relationRows := relationRows
+  }
 
 def writeNodeRows (path : FilePath) (rows : Array NodeRow) : IO Unit := do
-  let mut lines := #[
-    tsvLine [
-      "decl_name",
-      "is_structure",
-      "is_class",
-      "is_instance",
-      "parent_count",
-      "instance_target",
-    ]
-  ]
+  let mut lines := #[tsvLine [
+    "decl_name",
+    "is_structure",
+    "is_class",
+    "is_instance",
+    "parent_count",
+    "instance_target",
+  ]]
   for row in rows do
     lines := lines.push <| tsvLine [
       row.declName.toString,
@@ -116,14 +123,12 @@ def writeNodeRows (path : FilePath) (rows : Array NodeRow) : IO Unit := do
   IO.FS.writeFile path <| String.intercalate "\n" lines.toList ++ "\n"
 
 def writeRelationRows (path : FilePath) (rows : Array RelationRow) : IO Unit := do
-  let mut lines := #[
-    tsvLine [
-      "src_name",
-      "dst_name",
-      "relation_type",
-      "evidence_source",
-    ]
-  ]
+  let mut lines := #[tsvLine [
+    "src_name",
+    "dst_name",
+    "relation_type",
+    "evidence_source",
+  ]]
   for row in rows do
     lines := lines.push <| tsvLine [
       row.srcName.toString,
@@ -133,15 +138,6 @@ def writeRelationRows (path : FilePath) (rows : Array RelationRow) : IO Unit := 
     ]
   IO.FS.writeFile path <| String.intercalate "\n" lines.toList ++ "\n"
 
-def exportToDir (outputDir : FilePath) : CoreM Unit := do
-  let (nodeRows, relationRows) ← collectRows
-  IO.FS.createDirAll outputDir
-  writeNodeRows (outputDir / "nodes.tsv") nodeRows
-  writeRelationRows (outputDir / "relations.tsv") relationRows
-  IO.println s!"[done] nodes: {nodeRows.size}"
-  IO.println s!"[done] relations: {relationRows.size}"
-  IO.println s!"[done] output: {outputDir}"
-
 def usage : String :=
   "usage: lake env lean --run ExportPreciseHierarchy.lean <Main.Module> <output-dir>"
 
@@ -150,13 +146,20 @@ def main (args : List String) : IO UInt32 := do
   | mainModuleText :: outputDirText :: _ => do
       initSearchPath (← findSysroot)
       let mainModule := parseName mainModuleText
-      let env ← importModules (loadExts := true) #[{ module := mainModule }] {}
+      let outputDir := FilePath.mk outputDirText
+      let env <- importModules (loadExts := true) #[{ module := mainModule }] {}
       let ctx : Core.Context := {
         fileName := s!"<{mainModuleText}>"
         fileMap := default
       }
       let state : Core.State := { env := env }
-      discard <| (exportToDir outputDirText).toIO ctx state
+      let (rows, _) <- collectRows.toIO ctx state
+      IO.FS.createDirAll outputDir
+      writeNodeRows (outputDir / "nodes.tsv") rows.nodeRows
+      writeRelationRows (outputDir / "relations.tsv") rows.relationRows
+      IO.println s!"[done] nodes: {rows.nodeRows.size}"
+      IO.println s!"[done] relations: {rows.relationRows.size}"
+      IO.println s!"[done] output: {outputDir}"
       return 0
   | _ => do
       IO.eprintln usage

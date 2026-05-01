@@ -1,0 +1,320 @@
+{
+  "trace_root": "data\\raw\\leandojo_trace\\traced_batteries_v420_small",
+  "total_files": 7406,
+  "total_dirs": 607,
+  "suffix_counts": {
+    ".a": 14,
+    ".ast.json": 167,
+    ".builtins.a": 1,
+    ".c": 169,
+    ".c.hash": 169,
+    ".c.o.export": 15,
+    ".c.o.export.hash": 15,
+    ".c.o.export.trace": 15,
+    ".code-snippets": 1,
+    ".crtbegin.o": 1,
+    ".crtend.o": 1,
+    ".dep_paths": 167,
+    ".expected.lean": 2,
+    ".h": 32,
+    ".hash": 1,
+    ".idx": 1,
+    ".ilean": 1686,
+    ".ilean.hash": 169,
+    ".json": 3,
+    ".lean": 1871,
+    ".lld": 1,
+    ".md": 6,
+    ".mk": 1,
+    ".modules.json": 1,
+    ".o": 6,
+    ".olean": 1686,
+    ".olean.hash": 169,
+    ".olean.private": 302,
+    ".olean.server": 302,
+    ".pack": 1,
+    ".sample": 13,
+    ".sh": 4,
+    ".so": 20,
+    ".so.1": 6,
+    ".so.1.0": 3,
+    ".so.1.2.0": 1,
+    ".so.1.2.11": 1,
+    ".so.19.1": 2,
+    ".toml": 3,
+    ".trace": 170,
+    ".trace.xml": 167,
+    ".tsv": 3,
+    ".txt": 1,
+    ".yml": 12,
+    "<no_suffix>": 25
+  },
+  "depth_counts": {
+    "2": 11,
+    "3": 76,
+    "4": 120,
+    "5": 93,
+    "6": 81,
+    "7": 546,
+    "8": 1220,
+    "9": 1952,
+    "10": 2117,
+    "11": 701,
+    "12": 150,
+    "13": 195,
+    "14": 36,
+    "15": 108
+  },
+  "sample_files": [
+    {
+      "relative_path": "batteries\\.gitignore",
+      "suffix": "<no_suffix>",
+      "size_bytes": 246
+    },
+    {
+      "relative_path": "batteries\\.gitpod.yml",
+      "suffix": ".yml",
+      "size_bytes": 147
+    },
+    {
+      "relative_path": "batteries\\Batteries.lean",
+      "suffix": ".lean",
+      "size_bytes": 3636
+    },
+    {
+      "relative_path": "batteries\\bors.toml",
+      "suffix": ".toml",
+      "size_bytes": 202
+    },
+    {
+      "relative_path": "batteries\\lake-manifest.json",
+      "suffix": ".json",
+      "size_bytes": 115
+    },
+    {
+      "relative_path": "batteries\\lakefile.toml",
+      "suffix": ".toml",
+      "size_bytes": 457
+    },
+    {
+      "relative_path": "batteries\\lean-toolchain",
+      "suffix": "<no_suffix>",
+      "size_bytes": 25
+    },
+    {
+      "relative_path": "batteries\\Lean4Repl.lean",
+      "suffix": ".lean",
+      "size_bytes": 11223
+    },
+    {
+      "relative_path": "batteries\\LICENSE",
+      "suffix": "<no_suffix>",
+      "size_bytes": 11357
+    },
+    {
+      "relative_path": "batteries\\README.md",
+      "suffix": ".md",
+      "size_bytes": 5212
+    },
+    {
+      "relative_path": "batteries\\SmokeWriteLocal.lean",
+      "suffix": ".lean",
+      "size_bytes": 215
+    },
+    {
+      "relative_path": "batteries\\.codex_local_exporters\\ExportDeclarationIndex.lean",
+      "suffix": ".lean",
+      "size_bytes": 4137
+    },
+    {
+      "relative_path": "batteries\\.codex_local_exporters\\ExportPreciseHierarchy.lean",
+      "suffix": ".lean",
+      "size_bytes": 5000
+    },
+    {
+      "relative_path": "batteries\\.codex_local_exporters\\PrintPreciseHierarchyStats.lean",
+      "suffix": ".lean",
+      "size_bytes": 3149
+    },
+    {
+      "relative_path": "batteries\\.codex_local_export_output\\batteries_declaration_index.tsv",
+      "suffix": ".tsv",
+      "size_bytes": 5017582
+    },
+    {
+      "relative_path": "batteries\\.git\\config",
+      "suffix": "<no_suffix>",
+      "size_bytes": 270
+    },
+    {
+      "relative_path": "batteries\\.git\\description",
+      "suffix": "<no_suffix>",
+      "size_bytes": 73
+    },
+    {
+      "relative_path": "batteries\\.git\\HEAD",
+      "suffix": "<no_suffix>",
+      "size_bytes": 41
+    },
+    {
+      "relative_path": "batteries\\.git\\index",
+      "suffix": "<no_suffix>",
+      "size_bytes": 25800
+    },
+    {
+      "relative_path": "batteries\\.git\\packed-refs",
+      "suffix": "<no_suffix>",
+      "size_bytes": 339497
+    },
+    {
+      "relative_path": "batteries\\.vscode\\copyright.code-snippets",
+      "suffix": ".code-snippets",
+      "size_bytes": 275
+    },
+    {
+      "relative_path": "batteries\\.vscode\\settings.json",
+      "suffix": ".json",
+      "size_bytes": 271
+    },
+    {
+      "relative_path": "batteries\\Batteries\\CodeAction.lean",
+      "suffix": ".lean",
+      "size_bytes": 100
+    },
+    {
+      "relative_path": "batteries\\Batteries\\Linter.lean",
+      "suffix": ".lean",
+      "size_bytes": 86
+    },
+    {
+      "relative_path": "batteries\\Batteries\\Logic.lean",
+      "suffix": ".lean",
+      "size_bytes": 4439
+    },
+    {
+      "relative_path": "batteries\\Batteries\\WF.lean",
+      "suffix": ".lean",
+      "size_bytes": 4389
+    },
+    {
+      "relative_path": "batteries\\BatteriesTest\\absurd.lean",
+      "suffix": ".lean",
+      "size_bytes": 1077
+    },
+    {
+      "relative_path": "batteries\\BatteriesTest\\alias.lean",
+      "suffix": ".lean",
+      "size_bytes": 3255
+    },
+    {
+      "relative_path": "batteries\\BatteriesTest\\array.lean",
+      "suffix": ".lean",
+      "size_bytes": 716
+    },
+    {
+      "relative_path": "batteries\\BatteriesTest\\ArrayMap.lean",
+      "suffix": ".lean",
+      "size_bytes": 242
+    },
+    {
+      "relative_path": "batteries\\BatteriesTest\\by_contra.lean",
+      "suffix": ".lean",
+      "size_bytes": 736
+    },
+    {
+      "relative_path": "batteries\\BatteriesTest\\case.lean",
+      "suffix": ".lean",
+      "size_bytes": 5390
+    },
+    {
+      "relative_path": "batteries\\BatteriesTest\\congr.lean",
+      "suffix": ".lean",
+      "size_bytes": 2066
+    },
+    {
+      "relative_path": "batteries\\BatteriesTest\\conv_equals.lean",
+      "suffix": ".lean",
+      "size_bytes": 1127
+    },
+    {
+      "relative_path": "batteries\\BatteriesTest\\exfalso.lean",
+      "suffix": ".lean",
+      "size_bytes": 250
+    },
+    {
+      "relative_path": "batteries\\BatteriesTest\\float.lean",
+      "suffix": ".lean",
+      "size_bytes": 3155
+    },
+    {
+      "relative_path": "batteries\\BatteriesTest\\help_cmd.lean",
+      "suffix": ".lean",
+      "size_bytes": 16090
+    },
+    {
+      "relative_path": "batteries\\BatteriesTest\\import_lean.lean",
+      "suffix": ".lean",
+      "size_bytes": 128
+    },
+    {
+      "relative_path": "batteries\\BatteriesTest\\instances.lean",
+      "suffix": ".lean",
+      "size_bytes": 1255
+    },
+    {
+      "relative_path": "batteries\\BatteriesTest\\isIndependentOf.lean",
+      "suffix": ".lean",
+      "size_bytes": 1313
+    },
+    {
+      "relative_path": "batteries\\BatteriesTest\\kmp_matcher.lean",
+      "suffix": ".lean",
+      "size_bytes": 992
+    },
+    {
+      "relative_path": "batteries\\BatteriesTest\\lemma_cmd.lean",
+      "suffix": ".lean",
+      "size_bytes": 988
+    },
+    {
+      "relative_path": "batteries\\BatteriesTest\\library_note.lean",
+      "suffix": ".lean",
+      "size_bytes": 1341
+    },
+    {
+      "relative_path": "batteries\\BatteriesTest\\lintsimp.lean",
+      "suffix": ".lean",
+      "size_bytes": 1803
+    },
+    {
+      "relative_path": "batteries\\BatteriesTest\\lintTC.lean",
+      "suffix": ".lean",
+      "size_bytes": 598
+    },
+    {
+      "relative_path": "batteries\\BatteriesTest\\lintunused.lean",
+      "suffix": ".lean",
+      "size_bytes": 206
+    },
+    {
+      "relative_path": "batteries\\BatteriesTest\\lint_docBlame.lean",
+      "suffix": ".lean",
+      "size_bytes": 321
+    },
+    {
+      "relative_path": "batteries\\BatteriesTest\\lint_docBlameThm.lean",
+      "suffix": ".lean",
+      "size_bytes": 334
+    },
+    {
+      "relative_path": "batteries\\BatteriesTest\\lint_dupNamespace.lean",
+      "suffix": ".lean",
+      "size_bytes": 131
+    },
+    {
+      "relative_path": "batteries\\BatteriesTest\\lint_empty.lean",
+      "suffix": ".lean",
+      "size_bytes": 1612
+    }
+  ]
+}

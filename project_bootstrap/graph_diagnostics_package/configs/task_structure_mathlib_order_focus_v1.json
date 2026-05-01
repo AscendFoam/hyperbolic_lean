@@ -1,0 +1,21 @@
+{
+  "output_root": "artifacts/diagnostics/task_structure_mathlib_order_focus_v1",
+  "analyses": [
+    {
+      "name": "field_subfield_parent_prediction",
+      "base_config": "project_bootstrap/next_traced_target_selection_package/configs/relation_gcn_mathlib_hierarchy_probe_field_subfield_parent_prediction_v1.json"
+    },
+    {
+      "name": "field_subfield_ancestor_ranking",
+      "base_config": "project_bootstrap/next_traced_target_selection_package/configs/relation_gcn_mathlib_hierarchy_probe_field_subfield_ancestor_ranking_v1.json"
+    },
+    {
+      "name": "ring_subring_ancestor_ranking",
+      "base_config": "project_bootstrap/next_traced_target_selection_package/configs/relation_gcn_mathlib_hierarchy_probe_ring_subring_ancestor_ranking_v1.json"
+    },
+    {
+      "name": "order_ring_ancestor_ranking",
+      "base_config": "project_bootstrap/next_traced_target_selection_package/configs/relation_gcn_mathlib_hierarchy_probe_order_ring_ancestor_ranking_v1.json"
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "graph_root": "data/processed/declaration_graph/mathlib_hierarchy_probe_closed_world_v1",
+  "output_root": "data/processed/declaration_graph/mathlib_category_theory_hierarchy_probe_closed_world_v1",
+  "include_module_prefixes": [
+    "Mathlib.CategoryTheory"
+  ],
+  "keep_edge_types": [
+    "uses"
+  ],
+  "keep_only_internal_edges": true,
+  "drop_isolated_nodes": true
+}

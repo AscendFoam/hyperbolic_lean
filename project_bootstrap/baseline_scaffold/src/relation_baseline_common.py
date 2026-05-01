@@ -2,6 +2,8 @@ from __future__ import annotations
 
 import copy
 import importlib.util
+import math
+from collections import defaultdict
 from pathlib import Path
 
 from common import (
@@ -13,9 +15,12 @@ from common import (
 )
 from relation_tasks import (
     build_relation_candidate_pools,
+    build_grouped_ranking_queries,
     build_task_positive_examples,
     build_ranking_queries,
+    build_ancestor_task_examples_with_hops,
     read_relation_split_examples,
+    hop_bucket_name,
     sample_negative_relation_examples,
     stratified_split_relation_examples,
     summarize_ranking_ranks,
@@ -160,6 +165,161 @@ def build_ranking_metrics(model, embeddings, queries, node_to_idx, relation_to_i
     return summarize_ranking_ranks(ranks)
 
 
+def average_precision_from_binary_relevance(binary_relevance: list[int]) -> float | None:
+    positive_count = sum(binary_relevance)
+    if positive_count <= 0:
+        return None
+    hits = 0
+    precision_sum = 0.0
+    for idx, is_positive in enumerate(binary_relevance, start=1):
+        if not is_positive:
+            continue
+        hits += 1
+        precision_sum += hits / idx
+    return precision_sum / positive_count
+
+
+def dcg_at_k(binary_relevance: list[int], k: int | None = None) -> float:
+    if k is None:
+        k = len(binary_relevance)
+    score = 0.0
+    for idx, is_positive in enumerate(binary_relevance[:k], start=1):
+        if not is_positive:
+            continue
+        score += 1.0 / math.log2(idx + 1)
+    return score
+
+
+def ndcg_from_binary_relevance(binary_relevance: list[int], k: int | None = None) -> float | None:
+    positive_count = sum(binary_relevance)
+    if positive_count <= 0:
+        return None
+    if k is None:
+        k = len(binary_relevance)
+    ideal = [1] * min(positive_count, k)
+    ideal_dcg = dcg_at_k(ideal, k=k)
+    if ideal_dcg <= 0:
+        return None
+    return dcg_at_k(binary_relevance, k=k) / ideal_dcg
+
+
+def summarize_grouped_scores(values: list[float]) -> dict[str, float | int | None]:
+    if not values:
+        return {"count": 0, "mean": None, "min": None, "p50": None, "p90": None, "max": None}
+    ordered = sorted(values)
+    return {
+        "count": len(ordered),
+        "mean": float(sum(ordered) / len(ordered)),
+        "min": float(ordered[0]),
+        "p50": float(ordered[len(ordered) // 2]),
+        "p90": float(ordered[min(len(ordered) - 1, int(0.9 * (len(ordered) - 1)))]),
+        "max": float(ordered[-1]),
+    }
+
+
+def build_grouped_ranking_metrics(model, embeddings, grouped_queries, node_to_idx, relation_to_idx, torch):
+    grouped_ap: list[float] = []
+    grouped_ndcg: list[float] = []
+    grouped_ndcg_10: list[float] = []
+    grouped_mrr: list[float] = []
+    grouped_recall_1: list[float] = []
+    grouped_recall_3: list[float] = []
+    grouped_recall_5: list[float] = []
+    grouped_recall_10: list[float] = []
+    hop_bucket_metrics: dict[str, dict[str, list[float]]] = defaultdict(lambda: defaultdict(list))
+
+    model.eval()
+    with torch.no_grad():
+        for query in grouped_queries:
+            src_id = query["src_id"]
+            relation_type = query["relation_type"]
+            positive_ids = [node_id for node_id in query["positive_ids"] if node_id in node_to_idx]
+            candidate_ids = [candidate_id for candidate_id in query["candidate_ids"] if candidate_id in node_to_idx]
+            if src_id not in node_to_idx or len(candidate_ids) < 2 or not positive_ids:
+                continue
+
+            edge_index = torch.tensor(
+                [[node_to_idx[src_id], node_to_idx[candidate_id]] for candidate_id in candidate_ids],
+                dtype=torch.long,
+            )
+            relation_ids = torch.tensor(
+                [relation_to_idx[relation_type] for _ in candidate_ids],
+                dtype=torch.long,
+            )
+            logits = model.decode(embeddings, edge_index, relation_ids)
+            order = torch.argsort(logits, descending=True).detach().cpu().tolist()
+            ranked_ids = [candidate_ids[idx] for idx in order]
+            ranked_positive_set = set(positive_ids)
+            binary_relevance = [1 if candidate_id in ranked_positive_set else 0 for candidate_id in ranked_ids]
+            positive_ranks = [rank + 1 for rank, candidate_id in enumerate(ranked_ids) if candidate_id in ranked_positive_set]
+            if not positive_ranks:
+                continue
+
+            ap = average_precision_from_binary_relevance(binary_relevance)
+            ndcg = ndcg_from_binary_relevance(binary_relevance)
+            ndcg_10 = ndcg_from_binary_relevance(binary_relevance, k=10)
+            first_positive_rank = min(positive_ranks)
+            positive_count = len(positive_ids)
+
+            grouped_ap.append(ap if ap is not None else 0.0)
+            grouped_ndcg.append(ndcg if ndcg is not None else 0.0)
+            grouped_ndcg_10.append(ndcg_10 if ndcg_10 is not None else 0.0)
+            grouped_mrr.append(1.0 / first_positive_rank)
+            grouped_recall_1.append(sum(rank <= 1 for rank in positive_ranks) / positive_count)
+            grouped_recall_3.append(sum(rank <= 3 for rank in positive_ranks) / positive_count)
+            grouped_recall_5.append(sum(rank <= 5 for rank in positive_ranks) / positive_count)
+            grouped_recall_10.append(sum(rank <= 10 for rank in positive_ranks) / positive_count)
+
+            bucket_to_positive_ids = query.get("positive_ids_by_hop_bucket", {})
+            for bucket_name, bucket_positive_ids in bucket_to_positive_ids.items():
+                bucket_positive_set = {node_id for node_id in bucket_positive_ids if node_id in node_to_idx}
+                if not bucket_positive_set:
+                    continue
+                bucket_relevance = [1 if candidate_id in bucket_positive_set else 0 for candidate_id in ranked_ids]
+                bucket_positive_ranks = [
+                    rank + 1 for rank, candidate_id in enumerate(ranked_ids) if candidate_id in bucket_positive_set
+                ]
+                if not bucket_positive_ranks:
+                    continue
+                hop_bucket_metrics[bucket_name]["recall_at_1"].append(
+                    sum(rank <= 1 for rank in bucket_positive_ranks) / len(bucket_positive_set)
+                )
+                hop_bucket_metrics[bucket_name]["recall_at_3"].append(
+                    sum(rank <= 3 for rank in bucket_positive_ranks) / len(bucket_positive_set)
+                )
+                hop_bucket_metrics[bucket_name]["recall_at_5"].append(
+                    sum(rank <= 5 for rank in bucket_positive_ranks) / len(bucket_positive_set)
+                )
+                hop_bucket_metrics[bucket_name]["recall_at_10"].append(
+                    sum(rank <= 10 for rank in bucket_positive_ranks) / len(bucket_positive_set)
+                )
+                bucket_ap = average_precision_from_binary_relevance(bucket_relevance)
+                bucket_ndcg = ndcg_from_binary_relevance(bucket_relevance)
+                bucket_first_rank = min(bucket_positive_ranks)
+                hop_bucket_metrics[bucket_name]["map"].append(bucket_ap if bucket_ap is not None else 0.0)
+                hop_bucket_metrics[bucket_name]["ndcg"].append(bucket_ndcg if bucket_ndcg is not None else 0.0)
+                hop_bucket_metrics[bucket_name]["grouped_mrr"].append(1.0 / bucket_first_rank)
+
+    return {
+        "num_queries": len(grouped_ap),
+        "map": float(sum(grouped_ap) / len(grouped_ap)) if grouped_ap else None,
+        "ndcg": float(sum(grouped_ndcg) / len(grouped_ndcg)) if grouped_ndcg else None,
+        "ndcg_at_10": float(sum(grouped_ndcg_10) / len(grouped_ndcg_10)) if grouped_ndcg_10 else None,
+        "grouped_mrr": float(sum(grouped_mrr) / len(grouped_mrr)) if grouped_mrr else None,
+        "recall_at_1": float(sum(grouped_recall_1) / len(grouped_recall_1)) if grouped_recall_1 else None,
+        "recall_at_3": float(sum(grouped_recall_3) / len(grouped_recall_3)) if grouped_recall_3 else None,
+        "recall_at_5": float(sum(grouped_recall_5) / len(grouped_recall_5)) if grouped_recall_5 else None,
+        "recall_at_10": float(sum(grouped_recall_10) / len(grouped_recall_10)) if grouped_recall_10 else None,
+        "hop_buckets": {
+            bucket_name: {
+                metric_name: summarize_grouped_scores(values)
+                for metric_name, values in sorted(metric_values.items())
+            }
+            for bucket_name, metric_values in sorted(hop_bucket_metrics.items())
+        },
+    }
+
+
 def prepare_relation_run_data(config: dict) -> dict:
     graph_root = Path(config["graph_root"])
     artifacts_root = Path(config["artifacts_root"])
@@ -173,15 +333,25 @@ def prepare_relation_run_data(config: dict) -> dict:
     hierarchy_relation_types = list(config.get("hierarchy_relation_types", ["extends", "instance_of"]))
     ancestor_label_mode = str(config.get("ancestor_label_mode", "source_kind"))
     ancestor_min_hops = int(config.get("ancestor_min_hops", 1))
-    positive_examples = build_task_positive_examples(
-        declarations=declarations,
-        edges=edges,
-        task_name=task_name,
-        target_relation_types=target_relation_types,
-        hierarchy_relation_types=hierarchy_relation_types,
-        ancestor_label_mode=ancestor_label_mode,
-        ancestor_min_hops=ancestor_min_hops,
-    )
+    positive_hop_lookup: dict[tuple[str, str, str], int] = {}
+    if task_name == "ancestor_ranking":
+        positive_examples, positive_hop_lookup = build_ancestor_task_examples_with_hops(
+            declarations=declarations,
+            edges=edges,
+            hierarchy_relation_types=hierarchy_relation_types,
+            ancestor_label_mode=ancestor_label_mode,
+            min_hops=ancestor_min_hops,
+        )
+    else:
+        positive_examples = build_task_positive_examples(
+            declarations=declarations,
+            edges=edges,
+            task_name=task_name,
+            target_relation_types=target_relation_types,
+            hierarchy_relation_types=hierarchy_relation_types,
+            ancestor_label_mode=ancestor_label_mode,
+            ancestor_min_hops=ancestor_min_hops,
+        )
     split = stratified_split_relation_examples(
         examples=positive_examples,
         val_ratio=float(config["val_ratio"]),
@@ -244,6 +414,7 @@ def prepare_relation_run_data(config: dict) -> dict:
         "prediction_relation_types": prediction_relation_types,
         "message_relation_types": message_relation_types,
         "relation_candidate_pools": relation_candidate_pools,
+        "positive_hop_lookup": positive_hop_lookup,
         "dependency_status": dependency_status,
         "negative_sampling_stats": negative_sampling_stats,
         "task_summary": copy.deepcopy(manifest["task_summary"]),
@@ -265,22 +436,34 @@ def build_ranking_task_metrics(
     relation_candidate_pools: dict[str, list[str]],
     node_to_idx: dict[str, int],
     relation_to_idx: dict[str, int],
+    positive_hop_lookup: dict[tuple[str, str, str], int],
     torch,
 ):
     metrics = {}
     for split_name in ["val", "test"]:
-        queries = build_ranking_queries(
-            [
-                (src_id, dst_id, relation_type)
-                for src_id, dst_id, relation_type, label in split_examples[split_name]
-                if label == 1
-            ],
-            relation_candidate_pools,
-        )
+        positive_rows = [
+            (src_id, dst_id, relation_type)
+            for src_id, dst_id, relation_type, label in split_examples[split_name]
+            if label == 1
+        ]
+        queries = build_ranking_queries(positive_rows, relation_candidate_pools)
         metrics[split_name] = build_ranking_metrics(
             model=model,
             embeddings=embeddings,
             queries=queries,
+            node_to_idx=node_to_idx,
+            relation_to_idx=relation_to_idx,
+            torch=torch,
+        )
+        grouped_queries = build_grouped_ranking_queries(
+            positive_rows,
+            relation_candidate_pools,
+            positive_hop_lookup=positive_hop_lookup,
+        )
+        metrics[split_name]["grouped"] = build_grouped_ranking_metrics(
+            model=model,
+            embeddings=embeddings,
+            grouped_queries=grouped_queries,
             node_to_idx=node_to_idx,
             relation_to_idx=relation_to_idx,
             torch=torch,

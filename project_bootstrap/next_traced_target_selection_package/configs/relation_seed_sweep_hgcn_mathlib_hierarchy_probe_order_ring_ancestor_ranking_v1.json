@@ -1,0 +1,7 @@
+{
+  "model_type": "hgcn",
+  "base_config": "relation_hgcn_mathlib_hierarchy_probe_order_ring_ancestor_ranking_v1.json",
+  "output_root": "artifacts/baselines/relation_seed_sweeps/hgcn_mathlib_order_ring_anc_v1",
+  "seeds": [7, 42, 123, 2026, 3407],
+  "run_name_template": "{base_run_id}_s{seed}"
+}

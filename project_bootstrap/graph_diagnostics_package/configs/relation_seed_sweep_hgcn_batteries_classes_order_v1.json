@@ -1,0 +1,7 @@
+{
+  "model_type": "hgcn",
+  "base_config": "relation_hgcn_batteries_classes_order_parent_prediction_v1.json",
+  "output_root": "artifacts/baselines/relation_seed_sweeps/hgcn_batteries_classes_order_v1",
+  "seeds": [7, 42, 123, 2026, 3407],
+  "run_name_template": "{base_run_id}_seed{seed}"
+}

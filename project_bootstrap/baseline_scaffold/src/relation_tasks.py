@@ -107,6 +107,23 @@ def build_ancestor_task_examples(
     ancestor_label_mode: str = "source_kind",
     min_hops: int = 1,
 ) -> list[RelationExample]:
+    examples, _ = build_ancestor_task_examples_with_hops(
+        declarations=declarations,
+        edges=edges,
+        hierarchy_relation_types=hierarchy_relation_types,
+        ancestor_label_mode=ancestor_label_mode,
+        min_hops=min_hops,
+    )
+    return examples
+
+
+def build_ancestor_task_examples_with_hops(
+    declarations: list[dict],
+    edges: list[dict],
+    hierarchy_relation_types: Iterable[str],
+    ancestor_label_mode: str = "source_kind",
+    min_hops: int = 1,
+) -> tuple[list[RelationExample], dict[RelationExample, int]]:
     metadata = {row["declaration_id"]: row for row in declarations}
     outgoing: dict[str, list[str]] = defaultdict(list)
     for row in filter_edges_by_types(edges, hierarchy_relation_types):
@@ -121,6 +138,7 @@ def build_ancestor_task_examples(
         return "extends_ancestor"
 
     closure_examples: list[RelationExample] = []
+    hop_lookup: dict[RelationExample, int] = {}
     seen: set[RelationExample] = set()
     for src_id in outgoing:
         stack = [(dst_id, 1) for dst_id in outgoing.get(src_id, [])]
@@ -138,11 +156,12 @@ def build_ancestor_task_examples(
                 if example not in seen:
                     seen.add(example)
                     closure_examples.append(example)
+                    hop_lookup[example] = depth
             for next_dst_id in outgoing.get(dst_id, []):
                 next_depth = depth + 1
                 if best_depth.get(next_dst_id, 10**9) > next_depth:
                     stack.append((next_dst_id, next_depth))
-    return closure_examples
+    return closure_examples, hop_lookup
 
 
 def build_task_positive_examples(
@@ -350,6 +369,45 @@ def build_ranking_queries(
             }
         )
     return queries
+
+
+def hop_bucket_name(hop: int) -> str:
+    if hop <= 3:
+        return f"hop_{hop}"
+    return "hop_4_plus"
+
+
+def build_grouped_ranking_queries(
+    positive_examples: list[RelationExample],
+    relation_candidate_pools: dict[str, list[str]],
+    positive_hop_lookup: dict[RelationExample, int] | None = None,
+) -> list[dict]:
+    grouped_queries: dict[tuple[str, str], dict] = {}
+    for src_id, dst_id, relation_type in positive_examples:
+        key = (src_id, relation_type)
+        if key not in grouped_queries:
+            grouped_queries[key] = {
+                "src_id": src_id,
+                "relation_type": relation_type,
+                "candidate_ids": list(relation_candidate_pools.get(relation_type, [])),
+                "positive_ids": [],
+                "positive_ids_by_hop_bucket": {},
+                "positive_hops": {},
+            }
+        query = grouped_queries[key]
+        if dst_id not in query["positive_ids"]:
+            query["positive_ids"].append(dst_id)
+        if dst_id not in query["candidate_ids"]:
+            query["candidate_ids"].append(dst_id)
+        if positive_hop_lookup is None:
+            continue
+        hop = positive_hop_lookup.get((src_id, dst_id, relation_type))
+        if hop is None:
+            continue
+        query["positive_hops"][dst_id] = hop
+        bucket = hop_bucket_name(int(hop))
+        query["positive_ids_by_hop_bucket"].setdefault(bucket, []).append(dst_id)
+    return list(grouped_queries.values())
 
 
 def summarize_relation_examples(examples: list[RelationExample]) -> dict[str, int]:

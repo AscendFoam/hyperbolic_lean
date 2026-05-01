@@ -1,0 +1,7 @@
+{
+  "repo_url": "https://github.com/leanprover-community/mathlib4",
+  "commit": "c211948581bde9846a99e32d97a03f0d5307c31e",
+  "dst_dir": "data/raw/leandojo_trace/traced_mathlib_hierarchy_probe_v1",
+  "build_deps": false,
+  "num_procs": 2
+}

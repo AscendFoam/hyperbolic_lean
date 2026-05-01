@@ -1,6 +1,7 @@
 import Lean
 
 open Lean
+open Lean.Meta
 open System
 
 namespace DeclarationIndexExport
@@ -28,7 +29,7 @@ def collectConstantNames (env : Environment) : Array Name :=
 
 def getModuleContainingDecl? (env : Environment) (declName : Name) : Option Name :=
   match env.getModuleIdxFor? declName with
-  | some modIdx => env.allImportedModuleNames.get? modIdx
+  | some modIdx => env.allImportedModuleNames[modIdx]?
   | none =>
       if env.contains declName then
         some env.mainModule
@@ -36,7 +37,8 @@ def getModuleContainingDecl? (env : Environment) (declName : Name) : Option Name
         none
 
 def inferDeclKind (env : Environment) (declName : Name) : CoreM String := do
-  if (← Lean.Meta.isInstance declName) then
+  let isInstanceDecl <- Meta.isInstance declName
+  if isInstanceDecl then
     return "instance"
   if isClass env declName then
     return "class"
@@ -54,11 +56,12 @@ def inferDeclKind (env : Environment) (declName : Name) : CoreM String := do
   | none => return "unknown"
 
 def collectRows : CoreM (Array DeclIndexRow) := do
-  let env ← getEnv
+  let env <- getEnv
   let mut rows : Array DeclIndexRow := #[]
   for declName in collectConstantNames env do
-    let some ranges ← findDeclarationRanges? declName | continue
-    let declKind ← inferDeclKind env declName
+    let ranges? <- findDeclarationRanges? declName
+    let some ranges := ranges? | continue
+    let declKind <- inferDeclKind env declName
     let moduleName := (getModuleContainingDecl? env declName).map Name.toString |>.getD ""
     rows := rows.push {
       declName := declName
@@ -72,18 +75,16 @@ def collectRows : CoreM (Array DeclIndexRow) := do
   return rows.qsort (fun a b => Name.quickLt a.declName b.declName)
 
 def writeRows (path : FilePath) (rows : Array DeclIndexRow) : IO Unit := do
-  let mut lines := #[
-    tsvLine [
-      "decl_name",
-      "decl_short_name",
-      "decl_kind",
-      "module_name",
-      "line_start",
-      "line_end",
-      "selection_line_start",
-      "selection_line_end",
-    ]
-  ]
+  let mut lines := #[tsvLine [
+    "decl_name",
+    "decl_short_name",
+    "decl_kind",
+    "module_name",
+    "line_start",
+    "line_end",
+    "selection_line_start",
+    "selection_line_end",
+  ]]
   for row in rows do
     lines := lines.push <| tsvLine [
       row.declName.toString,
@@ -105,13 +106,13 @@ def main (args : List String) : IO UInt32 := do
   | mainModuleText :: outputPathText :: _ => do
       initSearchPath (← findSysroot)
       let mainModule := parseName mainModuleText
-      let env ← importModules (loadExts := true) #[{ module := mainModule }] {}
+      let env <- importModules (loadExts := true) #[{ module := mainModule }] {}
       let ctx : Core.Context := {
         fileName := s!"<{mainModuleText}>"
         fileMap := default
       }
       let state : Core.State := { env := env }
-      let (rows, _) ← (collectRows).toIO ctx state
+      let (rows, _) <- collectRows.toIO ctx state
       let outputPath := FilePath.mk outputPathText
       IO.FS.createDirAll (outputPath.parent.getD (FilePath.mk "."))
       writeRows outputPath rows

@@ -350,6 +350,7 @@ def run_relation_gcn_experiment(config: dict) -> dict:
             relation_candidate_pools=data["relation_candidate_pools"],
             node_to_idx=node_to_idx,
             relation_to_idx=relation_to_idx,
+            positive_hop_lookup=data["positive_hop_lookup"],
             torch=torch,
         )
     write_json(artifacts_root / "metrics.json", metrics)
@@ -378,6 +379,15 @@ def run_relation_gcn_experiment(config: dict) -> dict:
         result_summary["ranking_test_mrr"] = metrics["ranking"]["test"]["mrr"]
         result_summary["ranking_test_hits_at_1"] = metrics["ranking"]["test"]["hits_at_1"]
         result_summary["ranking_test_hits_at_10"] = metrics["ranking"]["test"]["hits_at_10"]
+        grouped = metrics["ranking"]["test"].get("grouped", {})
+        result_summary["grouped_test_map"] = grouped.get("map")
+        result_summary["grouped_test_ndcg"] = grouped.get("ndcg")
+        result_summary["grouped_test_ndcg_at_10"] = grouped.get("ndcg_at_10")
+        result_summary["grouped_test_mrr"] = grouped.get("grouped_mrr")
+        result_summary["grouped_test_recall_at_1"] = grouped.get("recall_at_1")
+        result_summary["grouped_test_recall_at_3"] = grouped.get("recall_at_3")
+        result_summary["grouped_test_recall_at_5"] = grouped.get("recall_at_5")
+        result_summary["grouped_test_recall_at_10"] = grouped.get("recall_at_10")
     write_json(artifacts_root / "result_summary.json", result_summary)
 
     print("[done] relation-aware gcn training completed")
@@ -387,6 +397,9 @@ def run_relation_gcn_experiment(config: dict) -> dict:
     print(f"[done] test AP: {fmt_metric(metrics['test']['average_precision'])}")
     if "ranking" in metrics:
         print(f"[done] test MRR: {fmt_metric(metrics['ranking']['test']['mrr'])}")
+        grouped = metrics["ranking"]["test"].get("grouped", {})
+        print(f"[done] grouped test MAP: {fmt_metric(grouped.get('map'))}")
+        print(f"[done] grouped test Recall@10: {fmt_metric(grouped.get('recall_at_10'))}")
     print(f"[done] artifacts: {artifacts_root}")
 
     return {

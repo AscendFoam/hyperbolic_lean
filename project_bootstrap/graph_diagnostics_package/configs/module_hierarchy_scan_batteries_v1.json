@@ -1,0 +1,32 @@
+{
+  "graph_root": "data/processed/declaration_graph/batteries_typeclass_precise_coverage_v1",
+  "output_root": "artifacts/diagnostics/module_hierarchy_scan_batteries_v1",
+  "seed": 42,
+  "distance_sample_sources": 16,
+  "hyperbolicity_landmarks": 12,
+  "max_hyperbolicity_quadruples": 256,
+  "relation_edge_types": [
+    "extends",
+    "instance_of"
+  ],
+  "module_field_priority": [
+    "module_name",
+    "namespace"
+  ],
+  "candidate_depths": [
+    2,
+    3
+  ],
+  "candidate_prefix_allowlist": [
+    "Batteries"
+  ],
+  "internal_prefixes": [
+    "Batteries"
+  ],
+  "expand_to_ancestor_closure": true,
+  "min_seed_declarations": 16,
+  "min_seed_relation_nodes": 8,
+  "min_retained_relation_edges": 8,
+  "top_k_per_depth": 20,
+  "materialize_top_k_per_depth": 5
+}

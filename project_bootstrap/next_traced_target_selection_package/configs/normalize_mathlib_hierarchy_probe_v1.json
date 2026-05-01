@@ -1,0 +1,22 @@
+{
+  "source_commit": "c211948581bde9846a99e32d97a03f0d5307c31e",
+  "trace_version": "leandojo-mathlib-hierarchy-probe-v1",
+  "input_root": "data/raw/leandojo_trace/traced_mathlib_hierarchy_probe_v1",
+  "input_glob": "**/*.trace.xml",
+  "input_format": "xml",
+  "output_path": "data/interim/normalized_trace/mathlib_hierarchy_probe_normalized_declarations_v1.jsonl",
+  "declaration_index_path": "data/interim/normalized_trace/mathlib_hierarchy_probe_declaration_index.tsv",
+  "skip_report_path": "artifacts/logs/mathlib_hierarchy_probe_normalize_trace_v1_skips.json",
+  "declaration_index_backfill": {
+    "enabled": true,
+    "include_decl_kinds": [
+      "class",
+      "instance",
+      "structure"
+    ],
+    "require_line_start": true
+  },
+  "adapter": {
+    "name": "leandojo_trace_xml"
+  }
+}

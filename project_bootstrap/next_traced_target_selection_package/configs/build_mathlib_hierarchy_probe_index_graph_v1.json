@@ -1,0 +1,13 @@
+{
+  "declaration_index_path": "data/interim/normalized_trace/mathlib_hierarchy_probe_declaration_index.tsv",
+  "output_root": "data/processed/declaration_graph/mathlib_hierarchy_probe_index_v1",
+  "source_commit": "c211948581bde9846a99e32d97a03f0d5307c31e",
+  "trace_version": "mathlib-hierarchy-probe-index-v1",
+  "include_decl_kinds": [
+    "class",
+    "instance",
+    "structure"
+  ],
+  "require_module_name": true,
+  "require_line_start": true
+}

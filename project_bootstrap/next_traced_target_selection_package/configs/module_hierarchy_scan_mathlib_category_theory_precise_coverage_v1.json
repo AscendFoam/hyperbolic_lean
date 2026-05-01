@@ -1,0 +1,33 @@
+{
+  "graph_root": "data/processed/declaration_graph/mathlib_category_theory_precise_coverage_v1",
+  "output_root": "artifacts/diagnostics/module_hierarchy_scan_mathlib_category_theory_v1",
+  "seed": 42,
+  "distance_sample_sources": 16,
+  "hyperbolicity_landmarks": 12,
+  "max_hyperbolicity_quadruples": 256,
+  "relation_edge_types": [
+    "extends",
+    "instance_of"
+  ],
+  "module_field_priority": [
+    "module_name",
+    "namespace"
+  ],
+  "candidate_depths": [
+    2,
+    3,
+    4
+  ],
+  "candidate_prefix_allowlist": [
+    "Mathlib.CategoryTheory"
+  ],
+  "internal_prefixes": [
+    "Mathlib.CategoryTheory"
+  ],
+  "expand_to_ancestor_closure": true,
+  "min_seed_declarations": 24,
+  "min_seed_relation_nodes": 12,
+  "min_retained_relation_edges": 12,
+  "top_k_per_depth": 30,
+  "materialize_top_k_per_depth": 8
+}

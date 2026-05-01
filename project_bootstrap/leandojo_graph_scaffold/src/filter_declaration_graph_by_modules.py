@@ -6,6 +6,40 @@ import json
 from collections import Counter
 from pathlib import Path
 
+DEFAULT_DECL_FIELDS = [
+    "declaration_id",
+    "decl_name",
+    "decl_short_name",
+    "raw_decl_name",
+    "name_qualification_source",
+    "decl_kind",
+    "module_name",
+    "file_path",
+    "namespace",
+    "line_start",
+    "line_end",
+    "signature_text",
+    "body_text",
+    "docstring",
+    "ast_size",
+    "token_count",
+    "dependency_depth",
+    "source_commit",
+    "trace_version",
+    "source_trace_file",
+]
+
+DEFAULT_EDGE_FIELDS = [
+    "edge_id",
+    "src_id",
+    "dst_id",
+    "edge_type",
+    "evidence_source",
+    "weight",
+    "is_direct",
+    "source_commit",
+]
+
 
 def load_config(path: Path) -> dict:
     return json.loads(path.read_text(encoding="utf-8"))
@@ -99,8 +133,16 @@ def main() -> None:
         "top_module_counts": dict(module_counts.most_common(30)),
     }
 
-    decl_fields = list(kept_declarations[0].keys()) if kept_declarations else list(declarations[0].keys())
-    edge_fields = list(kept_edges[0].keys()) if kept_edges else list(edges[0].keys())
+    decl_fields = (
+        list(kept_declarations[0].keys())
+        if kept_declarations
+        else (list(declarations[0].keys()) if declarations else DEFAULT_DECL_FIELDS)
+    )
+    edge_fields = (
+        list(kept_edges[0].keys())
+        if kept_edges
+        else (list(edges[0].keys()) if edges else DEFAULT_EDGE_FIELDS)
+    )
     write_csv(output_root / "declarations.csv", kept_declarations, decl_fields)
     write_csv(output_root / "edges.csv", kept_edges, edge_fields)
     (output_root / "stats.json").write_text(json.dumps(stats, ensure_ascii=False, indent=2), encoding="utf-8")

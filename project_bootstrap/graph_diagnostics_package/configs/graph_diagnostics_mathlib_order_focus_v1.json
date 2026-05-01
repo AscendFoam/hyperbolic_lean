@@ -1,0 +1,41 @@
+{
+  "output_root": "artifacts/diagnostics/mathlib_order_focus_v1",
+  "seed": 42,
+  "distance_sample_sources": 16,
+  "hyperbolicity_landmarks": 12,
+  "max_hyperbolicity_quadruples": 256,
+  "graphs": [
+    {
+      "name": "mathlib_algebra_order_d3",
+      "graph_root": "artifacts/diagnostics/module_hierarchy_scan_mathlib_algebra_order_index_v1/candidate_graphs/01_d3_Mathlib_Algebra_Order",
+      "relation_edge_types": [
+        "extends",
+        "instance_of"
+      ]
+    },
+    {
+      "name": "mathlib_algebra_ring_subring_d4",
+      "graph_root": "artifacts/diagnostics/module_hierarchy_scan_mathlib_algebra_order_index_v1/candidate_graphs/01_d4_Mathlib_Algebra_Ring_Subring",
+      "relation_edge_types": [
+        "extends",
+        "instance_of"
+      ]
+    },
+    {
+      "name": "mathlib_algebra_field_subfield_d4",
+      "graph_root": "artifacts/diagnostics/module_hierarchy_scan_mathlib_algebra_order_index_v1/candidate_graphs/02_d4_Mathlib_Algebra_Field_Subfield",
+      "relation_edge_types": [
+        "extends",
+        "instance_of"
+      ]
+    },
+    {
+      "name": "mathlib_algebra_order_ring_d4",
+      "graph_root": "artifacts/diagnostics/module_hierarchy_scan_mathlib_algebra_order_index_v1/candidate_graphs/04_d4_Mathlib_Algebra_Order_Ring",
+      "relation_edge_types": [
+        "extends",
+        "instance_of"
+      ]
+    }
+  ]
+}

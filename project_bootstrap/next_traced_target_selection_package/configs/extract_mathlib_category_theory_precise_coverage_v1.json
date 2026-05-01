@@ -1,0 +1,46 @@
+{
+  "graph_root": "data/processed/declaration_graph/mathlib_category_theory_hierarchy_probe_closed_world_v1",
+  "output_root": "data/processed/declaration_graph/mathlib_category_theory_precise_coverage_v1",
+  "source_commit": "c211948581bde9846a99e32d97a03f0d5307c31e",
+  "trace_version": "leandojo-mathlib-hierarchy-probe-v1",
+  "include_decl_kinds": [
+    "class",
+    "instance",
+    "structure"
+  ],
+  "class_like_decl_kinds": [
+    "class",
+    "structure"
+  ],
+  "keep_edge_types": [
+    "uses"
+  ],
+  "keep_induced_uses": true,
+  "relation_edges_path": "data/interim/lean_meta_relations/mathlib_hierarchy_probe_v1/relations.tsv",
+  "relation_format": "tsv",
+  "prefer_exact_relations": true,
+  "add_exact_extends_edges": true,
+  "add_exact_instance_of_edges": true,
+  "exact_extends_edge_type": "extends",
+  "exact_instance_of_edge_type": "instance_of",
+  "add_extends_inferred_edges": false,
+  "add_instance_of_inferred_edges": false,
+  "coverage_aware_backfill": {
+    "enabled": true,
+    "declaration_index_path": "data/interim/normalized_trace/mathlib_hierarchy_probe_declaration_index.tsv",
+    "relation_nodes_path": "data/interim/lean_meta_relations/mathlib_hierarchy_probe_v1/nodes.tsv",
+    "relation_types": [
+      "extends",
+      "instance_of"
+    ],
+    "endpoint_roles": [
+      "src",
+      "dst"
+    ],
+    "include_decl_kinds": [
+      "class",
+      "instance",
+      "structure"
+    ]
+  }
+}

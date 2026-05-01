@@ -1,0 +1,9 @@
+{
+  "source_commit": "c211948581bde9846a99e32d97a03f0d5307c31e",
+  "trace_version": "leandojo-mathlib-hierarchy-probe-v1",
+  "normalized_trace_path": "data/interim/normalized_trace/mathlib_hierarchy_probe_normalized_declarations_v1.jsonl",
+  "output_root": "data/processed/declaration_graph/mathlib_hierarchy_probe_closed_world_v1",
+  "edge_type": "uses",
+  "drop_self_edges": true,
+  "closed_world": true
+}
