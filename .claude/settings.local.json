@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(xargs grep *)",
+      "Read(//c/Users/26410/.claude/plans/**)",
+      "Bash(python -c ' *)"
+    ],
+    "additionalDirectories": [
+      "d:\\Codes\\Math\\hyperbolic_lean"
+    ]
+  }
+}

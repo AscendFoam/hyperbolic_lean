@@ -1,0 +1,17 @@
+{
+  "output_root": "artifacts/diagnostics/task_structure_relation_split_v1",
+  "analyses": [
+    {
+      "name": "explicit_only_gcn",
+      "base_config": "project_bootstrap/graph_diagnostics_package/configs/relation_gcn_batteries_explicit_only_parent_prediction.json"
+    },
+    {
+      "name": "synthesized_only_gcn",
+      "base_config": "project_bootstrap/graph_diagnostics_package/configs/relation_gcn_batteries_synthesized_only_parent_prediction.json"
+    },
+    {
+      "name": "hierarchy_mixed_gcn",
+      "base_config": "project_bootstrap/graph_diagnostics_package/configs/relation_gcn_batteries_hierarchy_mixed_parent_prediction.json"
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "source_graphs": [
+    {
+      "name": "batteries_full_precise_coverage_v1",
+      "graph_root": "data/processed/declaration_graph/batteries_full_precise_coverage_v1"
+    }
+  ],
+  "output_root": "data/processed/declaration_graph",
+  "origin_map": {
+    "extends": "explicit",
+    "instance_of": "synthesized",
+    "uses": "unknown"
+  },
+  "splits": {
+    "explicit_only": ["explicit"],
+    "synthesized_only": ["synthesized"],
+    "hierarchy_mixed": ["explicit", "synthesized"],
+    "full_with_uses": ["explicit", "synthesized", "unknown"]
+  }
+}

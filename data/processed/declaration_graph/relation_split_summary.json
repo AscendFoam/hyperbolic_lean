@@ -1,0 +1,118 @@
+{
+  "config": "project_bootstrap\\leandojo_graph_scaffold\\configs\\relation_split_batteries_v1.json",
+  "origin_map": {
+    "extends": "explicit",
+    "instance_of": "synthesized",
+    "uses": "unknown"
+  },
+  "split_names": [
+    "explicit_only",
+    "synthesized_only",
+    "hierarchy_mixed",
+    "full_with_uses"
+  ],
+  "sources": [
+    {
+      "source_name": "batteries_full_precise_coverage_v1",
+      "source_graph_root": "data\\processed\\declaration_graph\\batteries_full_precise_coverage_v1",
+      "origin_map": {
+        "extends": "explicit",
+        "instance_of": "synthesized",
+        "uses": "unknown"
+      },
+      "source_total_nodes": 7314,
+      "source_total_edges": 8738,
+      "source_edge_type_counts": {
+        "extends": 125,
+        "instance_of": 4595,
+        "uses": 4018
+      },
+      "source_edge_origin_counts": {
+        "explicit": 125,
+        "synthesized": 4595,
+        "unknown": 4018
+      },
+      "splits": {
+        "explicit_only": {
+          "source_name": "batteries_full_precise_coverage_v1",
+          "split": "explicit_only",
+          "num_nodes": 163,
+          "num_edges": 125,
+          "edge_type_counts": {
+            "extends": 125
+          },
+          "edge_origin_counts": {
+            "explicit": 125
+          },
+          "decl_kind_counts": {
+            "class": 57,
+            "structure": 106
+          },
+          "output_dir": "data\\processed\\declaration_graph\\batteries_full_precise_coverage_v1_explicit_only"
+        },
+        "synthesized_only": {
+          "source_name": "batteries_full_precise_coverage_v1",
+          "split": "synthesized_only",
+          "num_nodes": 4813,
+          "num_edges": 4595,
+          "edge_type_counts": {
+            "instance_of": 4595
+          },
+          "edge_origin_counts": {
+            "synthesized": 4595
+          },
+          "decl_kind_counts": {
+            "class": 218,
+            "instance": 4595
+          },
+          "output_dir": "data\\processed\\declaration_graph\\batteries_full_precise_coverage_v1_synthesized_only"
+        },
+        "hierarchy_mixed": {
+          "source_name": "batteries_full_precise_coverage_v1",
+          "split": "hierarchy_mixed",
+          "num_nodes": 4919,
+          "num_edges": 4720,
+          "edge_type_counts": {
+            "extends": 125,
+            "instance_of": 4595
+          },
+          "edge_origin_counts": {
+            "explicit": 125,
+            "synthesized": 4595
+          },
+          "decl_kind_counts": {
+            "class": 218,
+            "instance": 4595,
+            "structure": 106
+          },
+          "output_dir": "data\\processed\\declaration_graph\\batteries_full_precise_coverage_v1_hierarchy_mixed"
+        },
+        "full_with_uses": {
+          "source_name": "batteries_full_precise_coverage_v1",
+          "split": "full_with_uses",
+          "num_nodes": 6983,
+          "num_edges": 8738,
+          "edge_type_counts": {
+            "extends": 125,
+            "instance_of": 4595,
+            "uses": 4018
+          },
+          "edge_origin_counts": {
+            "explicit": 125,
+            "synthesized": 4595,
+            "unknown": 4018
+          },
+          "decl_kind_counts": {
+            "class": 221,
+            "def": 779,
+            "inductive": 22,
+            "instance": 4602,
+            "structure": 131,
+            "theorem": 1228
+          },
+          "output_dir": "data\\processed\\declaration_graph\\batteries_full_precise_coverage_v1_full_with_uses"
+        }
+      }
+    }
+  ]
+}

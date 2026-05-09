@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(\"C:/ProgramData/anaconda3/envs/DLEnv/python.exe\" project_bootstrap/baseline_scaffold/src/compare_relation_splits.py)",
+      "Bash(\"C:/ProgramData/anaconda3/envs/DLEnv/python.exe\" project_bootstrap/baseline_scaffold/src/run_relation_seed_sweep.py --config project_bootstrap/graph_diagnostics_package/configs/relation_seed_sweep_gcn_batteries_synthesized_only_v1.json)",
+      "Bash(\"C:/ProgramData/anaconda3/envs/DLEnv/python.exe\" project_bootstrap/baseline_scaffold/src/run_relation_seed_sweep.py --config project_bootstrap/graph_diagnostics_package/configs/relation_seed_sweep_hgcn_batteries_hierarchy_mixed_v1.json)",
+      "Bash(\"C:/ProgramData/anaconda3/envs/LeanDojoEnv/python.exe\" -c \"import torch; print\\('torch', torch.__version__\\); import numpy; print\\('numpy', numpy.__version__\\)\")",
+      "Bash(\"C:/ProgramData/anaconda3/envs/DLEnv/python.exe\" project_bootstrap/baseline_scaffold/src/run_relation_seed_sweep.py --config project_bootstrap/graph_diagnostics_package/configs/relation_seed_sweep_hgcn_batteries_synthesized_only_v1.json)",
+      "Bash(C:/ProgramData/anaconda3/envs/DLEnv/python.exe -c ' *)",
+      "Bash(\"C:/ProgramData/anaconda3/envs/DLEnv/python.exe\" project_bootstrap/baseline_scaffold/src/run_relation_grouped_retrieval_baseline.py --config project_bootstrap/graph_diagnostics_package/configs/grouped_gcn_field_subfield_anc_v1.json)",
+      "Bash(\"C:/ProgramData/anaconda3/envs/DLEnv/python.exe\" project_bootstrap/baseline_scaffold/src/run_relation_seed_sweep.py --config project_bootstrap/graph_diagnostics_package/configs/relation_seed_sweep_grouped_gcn_field_subfield_v1.json)",
+      "Bash(\"C:/ProgramData/anaconda3/envs/DLEnv/python.exe\" project_bootstrap/baseline_scaffold/src/run_relation_seed_sweep.py --config project_bootstrap/graph_diagnostics_package/configs/relation_seed_sweep_grouped_hgcn_field_subfield_v1.json)",
+      "Bash(\"C:/ProgramData/anaconda3/envs/DLEnv/python.exe\" project_bootstrap/baseline_scaffold/src/run_relation_seed_sweep.py --config project_bootstrap/graph_diagnostics_package/configs/relation_seed_sweep_grouped_gcn_order_ring_v1.json)",
+      "Bash(\"C:/ProgramData/anaconda3/envs/DLEnv/python.exe\" project_bootstrap/baseline_scaffold/src/run_relation_seed_sweep.py --config project_bootstrap/graph_diagnostics_package/configs/relation_seed_sweep_grouped_hgcn_order_ring_v1.json)",
+      "Bash(python3 -c ' *)",
+      "Bash(conda run -n DLEnv python3 -c ' *)",
+      "Bash(conda run *)"
+    ]
+  }
+}

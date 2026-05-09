@@ -1,0 +1,34 @@
+{
+  "output_root": "artifacts/diagnostics/relation_split_v1",
+  "seed": 42,
+  "distance_sample_sources": 16,
+  "hyperbolicity_landmarks": 12,
+  "max_hyperbolicity_quadruples": 256,
+  "graphs": [
+    {
+      "name": "batteries_explicit_only",
+      "graph_root": "data/processed/declaration_graph/batteries_full_precise_coverage_v1_explicit_only",
+      "relation_edge_types": ["extends"]
+    },
+    {
+      "name": "batteries_synthesized_only",
+      "graph_root": "data/processed/declaration_graph/batteries_full_precise_coverage_v1_synthesized_only",
+      "relation_edge_types": ["instance_of"]
+    },
+    {
+      "name": "batteries_hierarchy_mixed",
+      "graph_root": "data/processed/declaration_graph/batteries_full_precise_coverage_v1_hierarchy_mixed",
+      "relation_edge_types": ["extends", "instance_of"]
+    },
+    {
+      "name": "batteries_full_with_uses",
+      "graph_root": "data/processed/declaration_graph/batteries_full_precise_coverage_v1_full_with_uses",
+      "relation_edge_types": ["extends", "instance_of"]
+    },
+    {
+      "name": "batteries_typeclass_precise_coverage_v1_reference",
+      "graph_root": "data/processed/declaration_graph/batteries_typeclass_precise_coverage_v1",
+      "relation_edge_types": ["extends", "instance_of"]
+    }
+  ]
+}

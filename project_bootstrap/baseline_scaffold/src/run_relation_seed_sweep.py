@@ -9,6 +9,7 @@ from pathlib import Path
 from common import ensure_dir, load_config, write_json
 from run_relation_gcn_baseline import run_relation_gcn_experiment
 from run_relation_hyperbolic_baseline import run_relation_hyperbolic_experiment
+from run_relation_grouped_retrieval_baseline import run_grouped_retrieval_experiment
 
 
 def parse_args() -> argparse.Namespace:
@@ -143,6 +144,8 @@ def main() -> None:
         runner = run_relation_gcn_experiment
     elif model_type == "hgcn":
         runner = run_relation_hyperbolic_experiment
+    elif model_type in ("grouped_gcn", "grouped_hgcn"):
+        runner = run_grouped_retrieval_experiment
     else:
         raise ValueError(f"Unsupported model_type: {model_type}")
 
