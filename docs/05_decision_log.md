@@ -43,3 +43,11 @@
 - 依据：`docs/reference/AI_coding_workflow.md` 对 `README.md`、`AGENTS.md`、`CLAUDE.md` 的要求。
 - 决策：Current Unique Task 设为 T00，先创建根目录入口文档，再推进协议或代码任务。
 - 后果：后续 worker 会话能从仓库入口理解项目边界和任务纪律。
+
+## D006: T00 通过 review 并切换到 T01
+
+- 日期：2026-05-10
+- 状态：Accepted
+- 依据：`docs/review/T00_review.md`
+- 决策：`T00` 判定为 PASS，标记完成；当前唯一任务切换到 `T01`，继续做治理文档一致性复查。
+- 后果：后续 worker 可以在 `docs/tasks/M0_governance/T01_governance_consistency_review.md` 上继续推进，不需要回头修 T00。

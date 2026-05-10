@@ -13,8 +13,9 @@
 | R05 | full Mathlib trace 成本过高或再次卡住 | Medium | Active | 优先已有产物、模块级 probe、小仓库 trace |
 | R06 | synthesized relation 语义复杂，负采样或层级解释失真 | High | Active | Milestone 4 做 provenance split |
 | R07 | binary training 与 grouped retrieval 评测错配 | High | Active | Milestone 3 做 query-grouped training alignment |
-| R08 | 后续 worker 越界修改或重复做历史任务 | Medium | Active | `docs/04_task_board.md` 和 `docs/tasks/` 明确 Allowed files 与 Forbidden scope |
+| R08 | 后续 worker 越界修改或重复做历史任务 | Medium | Active | `docs/04_task_board.md`、`docs/tasks/` 与根目录入口文档明确 Allowed files 与 Forbidden scope |
 | R09 | 论文贡献被已有 Lean graph/export 工作稀释 | Medium | Active | 强调协议、诊断、条件性双曲结论和 proof-side bridge |
+| R10 | `docs/reference/AI_coding_workflow.md` 存在与 T00 无关的既有改动 | Low | Deferred | 不在 T00 收口中回滚；交给 T01 做一致性复查与裁决 |
 
 ## 2. Open Questions
 
@@ -25,6 +26,7 @@
 5. HGCN 若仍不赢，是否能在更深 hop bucket 或低维预算下形成局部价值？
 6. proof-side utility 应优先选择 ancestor explanation、declaration recommendation，还是 premise retrieval 正则化？
 7. 是否需要把 `project_bootstrap/` 中的脚手架整理成正式 `src/` 包，还是继续以实验包形式维护？
+8. `docs/reference/AI_coding_workflow.md` 的 reviewer prompt 变更是否应作为正式 workflow 更新保留？
 
 ## 3. Deferred Items
 
@@ -34,6 +36,7 @@
 | D02 | 复杂 hyperbolic transformer | 当前图结构和 baseline 尚未支持 | 强欧氏与简单双曲对照已完成，且候选图具备深层结构 |
 | D03 | 端到端 theorem proving | 超出当前 MVP | proof-side retrieval demo 证明图表示有实用价值 |
 | D04 | 简历素材同步到中枢项目 | 证据等级尚未提升 | 完成一个 milestone review 且 reviewer 通过 |
+| D05 | `docs/reference/AI_coding_workflow.md` 的既有改动裁决 | 与 T00 无关，且不应在 PASS 收口中擅自回滚 | T01 治理一致性复查 |
 
 ## 4. Risk Handling Rules
 

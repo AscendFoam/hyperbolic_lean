@@ -121,8 +121,7 @@ Reviewer 默认只读，只检查 diff 是否完成任务、是否有伪实现�
 
 ## 7. 当前架构缺口
 
-1. 根目录尚缺 `README.md`、`AGENTS.md`、`CLAUDE.md`，需要作为治理初始化后的第一个 worker 任务补齐。
-2. 数据资产缺少统一 version manifest 和 data card。
-3. grouped retrieval 协议需要从文档约定推进到明确的配置与验收入口。
-4. relation provenance split 需要从已有脚本能力推进到正式实验任务。
-5. proof-side utility 尚未进入工程实现。
+1. 数据资产仍缺少统一 version manifest 和 data card。
+2. grouped retrieval 协议需要从文档约定推进到明确的配置与验收入口。
+3. relation provenance split 需要从已有脚本能力推进到正式实验任务。
+4. proof-side utility 尚未进入工程实现。

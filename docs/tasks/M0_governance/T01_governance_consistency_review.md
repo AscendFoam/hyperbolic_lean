@@ -18,6 +18,8 @@ T00 完成后，治理入口会从 docs 扩展到根目录。需要在进入数�
 - `docs/06_eval_protocol.md`
 - `docs/07_handoff.md`
 - `docs/08_risks_and_open_questions.md`
+- `docs/reference/AI_coding_workflow.md`
+- `docs/for_human/T00_explained.md`
 - `docs/tasks/**`
 - `README.md`
 - `AGENTS.md`
@@ -33,6 +35,8 @@ T00 完成后，治理入口会从 docs 扩展到根目录。需要在进入数�
 - `docs/02_experiment_plan.md`
 - `docs/04_task_board.md`
 - `docs/tasks/M0_governance/T00_root_project_docs.md`
+- `docs/review/T00_review.md`
+- `docs/for_human/T00_explained.md`
 - T00 worker final report and review, if available
 
 ## Expected Output
@@ -42,7 +46,7 @@ T00 完成后，治理入口会从 docs 扩展到根目录。需要在进入数�
 
 ## Verification
 ```powershell
-rg -n "证明双曲优于|已证明|Current Unique Task|Allowed files|Forbidden scope" docs README.md AGENTS.md CLAUDE.md
+rg -n "证明双曲优于|已证明|Current Unique Task|Allowed files|Forbidden scope|docs/reference/AI_coding_workflow.md" docs README.md AGENTS.md CLAUDE.md
 git diff -- docs README.md AGENTS.md CLAUDE.md
 ```
 
