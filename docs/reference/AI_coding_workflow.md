@@ -307,6 +307,7 @@ Reviewer prompt：
 ```text
 你是 Claude Code reviewer。
 
+## 任务1：
 只读审查本次 diff（可通过git查询），不要修改文件。
 
 worker根据 
@@ -331,6 +332,12 @@ worker根据
 - Recommended next action
 
 请将输出的内容写入 `docs/review` 目录下，以 `TaskID_review.md` 格式命名。
+
+## 任务2：
+需要你在 @docs/for_human 目录中添加针对这个task以及对你的review的解释文档，解释内容包括：
+1. 对这个task先做通俗易懂的解释；
+2. 对这个task的实现进行详细解释，包括任务的目标、任务流程、代码变化/配置文件的变化、对后续开发的意义(这可能需要你参考 @docs/02_experiment_plan.md 、 @docs/04_task_board.md 、 @docs/07_handoff.md 等文档进行思考)等
+3. 为什么你给出了任务1中的审查结果？
 ```
 
 高风险任务用 adversarial review：
