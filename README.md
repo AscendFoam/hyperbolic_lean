@@ -49,6 +49,6 @@ Then follow the single-task loop:
 The current task entry is maintained in:
 
 - `docs/04_task_board.md`
-- `docs/tasks/M1_protocol/T10_version_manifest.md`
+- `docs/tasks/M1_protocol/T11_data_card.md`
 
-As of 2026-05-10, `T01` has passed review with warnings accepted. `T02` is deferred, and the current worker scope is `T10` until that round is reviewed and closed.
+As of 2026-05-10, `T10` has passed review and the current worker scope is `T11` until that round is reviewed and closed.

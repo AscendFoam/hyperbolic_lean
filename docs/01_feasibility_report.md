@@ -75,6 +75,7 @@ Go：
 - 下一步任务可拆成小型 worker 包，不需要一次性大改。
 - `T00` 已通过 review，说明根目录治理入口已经达到继续推进的最低要求。
 - `T01` 已通过 review with warnings accepted，说明治理一致性复查可以收口。
+- `T10` 已通过 review，版本锚点与数据资产入口已形成 reviewed manifest。
 
 No-Go 条件：
 
@@ -82,4 +83,4 @@ No-Go 条件：
 - 若所有候选图都过浅且无法接 proof-side utility，则项目应转为纯经验报告或归档。
 - 若后续只剩“继续调 HGCN 直到赢”，则不应继续作为主线。
 
-当前下一步是执行 `T10`，先完成版本锁定与数据资产 manifest；`T02` 暂缓且不阻塞 `T10`。
+当前下一步是执行 `T11`，在 `docs/data_manifest.md` 的基础上写出 data card；`T02` 已按用户裁决视为当前阶段完成。

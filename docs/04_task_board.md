@@ -7,7 +7,7 @@
 ## Project Status
 
 - 状态：Continue
-- 当前阶段：治理入口与一致性复查已完成，T02 暂缓，等待 T10 版本锁定
+- 当前阶段：治理入口、review 模板需求与版本 manifest 已收口，等待 T11 data card
 - 当前主线：`benchmark / protocol / diagnostics`
 - 当前不主张：把“已经证明 HGCN 稳定优于 GCN”写成既成事实
 - 当前证据等级：已有真实实验与工程原型，但尚未冻结成正式 benchmark artifact
@@ -16,11 +16,11 @@
 
 - [x] T00: 创建根目录 `README.md`、`AGENTS.md`、`CLAUDE.md`，把项目定位、执行入口和 agent 规则写入仓库入口
 - [x] T01: 审查并校正 `docs/00~08` 与 `docs/tasks` 的一致性，确保任务包可以直接交给 worker
-- [ ] T02: 建立 `docs/review/` 的 review 模板，并记录治理初始化 review（暂缓，不阻塞 T10）
+- [x] T02: 建立 `docs/review/` 的 review 模板，并记录治理初始化 review（由 PM 裁决：现有 Claude review 文档已满足当前阶段需要）
 
 ## Milestone 1: Data And Protocol Freeze
 
-- [ ] T10: 生成版本锁定与数据资产 manifest，覆盖 Lean、Mathlib、LeanDojo、Python 依赖、关键 config 与现有 artifact
+- [x] T10: 生成版本锁定与数据资产 manifest，覆盖 Lean、Mathlib、LeanDojo、Python 依赖、关键 config 与现有 artifact
 - [ ] T11: 写出 data card，描述当前可用图、字段、relation provenance、coverage-aware 处理与 unresolved 语义
 - [ ] T12: 固化 grouped multi-positive ancestor retrieval 协议，确认代码入口、配置字段、指标名与输出格式
 - [ ] T13: 增加或校验 hop bucket 常规报告入口，确保 `hop_2 / hop_3 / hop_4_plus` 出现在正式结果中
@@ -55,34 +55,31 @@
 
 ## Current Unique Task
 
-`T10`: 生成版本锁定与数据资产 manifest，覆盖 Lean、Mathlib、LeanDojo、Python 依赖、关键 config 与现有 artifact。
+`T11`: 写出 data card，描述当前可用图、字段、relation provenance、coverage-aware 处理与 unresolved 语义。
 
 任务包位置：
 
-`docs/tasks/M1_protocol/T10_version_manifest.md`
+`docs/tasks/M1_protocol/T11_data_card.md`
 
 ## Why Now
 
-`T01` 已经经过 review 并完成收口，warning 已接受并处理。`T02` 属于 review 模板标准化补强，可以暂缓；当前更关键的是进入 `T10`，先冻结版本与数据资产。
+`T10` 已经通过 review，`docs/data_manifest.md` 已成为当前版本锚点与资产入口。下一步应写出 `docs/data_card.md`，让后续协议和模型任务明确哪些图可用于正式 benchmark、哪些只适合历史或诊断用途。
 
 ## Worker Package Summary
 
-- Task ID: `T10`
+- Task ID: `T11`
 - Allowed files:
+  - `docs/data_card.md`
   - `docs/04_task_board.md`
-  - `docs/05_decision_log.md`
   - `docs/07_handoff.md`
   - `docs/08_risks_and_open_questions.md`
-  - `docs/data_manifest.md`
-  - `docs/tasks/**`
 - Forbidden scope:
-  - 不修改 `docs/02_experiment_plan.md`
-  - 不修改任何 `project_bootstrap/` 下的代码或配置
-  - 不运行 tracing、训练、seed sweep 等长任务
-  - 不编造版本信息；未知版本必须写成 `unknown / needs verification`
+  - 不改数据文件
+  - 不重算 artifacts
+  - 不把 coverage 不可靠的数据写成可靠标签
 - Verification:
-  - `rg -n "Lean|Mathlib|LeanDojo|artifact|config|unknown|needs verification" docs/data_manifest.md docs/04_task_board.md docs/07_handoff.md docs/05_decision_log.md docs/08_risks_and_open_questions.md`
-  - 人工检查 T10 包是否只做版本锁定与资产清点，不碰代码或实验运行
+  - `rg -n "unresolved|coverage|relation|extends|instance_of|recommended usage" docs/data_card.md`
+  - `git diff -- docs/data_card.md docs/04_task_board.md docs/07_handoff.md docs/08_risks_and_open_questions.md`
 
 ## Execution Note
 
@@ -91,6 +88,10 @@
 - 2026-05-10：`docs/reference/AI_coding_workflow.md` 中与 `T00` 无关的 reviewer prompt 微调，已并入 `T01` 的一致性复查范围，不再作为悬置改动单独跟踪。
 - 2026-05-10：`T01` review 结论为 `PASS_WITH_WARNINGS`；warnings 已接受并闭合，当前唯一任务切换为 `T10`。
 - 2026-05-10：未发现 `docs/review/T02_review.md`，因此 `T02` 不标记完成，仅暂缓。
+- 2026-05-10：`T10` 已产出 `docs/data_manifest.md` 草稿，完成版本锚点、代表性 config 入口与 artifact 根目录清点；`lean4-example`、LeanDojo、Python 环境等未能从可复现实据锁定的字段继续保留为 `unknown / needs verification`。
+- 2026-05-10：`T10` 已通过 review，标记完成；`unknown / needs verification` 字段作为后续补证项保留，不阻塞 T11。
+- 2026-05-10：PM 裁决 T02 可视为当前阶段完成，因为 `docs/review` 中已有可信 Claude review 文档覆盖已完成 task。
+- 2026-05-10：当前唯一任务切换为 `T11`。
 
 ## After Completion
 

@@ -75,3 +75,19 @@
 - 依据：当前 `docs/review/` 目录仅存在 `T00_review.md` 与 `T01_review.md`，未发现 `T02_review.md`
 - 决策：不将 `T02` 标记为完成或已 review；将其暂缓，不作为进入 `T10` 的前置条件。
 - 后果：优先推进版本锁定与数据资产 manifest；若后续 review 格式漂移，再回头补 `T02`。
+
+## D010: PM 裁决 T02 当前阶段完成
+
+- 日期：2026-05-10
+- 状态：Accepted
+- 依据：用户裁决；`docs/review/` 中已有由 Claude Code 编写的 `T00_review.md`、`T01_review.md`、`T10_review.md`
+- 决策：虽然没有单独的 `T02_review.md`，但现有 Claude review 文档已经足以满足当前阶段对 review 文档格式与可信度的要求，因此 T02 标记为完成。
+- 后果：Milestone 0 治理启动任务全部完成，不阻塞后续数据与协议任务。
+
+## D011: T10 通过 review 并切换到 T11
+
+- 日期：2026-05-10
+- 状态：Accepted
+- 依据：`docs/review/T10_review.md`
+- 决策：`T10` 判定为 PASS，标记完成；当前唯一任务切换到 `T11`。
+- 后果：`docs/data_manifest.md` 成为 reviewed manifest；其中 `unknown / needs verification` 字段继续作为后续补证项保留。

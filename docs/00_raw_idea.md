@@ -68,3 +68,4 @@ Go，但主线已收束：
 
 - 2026-05-10：`T00` 已通过 reviewer 判定 `PASS`，根目录入口文档已建立。
 - 2026-05-10：`T01` 已通过 reviewer 判定 `PASS_WITH_WARNINGS`，warnings 已接受并闭合；当前唯一任务切换为 `T10`。
+- 2026-05-10：`T10` 已通过 reviewer 判定 `PASS`；当前唯一任务切换为 `T11`，用于写出 data card。

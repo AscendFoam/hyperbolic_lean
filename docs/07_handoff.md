@@ -31,15 +31,15 @@
 
 ## 3. 当前唯一任务
 
-`T10`: 生成版本锁定与数据资产 manifest，覆盖 Lean、Mathlib、LeanDojo、Python 依赖、关键 config 与现有 artifact。
+`T11`: 写出 data card，描述当前可用图、字段、relation provenance、coverage-aware 处理与 unresolved 语义。
 
 任务包：
 
 ```text
-docs/tasks/M1_protocol/T10_version_manifest.md
+docs/tasks/M1_protocol/T11_data_card.md
 ```
 
-不要跳到代码实现；当前必须先做版本锁定与资产清点。
+不要跳到代码实现；当前必须先把 data card 写清楚。
 
 ## 4. 当前已知事实
 
@@ -102,15 +102,17 @@ Reviewer 默认只读。高风险任务使用 adversarial review。
 
 当前仍未完成的闭环：
 
-1. `T01` 已经过 reviewer 只读审查，结论为 `PASS_WITH_WARNINGS`。
-2. Captain 已接受并闭合 T01 的两个 warning。
-3. 当前唯一任务已切换到 `T10`。
-4. 未发现 `docs/review/T02_review.md`，因此 `T02` 暂缓，不标记完成。
+1. `T10` 已经过 reviewer 只读审查并判定为 PASS。
+2. Captain 已将 `T10` 标记为完成，并把当前唯一任务切换到 `T11`。
+3. PM 裁决 `T02` 可视为当前阶段完成，因为 `docs/review` 中已有可信 Claude review 文档覆盖已完成 task。
+4. `docs/data_manifest.md` 只锁定了当前可从仓库与现有 config 直接核实的版本锚点；`lean4-example`、LeanDojo 精确版本、Python 精确环境仍明确保留为 `unknown / needs verification`。
 
 ## 8. 下一步
 
-把当前 `T10` diff 交给 reviewer 做只读审查。完成后由 Captain：
+把当前 `T11` diff 交给 reviewer 做只读审查。完成后由 Captain：
 
-1. 决定是否将 `T10` 标记为完成。
+1. 决定是否将 `T11` 标记为完成。
 2. 更新 `docs/04_task_board.md`、`docs/07_handoff.md`，必要时更新 `docs/08_risks_and_open_questions.md` 与 `docs/05_decision_log.md`。
-3. 在 `T11` 与后续协议/诊断任务之间选择下一任务，但不要在同一轮直接执行下一任务。
+3. 在 `T12` 与后续协议/诊断任务之间选择下一任务，但不要在同一轮直接执行下一任务。
+
+不要把 `docs/data_manifest.md` 中的 `unknown / needs verification` 字段上升为既成版本事实；`T11` 的 data card 必须显式说明这些限制。
