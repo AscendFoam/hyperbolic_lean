@@ -51,3 +51,27 @@
 - 依据：`docs/review/T00_review.md`
 - 决策：`T00` 判定为 PASS，标记完成；当前唯一任务切换到 `T01`，继续做治理文档一致性复查。
 - 后果：后续 worker 可以在 `docs/tasks/M0_governance/T01_governance_consistency_review.md` 上继续推进，不需要回头修 T00。
+
+## D007: 保留 `docs/reference/AI_coding_workflow.md` 中的 reviewer prompt 措辞微调
+
+- 日期：2026-05-10
+- 状态：Accepted
+- 依据：`docs/review/T00_review.md`、`docs/tasks/M0_governance/T01_governance_consistency_review.md`
+- 决策：将 `docs/reference/AI_coding_workflow.md` 中 reviewer prompt 的措辞微调视为正式 workflow 文案更新保留，不在 `T01` 中回滚。
+- 后果：相关风险项与 deferred item 不再把这处改动视为待裁决状态；后续治理文档以当前 wording 为准。
+
+## D008: T01 通过 review with warnings accepted
+
+- 日期：2026-05-10
+- 状态：Accepted
+- 依据：`docs/review/T01_review.md`
+- 决策：`T01` 判定为 `PASS_WITH_WARNINGS`。两个 warning 均接受：`README.md` 当前任务入口已更新为 `T10`；`CLAUDE.md` 的 T00 专用 review boundary 已泛化为当前任务通用边界。
+- 后果：治理一致性复查完成，当前唯一任务切换到 `T10`。
+
+## D009: T02 暂缓且不阻塞 T10
+
+- 日期：2026-05-10
+- 状态：Accepted
+- 依据：当前 `docs/review/` 目录仅存在 `T00_review.md` 与 `T01_review.md`，未发现 `T02_review.md`
+- 决策：不将 `T02` 标记为完成或已 review；将其暂缓，不作为进入 `T10` 的前置条件。
+- 后果：优先推进版本锁定与数据资产 manifest；若后续 review 格式漂移，再回头补 `T02`。

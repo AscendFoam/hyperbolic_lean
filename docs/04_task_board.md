@@ -7,7 +7,7 @@
 ## Project Status
 
 - 状态：Continue
-- 当前阶段：治理入口已完成，等待 T01 一致性复查
+- 当前阶段：治理入口与一致性复查已完成，T02 暂缓，等待 T10 版本锁定
 - 当前主线：`benchmark / protocol / diagnostics`
 - 当前不主张：把“已经证明 HGCN 稳定优于 GCN”写成既成事实
 - 当前证据等级：已有真实实验与工程原型，但尚未冻结成正式 benchmark artifact
@@ -15,8 +15,8 @@
 ## Milestone 0: Governance Bootstrap
 
 - [x] T00: 创建根目录 `README.md`、`AGENTS.md`、`CLAUDE.md`，把项目定位、执行入口和 agent 规则写入仓库入口
-- [ ] T01: 审查并校正 `docs/00~08` 与 `docs/tasks` 的一致性，确保任务包可以直接交给 worker
-- [ ] T02: 建立 `docs/review/` 的 review 模板，并记录治理初始化 review
+- [x] T01: 审查并校正 `docs/00~08` 与 `docs/tasks` 的一致性，确保任务包可以直接交给 worker
+- [ ] T02: 建立 `docs/review/` 的 review 模板，并记录治理初始化 review（暂缓，不阻塞 T10）
 
 ## Milestone 1: Data And Protocol Freeze
 
@@ -55,46 +55,42 @@
 
 ## Current Unique Task
 
-`T01`: 审查并校正 `docs/00~08` 与 `docs/tasks` 的一致性，确保任务包可以直接交给 worker。
+`T10`: 生成版本锁定与数据资产 manifest，覆盖 Lean、Mathlib、LeanDojo、Python 依赖、关键 config 与现有 artifact。
 
 任务包位置：
 
-`docs/tasks/M0_governance/T01_governance_consistency_review.md`
+`docs/tasks/M1_protocol/T10_version_manifest.md`
 
 ## Why Now
 
-`T00` 已经经过 review 并完成收口，但治理文档之间还需要再做一轮一致性复查。当前最值得做的是确认 `docs/00~08`、`docs/tasks`、根目录入口与 review 流程完全对齐，然后再进入数据与协议冻结。
+`T01` 已经经过 review 并完成收口，warning 已接受并处理。`T02` 属于 review 模板标准化补强，可以暂缓；当前更关键的是进入 `T10`，先冻结版本与数据资产。
 
 ## Worker Package Summary
 
-- Task ID: `T01`
+- Task ID: `T10`
 - Allowed files:
-  - `docs/00_raw_idea.md`
-  - `docs/01_feasibility_report.md`
-  - `docs/03_architecture.md`
   - `docs/04_task_board.md`
   - `docs/05_decision_log.md`
-  - `docs/06_eval_protocol.md`
   - `docs/07_handoff.md`
   - `docs/08_risks_and_open_questions.md`
-  - `docs/reference/AI_coding_workflow.md`
+  - `docs/data_manifest.md`
   - `docs/tasks/**`
-  - `README.md`
-  - `AGENTS.md`
-  - `CLAUDE.md`
 - Forbidden scope:
   - 不修改 `docs/02_experiment_plan.md`
   - 不修改任何 `project_bootstrap/` 下的代码或配置
   - 不运行 tracing、训练、seed sweep 等长任务
-  - 不把双曲优于欧氏写成已完成事实
+  - 不编造版本信息；未知版本必须写成 `unknown / needs verification`
 - Verification:
-  - `rg -n "Current Unique Task|T01|PASS|PASS_WITH_WARNINGS|BLOCK" docs/04_task_board.md docs/07_handoff.md docs/00_raw_idea.md docs/01_feasibility_report.md docs/03_architecture.md docs/05_decision_log.md docs/06_eval_protocol.md docs/08_risks_and_open_questions.md docs/reference/AI_coding_workflow.md README.md AGENTS.md CLAUDE.md`
-  - 人工检查 T01 包是否只做文档一致性复查，不碰代码和实验配置
+  - `rg -n "Lean|Mathlib|LeanDojo|artifact|config|unknown|needs verification" docs/data_manifest.md docs/04_task_board.md docs/07_handoff.md docs/05_decision_log.md docs/08_risks_and_open_questions.md`
+  - 人工检查 T10 包是否只做版本锁定与资产清点，不碰代码或实验运行
 
 ## Execution Note
 
 - 2026-05-10：`T00` 已通过 review，根目录入口文档与相关 handoff 文档已收口。
 - 2026-05-10：当前唯一任务切换为 `T01`，用于复查治理文档之间的一致性。
+- 2026-05-10：`docs/reference/AI_coding_workflow.md` 中与 `T00` 无关的 reviewer prompt 微调，已并入 `T01` 的一致性复查范围，不再作为悬置改动单独跟踪。
+- 2026-05-10：`T01` review 结论为 `PASS_WITH_WARNINGS`；warnings 已接受并闭合，当前唯一任务切换为 `T10`。
+- 2026-05-10：未发现 `docs/review/T02_review.md`，因此 `T02` 不标记完成，仅暂缓。
 
 ## After Completion
 

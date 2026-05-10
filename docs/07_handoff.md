@@ -31,15 +31,15 @@
 
 ## 3. 当前唯一任务
 
-`T01`: 审查并校正 `docs/00~08` 与 `docs/tasks` 的一致性，确保任务包可以直接交给 worker。
+`T10`: 生成版本锁定与数据资产 manifest，覆盖 Lean、Mathlib、LeanDojo、Python 依赖、关键 config 与现有 artifact。
 
 任务包：
 
 ```text
-docs/tasks/M0_governance/T01_governance_consistency_review.md
+docs/tasks/M1_protocol/T10_version_manifest.md
 ```
 
-不要跳到 `T10` 或代码实现；当前必须先做治理一致性复查。
+不要跳到代码实现；当前必须先做版本锁定与资产清点。
 
 ## 4. 当前已知事实
 
@@ -102,14 +102,15 @@ Reviewer 默认只读。高风险任务使用 adversarial review。
 
 当前仍未完成的闭环：
 
-1. `T00` 已经过 reviewer 只读审查并判定为 PASS。
-2. Captain 已将 `T00` 标记为完成，并把当前唯一任务切换到 `T01`。
-3. 治理一致性复查尚未开始。
+1. `T01` 已经过 reviewer 只读审查，结论为 `PASS_WITH_WARNINGS`。
+2. Captain 已接受并闭合 T01 的两个 warning。
+3. 当前唯一任务已切换到 `T10`。
+4. 未发现 `docs/review/T02_review.md`，因此 `T02` 暂缓，不标记完成。
 
 ## 8. 下一步
 
-把当前 `T01` diff 交给 reviewer 做只读审查。完成后由 Captain：
+把当前 `T10` diff 交给 reviewer 做只读审查。完成后由 Captain：
 
-1. 决定是否将 `T01` 标记为完成。
+1. 决定是否将 `T10` 标记为完成。
 2. 更新 `docs/04_task_board.md`、`docs/07_handoff.md`，必要时更新 `docs/08_risks_and_open_questions.md` 与 `docs/05_decision_log.md`。
-3. 在 `T10` 与后续协议/诊断任务之间选择下一任务，但不要在同一轮直接执行下一任务。
+3. 在 `T11` 与后续协议/诊断任务之间选择下一任务，但不要在同一轮直接执行下一任务。
