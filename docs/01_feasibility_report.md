@@ -76,6 +76,7 @@ Go：
 - `T00` 已通过 review，说明根目录治理入口已经达到继续推进的最低要求。
 - `T01` 已通过 review with warnings accepted，说明治理一致性复查可以收口。
 - `T10` 已通过 review，版本锚点与数据资产入口已形成 reviewed manifest。
+- `T11` 已通过 review，当前可用图、字段、relation provenance、coverage-aware 边界和 recommended usage 已形成 reviewed data card。
 
 No-Go 条件：
 
@@ -83,4 +84,4 @@ No-Go 条件：
 - 若所有候选图都过浅且无法接 proof-side utility，则项目应转为纯经验报告或归档。
 - 若后续只剩“继续调 HGCN 直到赢”，则不应继续作为主线。
 
-当前下一步是执行 `T11`，在 `docs/data_manifest.md` 的基础上写出 data card；`T02` 已按用户裁决视为当前阶段完成。
+当前下一步是执行 `T12`，把 grouped multi-positive ancestor retrieval 协议与代码入口、配置字段、指标名和输出格式对齐；`T02` 已按用户裁决视为当前阶段完成。

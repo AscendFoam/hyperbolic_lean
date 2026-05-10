@@ -149,5 +149,6 @@ T10 将负责把这些要求落成 version manifest。
 - `T01` 已通过 review with warnings accepted，治理文档一致性复查已收口。
 - `T02` 已按 PM 裁决视为当前阶段完成。
 - `T10` 已通过 review，版本锁定与数据资产要求已落成 `docs/data_manifest.md`。
-- 当前唯一任务为 `T11`，负责在 manifest 基础上写出 data card。
-- 真正的协议冻结仍由后续 `T12` / `T13` 完成，当前不得把本文件写成已与代码完全对齐的事实。
+- `T11` 已通过 review，当前图资产、字段、relation provenance、coverage-aware 边界与 recommended usage 已落成 `docs/data_card.md`。
+- 当前唯一任务为 `T12`，负责把本协议与代码入口、配置字段、指标名和输出格式对齐。
+- 真正的 hop bucket 常规报告仍由后续 `T13` 完成；在 `T12` review 前，不得把本文件写成已与代码完全对齐的事实。

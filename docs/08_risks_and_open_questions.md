@@ -7,8 +7,8 @@
 | ID | 风险 | 严重度 | 状态 | 缓解策略 |
 | --- | --- | --- | --- | --- |
 | R01 | 项目叙事回退到“证明双曲必胜” | High | Active | 所有文档和任务包默认使用 benchmark / protocol / diagnostics 主线 |
-| R02 | grouped retrieval 协议只停留在文档，未与代码输出完全对齐 | High | Active | T12 / T13 专门冻结指标、字段和报告入口 |
-| R03 | 数据快照、版本和 config 仍有部分 unknown，导致结果不可复现 | High | Active | T10 已生成 reviewed manifest；T11 data card 必须保留 unknown 限制并说明使用边界 |
+| R02 | grouped retrieval 协议只停留在文档，未与代码输出完全对齐 | High | Active | 当前唯一任务 T12 专门冻结代码入口、配置字段、指标和输出格式；T13 继续补 hop bucket 常规报告 |
+| R03 | 数据快照、版本和 config 仍有部分 unknown，导致结果不可复现 | High | Active | T10 reviewed manifest 与 T11 reviewed data card 已保留 unknown 限制；后续只能用可复现实据关闭未知字段 |
 | R04 | relation layer 过浅，双曲价值不足 | High | Active | 先做诊断筛图，不把双曲设为主承诺 |
 | R05 | full Mathlib trace 成本过高或再次卡住 | Medium | Active | 优先已有产物、模块级 probe、小仓库 trace |
 | R06 | synthesized relation 语义复杂，负采样或层级解释失真 | High | Active | Milestone 4 做 provenance split |
@@ -16,6 +16,7 @@
 | R08 | 后续 worker 越界修改或重复做历史任务 | Medium | Active | `docs/04_task_board.md`、`docs/tasks/` 与根目录入口文档明确 Allowed files 与 Forbidden scope |
 | R09 | 论文贡献被已有 Lean graph/export 工作稀释 | Medium | Active | 强调协议、诊断、条件性双曲结论和 proof-side bridge |
 | R10 | `lean4-example`、LeanDojo、Python 环境等精确版本尚未从可复现实据锁定，若提前写成事实会削弱复现性声明 | High | Active | `docs/data_manifest.md` 继续将未证实字段标为 `unknown / needs verification`，待后续以环境清单或 trace 元数据补证 |
+| R11 | provenance split 目前主要通过派生图家族与诊断报告表达，而不是 `edges.csv` 中的一等字段，若直接下游消费容易误解 relation 语义 | Medium | Active | `docs/data_card.md` 明确 provenance 边界；Milestone 4 / T40-T43 继续把 provenance split 正式化 |
 
 ## 2. Open Questions
 
@@ -27,6 +28,7 @@
 6. proof-side utility 应优先选择 ancestor explanation、declaration recommendation，还是 premise retrieval 正则化？
 7. 是否需要把 `project_bootstrap/` 中的脚手架整理成正式 `src/` 包，还是继续以实验包形式维护？
 8. 哪一种可复现实据应被视为关闭 `T10` 剩余 unknowns 的规范来源：导出的 conda/pip lock、trace 元数据，还是单独的机器可读版本清单？
+9. `explicit-only / synthesized-only / mixed` 是否应在后续数据快照中成为 `edges.csv` 的一等字段，而不是继续依赖派生图目录名与诊断产物表达？
 
 ## 3. Deferred Items
 

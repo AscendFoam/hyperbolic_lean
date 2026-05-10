@@ -31,15 +31,15 @@
 
 ## 3. 当前唯一任务
 
-`T11`: 写出 data card，描述当前可用图、字段、relation provenance、coverage-aware 处理与 unresolved 语义。
+`T12`: 固化 grouped multi-positive ancestor retrieval 协议，确认代码入口、配置字段、指标名与输出格式。
 
 任务包：
 
 ```text
-docs/tasks/M1_protocol/T11_data_card.md
+docs/tasks/M1_protocol/T12_grouped_protocol_freeze.md
 ```
 
-不要跳到代码实现；当前必须先把 data card 写清楚。
+不要跳到训练或论文结论；当前必须先把 grouped retrieval 协议与代码入口、配置字段、指标名和输出格式对齐。
 
 ## 4. 当前已知事实
 
@@ -100,19 +100,23 @@ Reviewer 默认只读。高风险任务使用 adversarial review。
 2. 更新 `docs/04_task_board.md`，补充本轮 `T00` 执行说明，但没有擅自勾选完成。
 3. 更新本 handoff，说明根目录入口文档已补齐。
 
-当前仍未完成的闭环：
+当前状态：
 
 1. `T10` 已经过 reviewer 只读审查并判定为 PASS。
 2. Captain 已将 `T10` 标记为完成，并把当前唯一任务切换到 `T11`。
 3. PM 裁决 `T02` 可视为当前阶段完成，因为 `docs/review` 中已有可信 Claude review 文档覆盖已完成 task。
 4. `docs/data_manifest.md` 只锁定了当前可从仓库与现有 config 直接核实的版本锚点；`lean4-example`、LeanDojo 精确版本、Python 精确环境仍明确保留为 `unknown / needs verification`。
+5. `T11` 已经过 reviewer 只读审查并判定为 PASS；`docs/data_card.md` 成为 reviewed data card，补充了当前图资产的字段模式、relation 语义、coverage-aware 规则、recommended usage 与 unresolved 语义边界。
+6. Captain 已将 `T11` 标记为完成，并把当前唯一任务切换到 `T12`。
+7. `docs/tasks/**/*.md` 已检查，均包含 workflow 要求的任务包字段；GLM captain 后续可直接以 `docs/04_task_board.md` 的 Current Unique Task 为准分派 worker。
 
 ## 8. 下一步
 
-把当前 `T11` diff 交给 reviewer 做只读审查。完成后由 Captain：
+下一轮应把 `T12` 任务包交给 worker 执行。Worker 完成后，把 `T12` diff 交给 reviewer 做只读审查。完成后由 Captain：
 
-1. 决定是否将 `T11` 标记为完成。
+1. 决定是否将 `T12` 标记为完成。
 2. 更新 `docs/04_task_board.md`、`docs/07_handoff.md`，必要时更新 `docs/08_risks_and_open_questions.md` 与 `docs/05_decision_log.md`。
-3. 在 `T12` 与后续协议/诊断任务之间选择下一任务，但不要在同一轮直接执行下一任务。
+3. 在 `T13` 与后续诊断任务之间选择下一任务，但不要在同一轮直接执行下一任务。
 
-不要把 `docs/data_manifest.md` 中的 `unknown / needs verification` 字段上升为既成版本事实；`T11` 的 data card 必须显式说明这些限制。
+不要把 `docs/data_manifest.md` 中的 `unknown / needs verification` 字段上升为既成版本事实。
+不要把 `docs/data_card.md` 中的 `recommended usage` 误读为最终 benchmark 定稿；这仍然只是当前治理口径下的使用边界，后续还需要 `T12` / `T13` protocol 和 reviewer 收口。

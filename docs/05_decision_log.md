@@ -91,3 +91,11 @@
 - 依据：`docs/review/T10_review.md`
 - 决策：`T10` 判定为 PASS，标记完成；当前唯一任务切换到 `T11`。
 - 后果：`docs/data_manifest.md` 成为 reviewed manifest；其中 `unknown / needs verification` 字段继续作为后续补证项保留。
+
+## D012: T11 通过 review 并切换到 T12
+
+- 日期：2026-05-10
+- 状态：Accepted
+- 依据：`docs/review/T11_review.md`
+- 决策：`T11` 判定为 PASS，标记完成；当前唯一任务切换到 `T12`。
+- 后果：`docs/data_card.md` 成为 reviewed data card；其中的 recommended usage 仍不是最终 benchmark 定稿，provenance schema 边界继续作为 R11 / Open Question 9 跟踪，并由 Milestone 4 正式化。

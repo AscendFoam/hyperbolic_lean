@@ -7,7 +7,7 @@
 ## Project Status
 
 - 状态：Continue
-- 当前阶段：治理入口、review 模板需求与版本 manifest 已收口，等待 T11 data card
+- 当前阶段：治理入口、review 模板需求、版本 manifest 与 data card 已收口；当前推进 T12 协议冻结
 - 当前主线：`benchmark / protocol / diagnostics`
 - 当前不主张：把“已经证明 HGCN 稳定优于 GCN”写成既成事实
 - 当前证据等级：已有真实实验与工程原型，但尚未冻结成正式 benchmark artifact
@@ -21,7 +21,7 @@
 ## Milestone 1: Data And Protocol Freeze
 
 - [x] T10: 生成版本锁定与数据资产 manifest，覆盖 Lean、Mathlib、LeanDojo、Python 依赖、关键 config 与现有 artifact
-- [ ] T11: 写出 data card，描述当前可用图、字段、relation provenance、coverage-aware 处理与 unresolved 语义
+- [x] T11: 写出 data card，描述当前可用图、字段、relation provenance、coverage-aware 处理与 unresolved 语义
 - [ ] T12: 固化 grouped multi-positive ancestor retrieval 协议，确认代码入口、配置字段、指标名与输出格式
 - [ ] T13: 增加或校验 hop bucket 常规报告入口，确保 `hop_2 / hop_3 / hop_4_plus` 出现在正式结果中
 
@@ -55,31 +55,33 @@
 
 ## Current Unique Task
 
-`T11`: 写出 data card，描述当前可用图、字段、relation provenance、coverage-aware 处理与 unresolved 语义。
+`T12`: 固化 grouped multi-positive ancestor retrieval 协议，确认代码入口、配置字段、指标名与输出格式。
 
 任务包位置：
 
-`docs/tasks/M1_protocol/T11_data_card.md`
+`docs/tasks/M1_protocol/T12_grouped_protocol_freeze.md`
 
 ## Why Now
 
-`T10` 已经通过 review，`docs/data_manifest.md` 已成为当前版本锚点与资产入口。下一步应写出 `docs/data_card.md`，让后续协议和模型任务明确哪些图可用于正式 benchmark、哪些只适合历史或诊断用途。
+`T11` 已经通过 review，`docs/data_manifest.md` 与 `docs/data_card.md` 已成为当前数据资产入口。下一步必须把 grouped retrieval 协议与代码入口、配置字段、指标名和输出格式对齐，避免后续 worker 在未冻结协议上直接推进训练或论文结论。
 
 ## Worker Package Summary
 
-- Task ID: `T11`
+- Task ID: `T12`
 - Allowed files:
-  - `docs/data_card.md`
+  - `docs/06_eval_protocol.md`
+  - `docs/grouped_retrieval_protocol.md`
+  - relevant config files under `project_bootstrap/**/configs`
+  - relevant evaluation/reporting code under `project_bootstrap/baseline_scaffold/src`
   - `docs/04_task_board.md`
   - `docs/07_handoff.md`
   - `docs/08_risks_and_open_questions.md`
 - Forbidden scope:
-  - 不改数据文件
-  - 不重算 artifacts
-  - 不把 coverage 不可靠的数据写成可靠标签
+  - 不大改模型架构
+  - 不新增 unrelated task
+  - 不删除旧结果
 - Verification:
-  - `rg -n "unresolved|coverage|relation|extends|instance_of|recommended usage" docs/data_card.md`
-  - `git diff -- docs/data_card.md docs/04_task_board.md docs/07_handoff.md docs/08_risks_and_open_questions.md`
+  - `rg -n "grouped|Recall@|MAP|nDCG|MRR|hop" project_bootstrap\baseline_scaffold\src docs\06_eval_protocol.md docs\grouped_retrieval_protocol.md`
 
 ## Execution Note
 
@@ -92,6 +94,9 @@
 - 2026-05-10：`T10` 已通过 review，标记完成；`unknown / needs verification` 字段作为后续补证项保留，不阻塞 T11。
 - 2026-05-10：PM 裁决 T02 可视为当前阶段完成，因为 `docs/review` 中已有可信 Claude review 文档覆盖已完成 task。
 - 2026-05-10：当前唯一任务切换为 `T11`。
+- 2026-05-10：`T11` 已产出 `docs/data_card.md` 草稿，明确当前可用图、基础字段、`uses / extends / instance_of` relation 语义、coverage-aware 处理规则，以及哪些图只适合诊断或历史用途。
+- 2026-05-10：`T11` review 结论为 `PASS`；`docs/data_card.md` 成为 reviewed data card，新增的 provenance schema 边界风险继续在 R11 / Open Question 9 中跟踪。
+- 2026-05-10：当前唯一任务切换为 `T12`，用于冻结 grouped retrieval 协议、代码入口、配置字段、指标名与输出格式；后续 worker 不应自动执行 T12，需新会话按任务包领取。
 
 ## After Completion
 

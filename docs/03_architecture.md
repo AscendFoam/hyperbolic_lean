@@ -110,6 +110,8 @@ traced Lean repo
 | `06_eval_protocol.md` | 数据、split、指标、验收协议 |
 | `07_handoff.md` | 给下一个 Captain / Worker 的接手说明 |
 | `08_risks_and_open_questions.md` | 风险、开放问题、缓解策略 |
+| `data_manifest.md` | reviewed 数据资产与版本锚点清单，未知字段显式保留为 `unknown / needs verification` |
+| `data_card.md` | reviewed 数据卡，描述当前图资产字段、relation provenance、coverage-aware 处理和使用边界 |
 
 ## 6. Agent 工作边界
 
@@ -121,7 +123,7 @@ Reviewer 默认只读，只检查 diff 是否完成任务、是否有伪实现�
 
 ## 7. 当前架构缺口
 
-1. 数据资产仍缺少统一 version manifest 和 data card。
-2. grouped retrieval 协议需要从文档约定推进到明确的配置与验收入口。
-3. relation provenance split 需要从已有脚本能力推进到正式实验任务。
-4. proof-side utility 尚未进入工程实现。
+1. grouped retrieval 协议需要从文档约定推进到明确的配置与验收入口。
+2. relation provenance split 需要从已有脚本能力推进到正式实验任务，并解决 per-edge provenance 字段边界。
+3. proof-side utility 尚未进入工程实现。
+4. `lean4-example`、LeanDojo、Python 环境等部分版本锚点仍需后续可复现实据补证。
