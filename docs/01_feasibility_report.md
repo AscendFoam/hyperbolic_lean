@@ -1,6 +1,6 @@
 # 01 Feasibility Report
 
-> 更新时间：2026-05-11
+> 更新时间：2026-05-12
 >
 > 结论：Go，条件是先完成协议冻结、数据资产化和任务治理，再推进新实验。
 
@@ -79,6 +79,7 @@ Go：
 - `T11` 已通过 review，当前可用图、字段、relation provenance、coverage-aware 边界和 recommended usage 已形成 reviewed data card。
 - `T12` 已通过 adversarial review，grouped multi-positive ancestor retrieval 的代码入口、配置字段、指标名和核心输出字段已形成 reviewed protocol freeze。
 - `T13` 已通过 adversarial review，hop bucket 常规报告入口已接入单次 runner summary 与 seed sweep report；review 留下的重复 helper 与端到端 spot-check 作为后续轻量清理跟踪。
+- `T14` 已通过 normal review，最小 smoke 已真实落盘 `grouped_test_ndcg_at_10` 与 `hop_2 / hop_3 / hop_4_plus` 字段，Milestone 1 可视为闭合。
 
 No-Go 条件：
 
@@ -86,4 +87,4 @@ No-Go 条件：
 - 若所有候选图都过浅且无法接 proof-side utility，则项目应转为纯经验报告或归档。
 - 若后续只剩“继续调 HGCN 直到赢”，则不应继续作为主线。
 
-当前下一步是执行 `T14`，做 Milestone 1 收口 smoke check 与轻量清理；`T02` 已按用户裁决视为当前阶段完成。
+当前下一步是执行 `T20`，复查现有诊断产物并形成候选图优先级表；`T02` 已按用户裁决视为当前阶段完成。

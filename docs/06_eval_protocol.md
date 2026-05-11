@@ -1,8 +1,8 @@
 # 06 Eval Protocol
 
-> 更新时间：2026-05-11
+> 更新时间：2026-05-12
 >
-> 状态：T12 grouped protocol freeze 与 T13 hop bucket reporting 均已通过 adversarial review。T14 将做轻量 smoke check 与 cleanup，不改变正式协议口径。
+> 状态：T12 grouped protocol freeze、T13 hop bucket reporting 与 T14 smoke check 均已通过 review。Smoke artifact 只证明输出链可落盘，不是正式 benchmark 结果。
 
 ## 1. 默认任务
 
@@ -144,6 +144,15 @@ grouped multi-positive ancestor retrieval
   - `per_seed_results.json`
   - `aggregate.json`
   - `report.md`
+- smoke outputs:
+  - `artifacts/smoke/relation_gcn_lean4_example_typeclass_precise_v2_ancestor_ranking_smoke_t14/result_summary.json`
+  - `artifacts/smoke/relation_gcn_lean4_example_typeclass_precise_v2_ancestor_ranking_smoke_t14/metrics.json`
+
+当前 smoke 约定：
+
+- 只用于确认字段实际落盘，不用于正式 benchmark 比较。
+- 不替代后续真实 seed sweep。
+- 允许使用单 seed、极少 epoch 和缩小维度的最小运行配置。
 
 详细冻结说明见 `docs/grouped_retrieval_protocol.md`。
 
@@ -238,5 +247,6 @@ T10 将负责把这些要求落成 version manifest。
 - `T11` 已通过 review，当前图资产、字段、relation provenance、coverage-aware 边界与 recommended usage 已落成 `docs/data_card.md`。
 - `T12` 已通过 adversarial review，grouped 协议文档与 grouped retrieval runner 的最小输出字段对齐已收口。
 - `T13` 已通过 adversarial review，已把 `hop_2 / hop_3 / hop_4_plus` 补入单次 `result_summary.json` 与 seed sweep `report.md` 的常规报告入口。
-- 当前唯一任务为 `T14`，负责 Milestone 1 收口 smoke check 与轻量清理。
+- `T14` 已通过 review，最小 GCN smoke 已确认 `grouped_test_ndcg_at_10` 与 hop bucket 平铺字段真实落盘。
+- 当前唯一任务为 `T20`，负责现有诊断产物复查与候选图优先级表。
 - 不得把 T14 的 smoke output 写成正式 benchmark 结果。

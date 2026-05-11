@@ -1,6 +1,6 @@
 # 00 Raw Idea
 
-> 更新时间：2026-05-11
+> 更新时间：2026-05-12
 >
 > 项目名称：形式化图谱双曲化
 >
@@ -72,3 +72,4 @@ Go，但主线已收束：
 - 2026-05-10：`T11` 已通过 reviewer 判定 `PASS`；当前唯一任务切换为 `T12`，用于冻结 grouped retrieval 协议、代码入口、指标名与输出格式。
 - 2026-05-11：`T12` 已通过 adversarial reviewer 判定 `PASS`；当前唯一任务切换为 `T13`，用于校验 hop bucket 常规报告入口。
 - 2026-05-11：`T13` 已通过 adversarial reviewer 判定 `PASS`；当前唯一任务切换为 `T14`，用于做 Milestone 1 收口 smoke check 与轻量清理，不执行大规模实验。
+- 2026-05-12：`T14` 已通过 normal reviewer 判定 `PASS`；Milestone 1 数据与协议冻结闭合，当前唯一任务切换为 `T20`，进入诊断与候选图选择。

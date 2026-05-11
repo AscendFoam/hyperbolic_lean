@@ -14,7 +14,8 @@
       "Bash(\"C:/ProgramData/anaconda3/envs/DLEnv/python.exe\" project_bootstrap/baseline_scaffold/src/run_relation_seed_sweep.py --config project_bootstrap/graph_diagnostics_package/configs/relation_seed_sweep_grouped_hgcn_order_ring_v1.json)",
       "Bash(python3 -c ' *)",
       "Bash(conda run -n DLEnv python3 -c ' *)",
-      "Bash(conda run *)"
+      "Bash(conda run *)",
+      "Bash(git status *)"
     ]
   }
 }

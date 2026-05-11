@@ -1,6 +1,6 @@
 # 03 Architecture
 
-> 更新时间：2026-05-11
+> 更新时间：2026-05-12
 >
 > 范围：当前仓库的工程资产、数据产物、实验入口和治理文档结构。
 
@@ -123,7 +123,7 @@ Reviewer 默认只读，只检查 diff 是否完成任务、是否有伪实现�
 
 ## 7. 当前架构缺口
 
-1. T13 已把 hop bucket 常规报告入口接入 runner summary 与 seed sweep report，但还需要 T14 做轻量 smoke check，确认修改后的输出链至少能在小配置上实际落盘。
+1. 现有诊断产物尚未被汇总为候选图优先级表；T20 需要复查 `real_graphs_v1`、`hierarchy_focus_v1`、`mathlib_order_focus_v1`。
 2. relation provenance split 需要从已有脚本能力推进到正式实验任务，并解决 per-edge provenance 字段边界。
 3. proof-side utility 尚未进入工程实现。
 4. `lean4-example`、LeanDojo、Python 环境等部分版本锚点仍需后续可复现实据补证。

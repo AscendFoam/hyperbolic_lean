@@ -1,13 +1,13 @@
 # 04 Task Board
 
-> 更新时间：2026-05-11
+> 更新时间：2026-05-12
 >
 > Captain 原则：每轮只推进一个 `Current Unique Task`。Worker 不自动领取下一任务。
 
 ## Project Status
 
 - 状态：Continue
-- 当前阶段：Milestone 1 数据与协议冻结基本收口；T13 hop bucket reporting 已通过 adversarial review，当前推荐 T14 做轻量 smoke check 与 cleanup
+- 当前阶段：Milestone 1 数据与协议冻结已通过 review 闭合；当前进入 Milestone 2 诊断与候选图选择
 - 当前主线：`benchmark / protocol / diagnostics`
 - 当前不主张：把“已经证明 HGCN 稳定优于 GCN”写成既成事实
 - 当前证据等级：已有真实实验与工程原型，但尚未冻结成正式 benchmark artifact
@@ -24,7 +24,7 @@
 - [x] T11: 写出 data card，描述当前可用图、字段、relation provenance、coverage-aware 处理与 unresolved 语义
 - [x] T12: 固化 grouped multi-positive ancestor retrieval 协议，确认代码入口、配置字段、指标名与输出格式
 - [x] T13: 增加或校验 hop bucket 常规报告入口，确保 `hop_2 / hop_3 / hop_4_plus` 出现在正式结果中
-- [ ] T14: Milestone 1 收口 smoke check 与轻量清理，确认协议字段在最小运行或静态样例中实际落盘
+- [x] T14: Milestone 1 收口 smoke check 与轻量清理，确认协议字段在最小运行或静态样例中实际落盘
 
 ## Milestone 2: Diagnostics And Candidate Graph Selection
 
@@ -56,34 +56,30 @@
 
 ## Current Unique Task
 
-`T14`: Milestone 1 收口 smoke check 与轻量清理，确认 grouped / hop bucket 协议字段在最小运行或静态样例中实际落盘。
+`T20`: 复查 `real_graphs_v1`、`hierarchy_focus_v1`、`mathlib_order_focus_v1` 诊断产物，形成候选图优先级表。
 
 任务包位置：
 
-`docs/tasks/M1_protocol/T14_m1_smoke_check_and_cleanup.md`
+`docs/tasks/M2_diagnostics/T20_existing_diagnostics_summary.md`
 
 ## Why Now
 
-`T13` 已经通过 adversarial review。review 没有 blocking issue，但记录了无端到端运行、helper 重复和报告展示不完全对称等非阻塞问题。T14 用一个窄范围 smoke / cleanup 任务在不跑大规模 sweep 的前提下补上 Milestone 1 收口证据。
+`T14` 已经通过 normal review，Milestone 1 的 manifest、data card、grouped protocol、hop bucket reporting 与 smoke spot-check 已闭合。下一步应进入 Milestone 2，先复查现有诊断产物并给出候选图优先级，避免在未筛图前直接推进训练。
 
 ## Worker Package Summary
 
-- Task ID: `T14`
+- Task ID: `T20`
 - Allowed files:
-  - relevant evaluation/reporting code under `project_bootstrap/baseline_scaffold/src`
-  - relevant small/smoke config files under `project_bootstrap/**/configs`
-  - `docs/06_eval_protocol.md`
+  - `docs/diagnostics_summary.md`
   - `docs/04_task_board.md`
   - `docs/07_handoff.md`
   - `docs/08_risks_and_open_questions.md`
 - Forbidden scope:
-  - 不改训练目标
-  - 不重跑大规模 sweep
-  - 不引入新模型架构
-  - 不把 smoke output 写成正式 benchmark 结果
+  - 不重跑诊断脚本，除非现有产物缺失且 Captain 明确批准
+  - 不修改 baseline 训练代码
+  - 不把候选优先级写成最终实验结论
 - Verification:
-  - 运行一个可行的最小 smoke 命令，或明确记录为什么当前机器无法运行
-  - `rg -n "grouped_test_ndcg_at_10|hop_2_map|hop_3_map|hop_4_plus_map|flatten_grouped_hop_bucket_summary" project_bootstrap\baseline_scaffold\src docs\06_eval_protocol.md`
+  - `rg -n "real_graphs_v1|hierarchy_focus_v1|mathlib_order_focus_v1|candidate|priority|shallow|forest|hyperbolicity" docs artifacts\diagnostics`
 
 ## Execution Note
 
@@ -109,6 +105,12 @@
 - 2026-05-11：`docs/review/T13_review.md` 结论为 `PASS`，blocking issues 为 none；Captain 判定可标记完成。
 - 2026-05-11：T13 review 的非阻塞问题分类：helper duplication 与未来端到端 spot-check 记为 deferred；per-seed table 只展示 MAP/nDCG 记为 accepted presentation choice；doc status wording 由 Captain 收口修正。
 - 2026-05-11：`T13` 标记完成，当前唯一任务切换为 `T14`；本轮不执行 T14。
+- 2026-05-11：`T14` 本轮新增最小 smoke config `project_bootstrap/baseline_scaffold/configs/relation_gcn_typeclass_precise_v2_ancestor_ranking_smoke_t14.json`，输出到 `artifacts/smoke/`，不作为正式 benchmark 结果。
+- 2026-05-11：`T14` 已用 `C:\ProgramData\anaconda3\envs\DLEnv\python.exe` 成功运行单次最小 GCN smoke，生成 `artifacts/smoke/relation_gcn_lean4_example_typeclass_precise_v2_ancestor_ranking_smoke_t14/{metrics,result_summary}.json`，确认 `grouped_test_ndcg_at_10` 与 `hop_2 / hop_3 / hop_4_plus` 字段真实落盘。
+- 2026-05-11：`T14` 已把 `flatten_grouped_hop_bucket_summary` 去重到 `project_bootstrap/baseline_scaffold/src/relation_baseline_common.py`。
+- 2026-05-12：`docs/review/T14_review.md` 结论为 `PASS`，blocking issues 为 none；Captain 判定可标记完成。
+- 2026-05-12：T14 review 的非阻塞问题分类：`.claude/settings.json` 自动权限改动为 rejected/excluded from commit；`format_metric` duplication 为 deferred，继续由 D05 跟踪；只 smoke GCN runner 为 accepted low residual risk，因为三个 runner 已共享同一 helper。
+- 2026-05-12：`T14` 标记完成，Milestone 1 闭合；当前唯一任务切换为 `T20`，但本轮不执行 T20。
 
 ## After Completion
 

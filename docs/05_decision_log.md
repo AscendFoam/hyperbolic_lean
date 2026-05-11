@@ -1,6 +1,6 @@
 # 05 Decision Log
 
-> 更新时间：2026-05-11
+> 更新时间：2026-05-12
 >
 > 规则：只记录会影响后续任务选择、论文叙事、评测协议或项目状态的决策。
 
@@ -115,3 +115,11 @@
 - 依据：`docs/review/T13_review.md`
 - 决策：`T13` 判定为 PASS，标记完成；当前唯一任务切换到 `T14`。
 - 后果：hop bucket 常规报告入口已成为 reviewed Milestone 1 协议能力。T13 review 的 helper duplication 与端到端 smoke gap 作为 deferred follow-up 进入风险/开放问题；T14 用窄范围 smoke check 与轻量 cleanup 收口，不执行大规模 sweep。
+
+## D015: T14 通过 review 并切换到 T20
+
+- 日期：2026-05-12
+- 状态：Accepted
+- 依据：`docs/review/T14_review.md`
+- 决策：`T14` 判定为 PASS，标记完成；Milestone 1 数据与协议冻结闭合；当前唯一任务切换到 `T20`。
+- 后果：后续 worker 应进入诊断与候选图选择，不再继续补协议字段。`.claude/settings.json` 的自动权限 diff 不纳入 T14 提交；`format_metric` 展示 helper 去重仍由 D05 延后跟踪。

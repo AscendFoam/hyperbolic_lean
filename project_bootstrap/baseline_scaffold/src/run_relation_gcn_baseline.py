@@ -9,6 +9,7 @@ from common import load_config, set_global_random_seed, write_json
 from eval_utils import build_calibrated_metrics, summarize_score_distribution
 from relation_baseline_common import (
     build_edge_tensors,
+    flatten_grouped_hop_bucket_summary,
     build_ranking_task_metrics,
     build_relation_aware_adjacency,
     build_relation_type_index,
@@ -19,24 +20,6 @@ from relation_baseline_common import (
     prepare_relation_run_data,
 )
 from relation_tasks import build_message_edges_for_training
-
-
-def flatten_grouped_hop_bucket_summary(grouped: dict) -> dict[str, float | None]:
-    flattened: dict[str, float | None] = {}
-    hop_buckets = grouped.get("hop_buckets", {})
-    for bucket_name in ["hop_2", "hop_3", "hop_4_plus"]:
-        bucket_metrics = hop_buckets.get(bucket_name, {})
-        for metric_name in [
-            "map",
-            "ndcg",
-            "grouped_mrr",
-            "recall_at_1",
-            "recall_at_3",
-            "recall_at_5",
-            "recall_at_10",
-        ]:
-            flattened[f"{bucket_name}_{metric_name}"] = bucket_metrics.get(metric_name, {}).get("mean")
-    return flattened
 
 
 def parse_args() -> argparse.Namespace:

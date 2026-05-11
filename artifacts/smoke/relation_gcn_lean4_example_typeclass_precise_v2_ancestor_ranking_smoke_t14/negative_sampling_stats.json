@@ -1,0 +1,38 @@
+{
+  "train": {
+    "requested": 972,
+    "sampled": 972,
+    "negative_strategy": "same_module",
+    "negative_fallback_strategy": "random",
+    "strategy_usage": {
+      "random": 598,
+      "same_module": 374,
+      "same_namespace": 0,
+      "same_decl_kind": 0
+    }
+  },
+  "val": {
+    "requested": 120,
+    "sampled": 120,
+    "negative_strategy": "same_module",
+    "negative_fallback_strategy": "random",
+    "strategy_usage": {
+      "random": 73,
+      "same_module": 47,
+      "same_namespace": 0,
+      "same_decl_kind": 0
+    }
+  },
+  "test": {
+    "requested": 120,
+    "sampled": 120,
+    "negative_strategy": "same_module",
+    "negative_fallback_strategy": "random",
+    "strategy_usage": {
+      "random": 75,
+      "same_module": 45,
+      "same_namespace": 0,
+      "same_decl_kind": 0
+    }
+  }
+}
