@@ -1,6 +1,6 @@
 # 03 Architecture
 
-> 更新时间：2026-05-10
+> 更新时间：2026-05-11
 >
 > 范围：当前仓库的工程资产、数据产物、实验入口和治理文档结构。
 
@@ -123,7 +123,7 @@ Reviewer 默认只读，只检查 diff 是否完成任务、是否有伪实现�
 
 ## 7. 当前架构缺口
 
-1. grouped retrieval 协议需要从文档约定推进到明确的配置与验收入口。
+1. hop bucket 常规报告入口仍需由 `T13` 校验，确保 `hop_2 / hop_3 / hop_4_plus` 可在正式 grouped retrieval 结果中复查。
 2. relation provenance split 需要从已有脚本能力推进到正式实验任务，并解决 per-edge provenance 字段边界。
 3. proof-side utility 尚未进入工程实现。
 4. `lean4-example`、LeanDojo、Python 环境等部分版本锚点仍需后续可复现实据补证。

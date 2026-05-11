@@ -1,13 +1,13 @@
 # 08 Risks and Open Questions
 
-> 更新时间：2026-05-10
+> 更新时间：2026-05-11
 
 ## 1. Active Risks
 
 | ID | 风险 | 严重度 | 状态 | 缓解策略 |
 | --- | --- | --- | --- | --- |
 | R01 | 项目叙事回退到“证明双曲必胜” | High | Active | 所有文档和任务包默认使用 benchmark / protocol / diagnostics 主线 |
-| R02 | grouped retrieval 协议只停留在文档，未与代码输出完全对齐 | High | Active | 当前唯一任务 T12 专门冻结代码入口、配置字段、指标和输出格式；T13 继续补 hop bucket 常规报告 |
+| R02 | grouped retrieval 的核心协议与输出字段已通过 T12 收口，但 hop bucket 常规报告入口若缺失，仍无法验证深层 hop 上的条件性双曲价值 | High | Active | T13 专门校验 `hop_2 / hop_3 / hop_4_plus` 报告入口 |
 | R03 | 数据快照、版本和 config 仍有部分 unknown，导致结果不可复现 | High | Active | T10 reviewed manifest 与 T11 reviewed data card 已保留 unknown 限制；后续只能用可复现实据关闭未知字段 |
 | R04 | relation layer 过浅，双曲价值不足 | High | Active | 先做诊断筛图，不把双曲设为主承诺 |
 | R05 | full Mathlib trace 成本过高或再次卡住 | Medium | Active | 优先已有产物、模块级 probe、小仓库 trace |
@@ -20,7 +20,7 @@
 
 ## 2. Open Questions
 
-1. 当前代码里的 grouped retrieval 输出字段是否已经与 `docs/06_eval_protocol.md` 完全一致？
+1. `hop_2 / hop_3 / hop_4_plus` 是否已经在正式 grouped retrieval 报告入口中稳定可见？
 2. `Field.Subfield`、`Order.Ring` 和更大的 `Mathlib.Algebra.Order` 中，哪一个最适合作为下一轮正式 benchmark 图？
 3. synthesized relation 是否真的降低 hierarchy 深度，还是主要改变候选分布和负采样难度？
 4. query-grouped loss 在 GCN 上是否已经足够改善训练/评测对齐？
@@ -29,6 +29,7 @@
 7. 是否需要把 `project_bootstrap/` 中的脚手架整理成正式 `src/` 包，还是继续以实验包形式维护？
 8. 哪一种可复现实据应被视为关闭 `T10` 剩余 unknowns 的规范来源：导出的 conda/pip lock、trace 元数据，还是单独的机器可读版本清单？
 9. `explicit-only / synthesized-only / mixed` 是否应在后续数据快照中成为 `edges.csv` 的一等字段，而不是继续依赖派生图目录名与诊断产物表达？
+10. 是否要在后续版本中把 legacy `task = ancestor_ranking` 正式重命名为更不易混淆的 grouped 协议键，还是继续保留兼容别名？
 
 ## 3. Deferred Items
 

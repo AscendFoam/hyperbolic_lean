@@ -1,8 +1,8 @@
 # 06 Eval Protocol
 
-> 更新时间：2026-05-10
+> 更新时间：2026-05-11
 >
-> 状态：协议冻结前草案。后续 T12 / T13 负责把本文件与代码输出字段完全对齐。
+> 状态：T12 grouped protocol freeze 已通过 adversarial review。代码入口、配置字段、指标名与核心输出字段已收口；hop bucket 常规报告入口仍由 T13 校验。
 
 ## 1. 默认任务
 
@@ -60,6 +60,64 @@ grouped retrieval 必须报告：
 ```text
 mean ± std over 5 seeds
 ```
+
+## 3.1 当前代码入口与字段映射
+
+当前执行仍保留旧任务键：
+
+```text
+task = ancestor_ranking
+```
+
+但在当前协议下，它默认映射到正式任务名：
+
+```text
+grouped multi-positive ancestor retrieval
+```
+
+当前代码入口：
+
+1. 任务与 hop 构造：
+   - `project_bootstrap/baseline_scaffold/src/relation_tasks.py`
+2. grouped 指标计算与输出结构：
+   - `project_bootstrap/baseline_scaffold/src/relation_baseline_common.py`
+3. baseline runner：
+   - `project_bootstrap/baseline_scaffold/src/run_relation_gcn_baseline.py`
+   - `project_bootstrap/baseline_scaffold/src/run_relation_hyperbolic_baseline.py`
+   - `project_bootstrap/baseline_scaffold/src/run_relation_grouped_retrieval_baseline.py`
+4. sweep / report 汇总：
+   - `project_bootstrap/baseline_scaffold/src/run_relation_seed_sweep.py`
+   - `project_bootstrap/baseline_scaffold/src/_patch_sweep_reports.py`
+
+当前冻结的关键配置字段：
+
+- `task`
+- `target_relation_types`
+- `message_relation_types`
+- `hierarchy_relation_types`
+- `ancestor_label_mode`
+- `ancestor_min_hops`
+- `class_like_decl_kinds`
+- `exclude_held_out_direct_edges`
+- `negative_strategy`
+- `negative_fallback_strategy`
+
+当前冻结的 grouped 输出字段：
+
+- `metrics.json`:
+  - `ranking.val.grouped`
+  - `ranking.test.grouped`
+- `result_summary.json`:
+  - `grouped_test_map`
+  - `grouped_test_ndcg`
+  - `grouped_test_ndcg_at_10`
+  - `grouped_test_mrr`
+  - `grouped_test_recall_at_1`
+  - `grouped_test_recall_at_3`
+  - `grouped_test_recall_at_5`
+  - `grouped_test_recall_at_10`
+
+详细冻结说明见 `docs/grouped_retrieval_protocol.md`。
 
 ## 4. Split 原则
 
@@ -150,5 +208,6 @@ T10 将负责把这些要求落成 version manifest。
 - `T02` 已按 PM 裁决视为当前阶段完成。
 - `T10` 已通过 review，版本锁定与数据资产要求已落成 `docs/data_manifest.md`。
 - `T11` 已通过 review，当前图资产、字段、relation provenance、coverage-aware 边界与 recommended usage 已落成 `docs/data_card.md`。
-- 当前唯一任务为 `T12`，负责把本协议与代码入口、配置字段、指标名和输出格式对齐。
-- 真正的 hop bucket 常规报告仍由后续 `T13` 完成；在 `T12` review 前，不得把本文件写成已与代码完全对齐的事实。
+- `T12` 已通过 adversarial review，grouped 协议文档与 grouped retrieval runner 的最小输出字段对齐已收口。
+- 当前唯一任务为 `T13`，负责校验 `hop_2 / hop_3 / hop_4_plus` 常规报告入口。
+- 不得把 T13 尚未校验的 hop bucket 常规报告写成已完成事实。

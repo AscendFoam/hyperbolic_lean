@@ -469,6 +469,7 @@ def run_grouped_retrieval_experiment(config: dict) -> dict:
         grouped = metrics["ranking"]["test"].get("grouped", {})
         result_summary["grouped_test_map"] = grouped.get("map")
         result_summary["grouped_test_ndcg"] = grouped.get("ndcg")
+        result_summary["grouped_test_ndcg_at_10"] = grouped.get("ndcg_at_10")
         result_summary["grouped_test_mrr"] = grouped.get("grouped_mrr")
         result_summary["grouped_test_recall_at_1"] = grouped.get("recall_at_1")
         result_summary["grouped_test_recall_at_3"] = grouped.get("recall_at_3")

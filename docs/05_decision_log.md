@@ -1,6 +1,6 @@
 # 05 Decision Log
 
-> 更新时间：2026-05-10
+> 更新时间：2026-05-11
 >
 > 规则：只记录会影响后续任务选择、论文叙事、评测协议或项目状态的决策。
 
@@ -99,3 +99,11 @@
 - 依据：`docs/review/T11_review.md`
 - 决策：`T11` 判定为 PASS，标记完成；当前唯一任务切换到 `T12`。
 - 后果：`docs/data_card.md` 成为 reviewed data card；其中的 recommended usage 仍不是最终 benchmark 定稿，provenance schema 边界继续作为 R11 / Open Question 9 跟踪，并由 Milestone 4 正式化。
+
+## D013: T12 通过 adversarial review 并切换到 T13
+
+- 日期：2026-05-11
+- 状态：Accepted
+- 依据：`docs/review/T12_review.md`
+- 决策：`T12` 判定为 PASS，标记完成；当前唯一任务切换到 `T13`。
+- 后果：`docs/grouped_retrieval_protocol.md` 成为 reviewed grouped protocol freeze；`task = ancestor_ranking` 继续只是 grouped multi-positive 协议的兼容执行键。hop bucket 常规报告入口仍由 `T13` 收口。
