@@ -31,15 +31,15 @@
 
 ## 3. 当前唯一任务
 
-`T13`: 增加或校验 hop bucket 常规报告入口，确保 `hop_2 / hop_3 / hop_4_plus` 出现在正式 grouped retrieval 结果中。
+`T14`: Milestone 1 收口 smoke check 与轻量清理，确认 grouped / hop bucket 协议字段在最小运行或静态样例中实际落盘。
 
 任务包：
 
 ```text
-docs/tasks/M1_protocol/T13_hop_bucket_reporting.md
+docs/tasks/M1_protocol/T14_m1_smoke_check_and_cleanup.md
 ```
 
-不要跳到训练或论文结论；当前必须先把 hop bucket 常规报告入口校验清楚。
+不要跳到训练或论文结论；当前先执行 `T14` 的窄范围 smoke / cleanup，不跑大规模 sweep，也不写正式 benchmark 结论。
 
 ## 4. 当前已知事实
 
@@ -112,16 +112,20 @@ Reviewer 默认只读。高风险任务使用 adversarial review。
 8. Worker 已产出 `docs/grouped_retrieval_protocol.md` 草稿，并更新 `docs/06_eval_protocol.md`，把 grouped 协议的代码入口、配置字段、指标名与输出字段写成显式映射。
 9. Worker 已对 `run_relation_grouped_retrieval_baseline.py` 做最小代码修正，补齐 `grouped_test_ndcg_at_10` 到 `result_summary.json`，以匹配现有 seed sweep / report 汇总字段。
 10. `T12` 已经过 adversarial reviewer 只读审查并判定为 PASS；Captain 已将 `T12` 标记完成。
-11. 当前唯一任务已切换到 `T13`；本轮只推荐下一任务，不执行 T13。
+11. 此前当前唯一任务已从 `T12` 切换到 `T13`。
+12. `T13` 本轮已由 worker 完成实现与静态验证：单次 `result_summary.json` 已平铺导出 `hop_2 / hop_3 / hop_4_plus` 指标，seed sweep `report.md` 也已显式展示 hop bucket 聚合与 per-seed 结果。
+13. `T13` 已经过 adversarial reviewer 只读审查并判定为 PASS；Captain 已将 `T13` 标记完成。
+14. T13 review 的 helper duplication 与 end-to-end smoke gap 作为 deferred follow-up 跟踪；per-seed table 只展示 MAP/nDCG 被接受为展示选择，不视为阻塞。
+15. 当前唯一任务已切换到 `T14`；本轮只推荐下一任务，不执行 T14。
 
 ## 8. 下一步
 
-下一轮可把 `T13` 任务包交给 worker 执行。Worker 完成后，把 `T13` diff 交给 reviewer 做只读审查。完成后由 Captain：
+下一轮可把 `T14` 任务包交给 worker 执行。Worker 完成后，把 `T14` diff 交给 reviewer 做只读审查。完成后由 Captain：
 
-1. 决定是否将 `T13` 标记为完成。
+1. 决定是否将 `T14` 标记为完成，或要求返修。
 2. 更新 `docs/04_task_board.md`、`docs/07_handoff.md`，必要时更新 `docs/08_risks_and_open_questions.md` 与 `docs/05_decision_log.md`。
 3. 在 T20 与其他后续任务之间选择下一任务，但不要在同一轮直接执行下一任务。
 
 不要把 `docs/data_manifest.md` 中的 `unknown / needs verification` 字段上升为既成版本事实。
-不要把 `docs/data_card.md` 中的 `recommended usage` 误读为最终 benchmark 定稿；这仍然只是当前治理口径下的使用边界，后续还需要 `T13` hop bucket 和后续 diagnostics 收口。
+不要把 `docs/data_card.md` 中的 `recommended usage` 误读为最终 benchmark 定稿；这仍然只是当前治理口径下的使用边界，后续还需要 T14 smoke check 和后续 diagnostics。
 不要把 legacy `task = ancestor_ranking` 误读为旧单正例协议仍然有效；在 reviewed grouped protocol freeze 中，它只是 grouped multi-positive ancestor retrieval 的兼容执行键。

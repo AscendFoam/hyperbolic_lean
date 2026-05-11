@@ -68,6 +68,12 @@ def flatten_hop_bucket_metrics(result: dict) -> dict[str, float | int | None]:
     return flattened
 
 
+def format_metric(value: float | None) -> str:
+    if value is None:
+        return "NA"
+    return f"{value:.4f}"
+
+
 def build_markdown_report(config: dict, per_seed_rows: list[dict], aggregate: dict) -> str:
     lines = [
         "# Relation Seed Sweep",
@@ -105,17 +111,69 @@ def build_markdown_report(config: dict, per_seed_rows: list[dict], aggregate: di
                 [
                     str(row["seed"]),
                     str(row["run_id"]),
-                    "NA" if row["test_average_precision"] is None else f"{row['test_average_precision']:.4f}",
-                    "NA" if row["test_auroc"] is None else f"{row['test_auroc']:.4f}",
-                    "NA" if row["test_f1"] is None else f"{row['test_f1']:.4f}",
-                    "NA" if row["calibrated_test_f1"] is None else f"{row['calibrated_test_f1']:.4f}",
-                    "NA" if row["ranking_test_mrr"] is None else f"{row['ranking_test_mrr']:.4f}",
-                    "NA" if row.get("grouped_test_map") is None else f"{row['grouped_test_map']:.4f}",
-                    "NA" if row.get("grouped_test_ndcg") is None else f"{row['grouped_test_ndcg']:.4f}",
-                    "NA" if row.get("grouped_test_mrr") is None else f"{row['grouped_test_mrr']:.4f}",
-                    "NA" if row.get("grouped_test_recall_at_3") is None else f"{row['grouped_test_recall_at_3']:.4f}",
-                    "NA" if row.get("grouped_test_recall_at_10") is None else f"{row['grouped_test_recall_at_10']:.4f}",
-                    "NA" if row["ranking_test_hits_at_10"] is None else f"{row['ranking_test_hits_at_10']:.4f}",
+                    format_metric(row["test_average_precision"]),
+                    format_metric(row["test_auroc"]),
+                    format_metric(row["test_f1"]),
+                    format_metric(row["calibrated_test_f1"]),
+                    format_metric(row["ranking_test_mrr"]),
+                    format_metric(row.get("grouped_test_map")),
+                    format_metric(row.get("grouped_test_ndcg")),
+                    format_metric(row.get("grouped_test_mrr")),
+                    format_metric(row.get("grouped_test_recall_at_3")),
+                    format_metric(row.get("grouped_test_recall_at_10")),
+                    format_metric(row["ranking_test_hits_at_10"]),
+                ]
+            )
+            + " |"
+        )
+    lines.extend(
+        [
+            "",
+            "## Hop Bucket Aggregate",
+            "",
+            "| bucket | MAP | nDCG | grouped MRR | Recall@1 | Recall@3 | Recall@5 | Recall@10 |",
+            "| --- | --- | --- | --- | --- | --- | --- | --- |",
+        ]
+    )
+    for bucket_name in ["hop_2", "hop_3", "hop_4_plus"]:
+        lines.append(
+            "| "
+            + " | ".join(
+                [
+                    bucket_name,
+                    f"{format_metric(aggregate['metrics'][f'{bucket_name}_map']['mean'])} ± {format_metric(aggregate['metrics'][f'{bucket_name}_map']['std'])}",
+                    f"{format_metric(aggregate['metrics'][f'{bucket_name}_ndcg']['mean'])} ± {format_metric(aggregate['metrics'][f'{bucket_name}_ndcg']['std'])}",
+                    f"{format_metric(aggregate['metrics'][f'{bucket_name}_grouped_mrr']['mean'])} ± {format_metric(aggregate['metrics'][f'{bucket_name}_grouped_mrr']['std'])}",
+                    f"{format_metric(aggregate['metrics'][f'{bucket_name}_recall_at_1']['mean'])} ± {format_metric(aggregate['metrics'][f'{bucket_name}_recall_at_1']['std'])}",
+                    f"{format_metric(aggregate['metrics'][f'{bucket_name}_recall_at_3']['mean'])} ± {format_metric(aggregate['metrics'][f'{bucket_name}_recall_at_3']['std'])}",
+                    f"{format_metric(aggregate['metrics'][f'{bucket_name}_recall_at_5']['mean'])} ± {format_metric(aggregate['metrics'][f'{bucket_name}_recall_at_5']['std'])}",
+                    f"{format_metric(aggregate['metrics'][f'{bucket_name}_recall_at_10']['mean'])} ± {format_metric(aggregate['metrics'][f'{bucket_name}_recall_at_10']['std'])}",
+                ]
+            )
+            + " |"
+        )
+    lines.extend(
+        [
+            "",
+            "## Hop Bucket Per Seed",
+            "",
+            "| seed | run_id | hop_2 MAP | hop_2 nDCG | hop_3 MAP | hop_3 nDCG | hop_4_plus MAP | hop_4_plus nDCG |",
+            "| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: |",
+        ]
+    )
+    for row in per_seed_rows:
+        lines.append(
+            "| "
+            + " | ".join(
+                [
+                    str(row["seed"]),
+                    str(row["run_id"]),
+                    format_metric(row.get("hop_2_map")),
+                    format_metric(row.get("hop_2_ndcg")),
+                    format_metric(row.get("hop_3_map")),
+                    format_metric(row.get("hop_3_ndcg")),
+                    format_metric(row.get("hop_4_plus_map")),
+                    format_metric(row.get("hop_4_plus_ndcg")),
                 ]
             )
             + " |"

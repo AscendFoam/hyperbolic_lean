@@ -7,7 +7,7 @@
 ## Project Status
 
 - 状态：Continue
-- 当前阶段：治理入口、review 模板需求、版本 manifest、data card 与 T12 grouped protocol freeze 已收口；当前推荐推进 T13 hop bucket reporting
+- 当前阶段：Milestone 1 数据与协议冻结基本收口；T13 hop bucket reporting 已通过 adversarial review，当前推荐 T14 做轻量 smoke check 与 cleanup
 - 当前主线：`benchmark / protocol / diagnostics`
 - 当前不主张：把“已经证明 HGCN 稳定优于 GCN”写成既成事实
 - 当前证据等级：已有真实实验与工程原型，但尚未冻结成正式 benchmark artifact
@@ -23,7 +23,8 @@
 - [x] T10: 生成版本锁定与数据资产 manifest，覆盖 Lean、Mathlib、LeanDojo、Python 依赖、关键 config 与现有 artifact
 - [x] T11: 写出 data card，描述当前可用图、字段、relation provenance、coverage-aware 处理与 unresolved 语义
 - [x] T12: 固化 grouped multi-positive ancestor retrieval 协议，确认代码入口、配置字段、指标名与输出格式
-- [ ] T13: 增加或校验 hop bucket 常规报告入口，确保 `hop_2 / hop_3 / hop_4_plus` 出现在正式结果中
+- [x] T13: 增加或校验 hop bucket 常规报告入口，确保 `hop_2 / hop_3 / hop_4_plus` 出现在正式结果中
+- [ ] T14: Milestone 1 收口 smoke check 与轻量清理，确认协议字段在最小运行或静态样例中实际落盘
 
 ## Milestone 2: Diagnostics And Candidate Graph Selection
 
@@ -55,32 +56,34 @@
 
 ## Current Unique Task
 
-`T13`: 增加或校验 hop bucket 常规报告入口，确保 `hop_2 / hop_3 / hop_4_plus` 出现在正式结果中。
+`T14`: Milestone 1 收口 smoke check 与轻量清理，确认 grouped / hop bucket 协议字段在最小运行或静态样例中实际落盘。
 
 任务包位置：
 
-`docs/tasks/M1_protocol/T13_hop_bucket_reporting.md`
+`docs/tasks/M1_protocol/T14_m1_smoke_check_and_cleanup.md`
 
 ## Why Now
 
-`T12` 已经通过 adversarial review，grouped retrieval 协议、代码入口、配置字段和核心输出字段已收口。下一步必须校验 hop bucket 常规报告入口，因为双曲价值若只出现在更深 hop bucket，没有 `hop_2 / hop_3 / hop_4_plus` 就无法形成可复查结论。
+`T13` 已经通过 adversarial review。review 没有 blocking issue，但记录了无端到端运行、helper 重复和报告展示不完全对称等非阻塞问题。T14 用一个窄范围 smoke / cleanup 任务在不跑大规模 sweep 的前提下补上 Milestone 1 收口证据。
 
 ## Worker Package Summary
 
-- Task ID: `T13`
+- Task ID: `T14`
 - Allowed files:
-  - relevant config files under `project_bootstrap/**/configs`
   - relevant evaluation/reporting code under `project_bootstrap/baseline_scaffold/src`
+  - relevant small/smoke config files under `project_bootstrap/**/configs`
   - `docs/06_eval_protocol.md`
   - `docs/04_task_board.md`
   - `docs/07_handoff.md`
-  - `docs/08_risks_and_open_questions.md` if blocked
+  - `docs/08_risks_and_open_questions.md`
 - Forbidden scope:
   - 不改训练目标
-  - 不重跑大规模 sweep，除非任务包后续显式要求
-  - 不把单次 dry-run 写成正式结果
+  - 不重跑大规模 sweep
+  - 不引入新模型架构
+  - 不把 smoke output 写成正式 benchmark 结果
 - Verification:
-  - `rg -n "hop_2|hop_3|hop_4_plus|hop" project_bootstrap\baseline_scaffold\src docs\06_eval_protocol.md`
+  - 运行一个可行的最小 smoke 命令，或明确记录为什么当前机器无法运行
+  - `rg -n "grouped_test_ndcg_at_10|hop_2_map|hop_3_map|hop_4_plus_map|flatten_grouped_hop_bucket_summary" project_bootstrap\baseline_scaffold\src docs\06_eval_protocol.md`
 
 ## Execution Note
 
@@ -100,6 +103,12 @@
 - 2026-05-10：`T12` 对 `project_bootstrap/baseline_scaffold/src/run_relation_grouped_retrieval_baseline.py` 做了最小字段对齐，补齐 `grouped_test_ndcg_at_10` 到 `result_summary.json`。
 - 2026-05-11：`docs/review/T12_review.md` 结论为 `PASS`，blocking issues、non-blocking issues 与 missing verification 均为 none；Captain 判定无需 warning 分类或返修。
 - 2026-05-11：`T12` 标记完成，`docs/grouped_retrieval_protocol.md` 成为 reviewed grouped protocol freeze；当前唯一任务切换为 `T13`，但本轮不执行 T13。
+- 2026-05-11：`T13` 本轮完成 worker 实现，向 `run_relation_gcn_baseline.py`、`run_relation_hyperbolic_baseline.py`、`run_relation_grouped_retrieval_baseline.py` 的 `result_summary.json` 补齐 `hop_2 / hop_3 / hop_4_plus` 平铺字段。
+- 2026-05-11：`T13` 同步更新 `run_relation_seed_sweep.py` 与 `_patch_sweep_reports.py`，让 seed sweep `report.md` 显式展示 hop bucket 聚合与 per-seed 结果。
+- 2026-05-11：`T13` 已运行任务包静态校验 `rg -n "hop_2|hop_3|hop_4_plus|hop" project_bootstrap\baseline_scaffold\src docs\06_eval_protocol.md`。
+- 2026-05-11：`docs/review/T13_review.md` 结论为 `PASS`，blocking issues 为 none；Captain 判定可标记完成。
+- 2026-05-11：T13 review 的非阻塞问题分类：helper duplication 与未来端到端 spot-check 记为 deferred；per-seed table 只展示 MAP/nDCG 记为 accepted presentation choice；doc status wording 由 Captain 收口修正。
+- 2026-05-11：`T13` 标记完成，当前唯一任务切换为 `T14`；本轮不执行 T14。
 
 ## After Completion
 

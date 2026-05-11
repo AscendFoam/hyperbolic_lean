@@ -123,7 +123,7 @@ Reviewer 默认只读，只检查 diff 是否完成任务、是否有伪实现�
 
 ## 7. 当前架构缺口
 
-1. hop bucket 常规报告入口仍需由 `T13` 校验，确保 `hop_2 / hop_3 / hop_4_plus` 可在正式 grouped retrieval 结果中复查。
+1. T13 已把 hop bucket 常规报告入口接入 runner summary 与 seed sweep report，但还需要 T14 做轻量 smoke check，确认修改后的输出链至少能在小配置上实际落盘。
 2. relation provenance split 需要从已有脚本能力推进到正式实验任务，并解决 per-edge provenance 字段边界。
 3. proof-side utility 尚未进入工程实现。
 4. `lean4-example`、LeanDojo、Python 环境等部分版本锚点仍需后续可复现实据补证。

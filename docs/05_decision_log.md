@@ -107,3 +107,11 @@
 - 依据：`docs/review/T12_review.md`
 - 决策：`T12` 判定为 PASS，标记完成；当前唯一任务切换到 `T13`。
 - 后果：`docs/grouped_retrieval_protocol.md` 成为 reviewed grouped protocol freeze；`task = ancestor_ranking` 继续只是 grouped multi-positive 协议的兼容执行键。hop bucket 常规报告入口仍由 `T13` 收口。
+
+## D014: T13 通过 adversarial review 并切换到 T14
+
+- 日期：2026-05-11
+- 状态：Accepted
+- 依据：`docs/review/T13_review.md`
+- 决策：`T13` 判定为 PASS，标记完成；当前唯一任务切换到 `T14`。
+- 后果：hop bucket 常规报告入口已成为 reviewed Milestone 1 协议能力。T13 review 的 helper duplication 与端到端 smoke gap 作为 deferred follow-up 进入风险/开放问题；T14 用窄范围 smoke check 与轻量 cleanup 收口，不执行大规模 sweep。

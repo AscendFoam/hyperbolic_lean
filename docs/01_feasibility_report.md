@@ -78,6 +78,7 @@ Go：
 - `T10` 已通过 review，版本锚点与数据资产入口已形成 reviewed manifest。
 - `T11` 已通过 review，当前可用图、字段、relation provenance、coverage-aware 边界和 recommended usage 已形成 reviewed data card。
 - `T12` 已通过 adversarial review，grouped multi-positive ancestor retrieval 的代码入口、配置字段、指标名和核心输出字段已形成 reviewed protocol freeze。
+- `T13` 已通过 adversarial review，hop bucket 常规报告入口已接入单次 runner summary 与 seed sweep report；review 留下的重复 helper 与端到端 spot-check 作为后续轻量清理跟踪。
 
 No-Go 条件：
 
@@ -85,4 +86,4 @@ No-Go 条件：
 - 若所有候选图都过浅且无法接 proof-side utility，则项目应转为纯经验报告或归档。
 - 若后续只剩“继续调 HGCN 直到赢”，则不应继续作为主线。
 
-当前下一步是执行 `T13`，把 `hop_2 / hop_3 / hop_4_plus` 常规报告入口校验清楚；`T02` 已按用户裁决视为当前阶段完成。
+当前下一步是执行 `T14`，做 Milestone 1 收口 smoke check 与轻量清理；`T02` 已按用户裁决视为当前阶段完成。

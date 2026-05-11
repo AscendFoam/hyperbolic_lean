@@ -2,7 +2,7 @@
 
 > 更新时间：2026-05-11
 >
-> 状态：T12 grouped protocol freeze 已通过 adversarial review。代码入口、配置字段、指标名与核心输出字段已收口；hop bucket 常规报告入口仍由 T13 校验。
+> 状态：T12 grouped protocol freeze 与 T13 hop bucket reporting 均已通过 adversarial review。T14 将做轻量 smoke check 与 cleanup，不改变正式协议口径。
 
 ## 1. 默认任务
 
@@ -107,6 +107,8 @@ grouped multi-positive ancestor retrieval
 - `metrics.json`:
   - `ranking.val.grouped`
   - `ranking.test.grouped`
+  - `ranking.val.grouped.hop_buckets`
+  - `ranking.test.grouped.hop_buckets`
 - `result_summary.json`:
   - `grouped_test_map`
   - `grouped_test_ndcg`
@@ -116,6 +118,32 @@ grouped multi-positive ancestor retrieval
   - `grouped_test_recall_at_3`
   - `grouped_test_recall_at_5`
   - `grouped_test_recall_at_10`
+  - `hop_2_map`
+  - `hop_2_ndcg`
+  - `hop_2_grouped_mrr`
+  - `hop_2_recall_at_1`
+  - `hop_2_recall_at_3`
+  - `hop_2_recall_at_5`
+  - `hop_2_recall_at_10`
+  - `hop_3_map`
+  - `hop_3_ndcg`
+  - `hop_3_grouped_mrr`
+  - `hop_3_recall_at_1`
+  - `hop_3_recall_at_3`
+  - `hop_3_recall_at_5`
+  - `hop_3_recall_at_10`
+  - `hop_4_plus_map`
+  - `hop_4_plus_ndcg`
+  - `hop_4_plus_grouped_mrr`
+  - `hop_4_plus_recall_at_1`
+  - `hop_4_plus_recall_at_3`
+  - `hop_4_plus_recall_at_5`
+  - `hop_4_plus_recall_at_10`
+- seed sweep outputs:
+  - `per_seed_results.csv`
+  - `per_seed_results.json`
+  - `aggregate.json`
+  - `report.md`
 
 详细冻结说明见 `docs/grouped_retrieval_protocol.md`。
 
@@ -209,5 +237,6 @@ T10 将负责把这些要求落成 version manifest。
 - `T10` 已通过 review，版本锁定与数据资产要求已落成 `docs/data_manifest.md`。
 - `T11` 已通过 review，当前图资产、字段、relation provenance、coverage-aware 边界与 recommended usage 已落成 `docs/data_card.md`。
 - `T12` 已通过 adversarial review，grouped 协议文档与 grouped retrieval runner 的最小输出字段对齐已收口。
-- 当前唯一任务为 `T13`，负责校验 `hop_2 / hop_3 / hop_4_plus` 常规报告入口。
-- 不得把 T13 尚未校验的 hop bucket 常规报告写成已完成事实。
+- `T13` 已通过 adversarial review，已把 `hop_2 / hop_3 / hop_4_plus` 补入单次 `result_summary.json` 与 seed sweep `report.md` 的常规报告入口。
+- 当前唯一任务为 `T14`，负责 Milestone 1 收口 smoke check 与轻量清理。
+- 不得把 T14 的 smoke output 写成正式 benchmark 结果。
