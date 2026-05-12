@@ -123,7 +123,8 @@ Reviewer 默认只读，只检查 diff 是否完成任务、是否有伪实现�
 
 ## 7. 当前架构缺口
 
-1. T20 已形成现有诊断产物的 provisional candidate priority；T21 需要进一步审计 module-level candidate scan 输出的数据质量。
+1. T21 已形成 module-level candidate scan data-quality audit；T22 需要把 shallow forest / star forest、positive scale、component ratio 与 closure expansion 等经验判断固化为可复用诊断阈值和报告模板。
 2. relation provenance split 需要从已有脚本能力推进到正式实验任务，并解决 per-edge provenance 字段边界。
 3. proof-side utility 尚未进入工程实现。
 4. `lean4-example`、LeanDojo、Python 环境等部分版本锚点仍需后续可复现实据补证。
+5. mathlib module scan 的 standalone checked-in config 仍缺失，当前只能从 `summary.json` 追踪 scan settings。

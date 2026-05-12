@@ -31,15 +31,15 @@
 
 ## 3. 当前唯一任务
 
-`T21`: 对 module-level candidate scan 输出做 data-quality 审计，标出更深、更连续、更适合双曲检验的图。
+`T22`: 为 shallow forest / star forest 判断写出可复用诊断阈值与报告模板。
 
 任务包：
 
 ```text
-docs/tasks/M2_diagnostics/T21_candidate_scan_audit.md
+docs/tasks/M2_diagnostics/T22_diagnostics_threshold_template.md
 ```
 
-不要跳到训练或论文结论；当前先审计 module-level candidate scan 的数据质量，不直接推进 T30+ 训练任务。
+不要跳到训练或论文结论；当前先把诊断阈值与报告模板固化为 heuristic protocol，不直接推进 T30+ 训练任务。
 
 ## 4. 当前已知事实
 
@@ -128,15 +128,19 @@ Reviewer 默认只读。高风险任务使用 adversarial review。
 23. `T20` 的核心结论是：大多数真实 relation layer 仍然偏浅，更多像 forest / star-forest；更值得继续跟进的是 `mathlib_algebra_order_d3` 与 `mathlib_algebra_order_ring_d4`，而 `ring_subring` / `field_subfield` 更适合作为小型受控 probe。
 24. `T20` 已经过 reviewer 只读审查并判定为 `PASS_WITH_WARNINGS`；Captain 已将 `T20` 标记完成。
 25. T20 review 的两个 warning 均 deferred：部分 `n/a` 表格数值可在后续文档精修中补全；单表混合指标来源可在后续修订中加来源标注。它们不影响候选优先级。
-26. 当前唯一任务已切换到 `T21`；本轮只推荐下一任务，不执行 T21。
+26. 当前唯一任务已切换到 `T21`。
+27. `T21` 已由 worker 执行完成：基于 `module_hierarchy_scan_mathlib_algebra_order_index_v1` 与 `module_hierarchy_scan_batteries_v1` 现有 scan 产物新增 `docs/candidate_graph_audit.md`，把 depth、continuity、positive scale、ancestor closure cost 和结构风险拆开审计。
+28. `T21` 的核心审计结论是：`Mathlib.Algebra.Order.Ring` 是当前最平衡的 follow-up 候选；`Mathlib.Algebra.Order` 更适合作为 depth stress-test；`Ring.Subring` / `Field.Subfield` 继续作为受控 probe；`Batteries` 模块扫描整体仍过浅，不适合作为下一轮 benchmark 来源。
+29. `T21` 还指出 raw hierarchy score 不能直接当作 benchmark 排序依据，因为它会偏向小而紧凑的模块；后续若进入 T22，应把 positive scale、component ratio 与 closure cost 一起门控。
+30. `T21` 已经过 reviewer 只读审查并判定为 PASS；Captain 已将 `T21` 标记完成。
+31. T21 review 的三个 non-blocking issues 均 deferred：`depth` 列名歧义、审计表选择范围说明不足、mathlib module scan standalone config traceability gap。前两个作为 candidate audit 文档精修跟踪，第三个作为可复现 traceability 风险跟踪。
+32. 当前唯一任务已切换到 `T22`；本轮只推荐下一任务，不执行 T22。
 
 ## 8. 下一步
 
-下一轮可把 `T21` 任务包交给 worker 执行。Worker 完成后，把 `T21` diff 交给 reviewer 做只读审查。review 返回后由 Captain：
+下一步把 `T22` 任务包交给 worker 执行。Worker 应先阅读 `docs/diagnostics_summary.md`、`docs/candidate_graph_audit.md`、现有 diagnostics report 与 `docs/02_experiment_plan.md`，然后产出 `docs/diagnostics_protocol.md`，把 shallow forest / star forest 判断和 T21 提出的 positive scale、component ratio、closure expansion 门控写成明确标注为 heuristic 的可复用模板。
 
-1. 决定是否将 `T21` 标记为完成，或要求返修。
-2. 如果 `T21` 通过 review，再更新 `docs/04_task_board.md`、`docs/07_handoff.md`，必要时更新 `docs/08_risks_and_open_questions.md` 与 `docs/05_decision_log.md`。
-3. 只有在 `T21` 闭合后，才在 T22 与其他后续任务之间选择下一任务；不要在同一轮直接执行下一任务。
+T22 完成后，把 diff 交给 reviewer 做只读审查。不要在同一轮直接执行 T30 训练任务。
 
 不要把 `docs/data_manifest.md` 中的 `unknown / needs verification` 字段上升为既成版本事实。
 不要把 `docs/data_card.md` 中的 `recommended usage` 误读为最终 benchmark 定稿；这仍然只是当前治理口径下的使用边界，后续还需要 T20+ diagnostics。
