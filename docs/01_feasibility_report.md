@@ -80,6 +80,7 @@ Go：
 - `T12` 已通过 adversarial review，grouped multi-positive ancestor retrieval 的代码入口、配置字段、指标名和核心输出字段已形成 reviewed protocol freeze。
 - `T13` 已通过 adversarial review，hop bucket 常规报告入口已接入单次 runner summary 与 seed sweep report；review 留下的重复 helper 与端到端 spot-check 作为后续轻量清理跟踪。
 - `T14` 已通过 normal review，最小 smoke 已真实落盘 `grouped_test_ndcg_at_10` 与 `hop_2 / hop_3 / hop_4_plus` 字段，Milestone 1 可视为闭合。
+- `T20` 已通过 review with warnings，现有诊断产物已经形成 provisional candidate priority；其中 `mathlib_algebra_order_d3` 是最强候选，`mathlib_algebra_order_ring_d4` 是实用 fallback，部分表格精修留作后续。
 
 No-Go 条件：
 
@@ -87,4 +88,4 @@ No-Go 条件：
 - 若所有候选图都过浅且无法接 proof-side utility，则项目应转为纯经验报告或归档。
 - 若后续只剩“继续调 HGCN 直到赢”，则不应继续作为主线。
 
-当前下一步是执行 `T20`，复查现有诊断产物并形成候选图优先级表；`T02` 已按用户裁决视为当前阶段完成。
+当前下一步是执行 `T21`，审计 module-level candidate scan 输出的数据质量；`T02` 已按用户裁决视为当前阶段完成。

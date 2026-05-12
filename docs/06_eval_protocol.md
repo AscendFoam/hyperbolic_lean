@@ -248,5 +248,5 @@ T10 将负责把这些要求落成 version manifest。
 - `T12` 已通过 adversarial review，grouped 协议文档与 grouped retrieval runner 的最小输出字段对齐已收口。
 - `T13` 已通过 adversarial review，已把 `hop_2 / hop_3 / hop_4_plus` 补入单次 `result_summary.json` 与 seed sweep `report.md` 的常规报告入口。
 - `T14` 已通过 review，最小 GCN smoke 已确认 `grouped_test_ndcg_at_10` 与 hop bucket 平铺字段真实落盘。
-- 当前唯一任务为 `T20`，负责现有诊断产物复查与候选图优先级表。
+- 当前唯一任务为 `T21`，负责 module-level candidate scan data-quality audit。
 - 不得把 T14 的 smoke output 写成正式 benchmark 结果。

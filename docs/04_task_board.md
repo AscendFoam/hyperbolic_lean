@@ -7,7 +7,7 @@
 ## Project Status
 
 - 状态：Continue
-- 当前阶段：Milestone 1 数据与协议冻结已通过 review 闭合；当前进入 Milestone 2 诊断与候选图选择
+- 当前阶段：Milestone 2 诊断与候选图选择；T20 已通过 review with warnings，当前推荐 T21 做 candidate scan data-quality audit
 - 当前主线：`benchmark / protocol / diagnostics`
 - 当前不主张：把“已经证明 HGCN 稳定优于 GCN”写成既成事实
 - 当前证据等级：已有真实实验与工程原型，但尚未冻结成正式 benchmark artifact
@@ -28,7 +28,7 @@
 
 ## Milestone 2: Diagnostics And Candidate Graph Selection
 
-- [ ] T20: 复查 `real_graphs_v1`、`hierarchy_focus_v1`、`mathlib_order_focus_v1` 诊断产物，形成候选图优先级表
+- [x] T20: 复查 `real_graphs_v1`、`hierarchy_focus_v1`、`mathlib_order_focus_v1` 诊断产物，形成候选图优先级表
 - [ ] T21: 对 module-level candidate scan 输出做 data-quality 审计，标出更深、更连续、更适合双曲检验的图
 - [ ] T22: 为 shallow forest / star forest 判断写出可复用诊断阈值与报告模板
 
@@ -56,30 +56,30 @@
 
 ## Current Unique Task
 
-`T20`: 复查 `real_graphs_v1`、`hierarchy_focus_v1`、`mathlib_order_focus_v1` 诊断产物，形成候选图优先级表。
+`T21`: 对 module-level candidate scan 输出做 data-quality 审计，标出更深、更连续、更适合双曲检验的图。
 
 任务包位置：
 
-`docs/tasks/M2_diagnostics/T20_existing_diagnostics_summary.md`
+`docs/tasks/M2_diagnostics/T21_candidate_scan_audit.md`
 
 ## Why Now
 
-`T14` 已经通过 normal review，Milestone 1 的 manifest、data card、grouped protocol、hop bucket reporting 与 smoke spot-check 已闭合。下一步应进入 Milestone 2，先复查现有诊断产物并给出候选图优先级，避免在未筛图前直接推进训练。
+`T20` 已通过 review with warnings，并给出 provisional candidate priority。下一步应审计 module-level candidate scan 的数据质量，确认优先候选是否有足够连续、可复查的结构信号，再决定是否推进训练或阈值模板。
 
 ## Worker Package Summary
 
-- Task ID: `T20`
+- Task ID: `T21`
 - Allowed files:
-  - `docs/diagnostics_summary.md`
+  - `docs/candidate_graph_audit.md`
   - `docs/04_task_board.md`
   - `docs/07_handoff.md`
   - `docs/08_risks_and_open_questions.md`
 - Forbidden scope:
-  - 不重跑诊断脚本，除非现有产物缺失且 Captain 明确批准
-  - 不修改 baseline 训练代码
-  - 不把候选优先级写成最终实验结论
+  - 不重跑 candidate scan
+  - 不修改 graph extraction 或 training code
+  - 不把 audit priority 写成最终 benchmark conclusion
 - Verification:
-  - `rg -n "real_graphs_v1|hierarchy_focus_v1|mathlib_order_focus_v1|candidate|priority|shallow|forest|hyperbolicity" docs artifacts\diagnostics`
+  - `rg -n "Priority|module|longest|positive|risk" docs\candidate_graph_audit.md`
 
 ## Execution Note
 
@@ -111,6 +111,10 @@
 - 2026-05-12：`docs/review/T14_review.md` 结论为 `PASS`，blocking issues 为 none；Captain 判定可标记完成。
 - 2026-05-12：T14 review 的非阻塞问题分类：`.claude/settings.json` 自动权限改动为 rejected/excluded from commit；`format_metric` duplication 为 deferred，继续由 D05 跟踪；只 smoke GCN runner 为 accepted low residual risk，因为三个 runner 已共享同一 helper。
 - 2026-05-12：`T14` 标记完成，Milestone 1 闭合；当前唯一任务切换为 `T20`，但本轮不执行 T20。
+- 2026-05-12：`T20` 已由 worker 完成现有 diagnostics 复查与候选图优先级摘要，产出 `docs/diagnostics_summary.md`，并同步更新 handoff 与风险文档。
+- 2026-05-12：`docs/review/T20_review.md` 结论为 `PASS_WITH_WARNINGS`，blocking issues 为 none；Captain 判定可标记完成。
+- 2026-05-12：T20 review 的 warning 分类：`n/a` 数值补全与单表混合指标来源标注均 deferred，写入 R13 / D07；不影响候选优先级或 T20 完成。
+- 2026-05-12：`T20` 标记完成，当前唯一任务切换为 `T21`；本轮不执行 T21。
 
 ## After Completion
 

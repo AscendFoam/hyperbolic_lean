@@ -123,7 +123,7 @@ Reviewer 默认只读，只检查 diff 是否完成任务、是否有伪实现�
 
 ## 7. 当前架构缺口
 
-1. 现有诊断产物尚未被汇总为候选图优先级表；T20 需要复查 `real_graphs_v1`、`hierarchy_focus_v1`、`mathlib_order_focus_v1`。
+1. T20 已形成现有诊断产物的 provisional candidate priority；T21 需要进一步审计 module-level candidate scan 输出的数据质量。
 2. relation provenance split 需要从已有脚本能力推进到正式实验任务，并解决 per-edge provenance 字段边界。
 3. proof-side utility 尚未进入工程实现。
 4. `lean4-example`、LeanDojo、Python 环境等部分版本锚点仍需后续可复现实据补证。

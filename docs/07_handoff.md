@@ -31,15 +31,15 @@
 
 ## 3. 当前唯一任务
 
-`T20`: 复查 `real_graphs_v1`、`hierarchy_focus_v1`、`mathlib_order_focus_v1` 诊断产物，形成候选图优先级表。
+`T21`: 对 module-level candidate scan 输出做 data-quality 审计，标出更深、更连续、更适合双曲检验的图。
 
 任务包：
 
 ```text
-docs/tasks/M2_diagnostics/T20_existing_diagnostics_summary.md
+docs/tasks/M2_diagnostics/T21_candidate_scan_audit.md
 ```
 
-不要跳到训练或论文结论；当前先做诊断产物复查和候选图排序，不直接推进 T30+ 训练任务。
+不要跳到训练或论文结论；当前先审计 module-level candidate scan 的数据质量，不直接推进 T30+ 训练任务。
 
 ## 4. 当前已知事实
 
@@ -63,6 +63,7 @@ docs/tasks/M2_diagnostics/T20_existing_diagnostics_summary.md
 
 - `artifacts/diagnostics/real_graphs_v1/report.md`
 - `artifacts/diagnostics/hierarchy_focus_v1/report.md`
+- `artifacts/diagnostics/mathlib_order_focus_v1/report.md`
 - `artifacts/baselines/relation_seed_sweeps/`
 
 治理入口：
@@ -122,15 +123,20 @@ Reviewer 默认只读。高风险任务使用 adversarial review。
 18. `T14` 还完成了轻量 cleanup：把 `flatten_grouped_hop_bucket_summary` 去重到 `relation_baseline_common.py`，消除了 T13 review 指出的 runner 间重复 helper。
 19. `T14` 已经过 reviewer 只读审查并判定为 PASS；Captain 已将 `T14` 标记完成，Milestone 1 闭合。
 20. T14 review 要求不要提交 `.claude/settings.json` 的自动权限 diff；该文件不属于 T14 Allowed Files。
-21. 当前唯一任务已切换到 `T20`；本轮只推荐下一任务，不执行 T20。
+21. 此前当前唯一任务已从 `T14` 切换到 `T20`。
+22. `T20` 已由 worker 执行完成：基于 `real_graphs_v1`、`hierarchy_focus_v1`、`mathlib_order_focus_v1` 现有 artifacts 新增 `docs/diagnostics_summary.md`，给出“shallow diagnostic-only”与“candidate pool”的分层判断，并形成 provisional candidate priority。
+23. `T20` 的核心结论是：大多数真实 relation layer 仍然偏浅，更多像 forest / star-forest；更值得继续跟进的是 `mathlib_algebra_order_d3` 与 `mathlib_algebra_order_ring_d4`，而 `ring_subring` / `field_subfield` 更适合作为小型受控 probe。
+24. `T20` 已经过 reviewer 只读审查并判定为 `PASS_WITH_WARNINGS`；Captain 已将 `T20` 标记完成。
+25. T20 review 的两个 warning 均 deferred：部分 `n/a` 表格数值可在后续文档精修中补全；单表混合指标来源可在后续修订中加来源标注。它们不影响候选优先级。
+26. 当前唯一任务已切换到 `T21`；本轮只推荐下一任务，不执行 T21。
 
 ## 8. 下一步
 
-下一轮可把 `T20` 任务包交给 worker 执行。Worker 完成后，把 `T20` diff 交给 reviewer 做只读审查。完成后由 Captain：
+下一轮可把 `T21` 任务包交给 worker 执行。Worker 完成后，把 `T21` diff 交给 reviewer 做只读审查。review 返回后由 Captain：
 
-1. 决定是否将 `T20` 标记为完成，或要求返修。
-2. 更新 `docs/04_task_board.md`、`docs/07_handoff.md`，必要时更新 `docs/08_risks_and_open_questions.md` 与 `docs/05_decision_log.md`。
-3. 在 T21 与其他后续任务之间选择下一任务，但不要在同一轮直接执行下一任务。
+1. 决定是否将 `T21` 标记为完成，或要求返修。
+2. 如果 `T21` 通过 review，再更新 `docs/04_task_board.md`、`docs/07_handoff.md`，必要时更新 `docs/08_risks_and_open_questions.md` 与 `docs/05_decision_log.md`。
+3. 只有在 `T21` 闭合后，才在 T22 与其他后续任务之间选择下一任务；不要在同一轮直接执行下一任务。
 
 不要把 `docs/data_manifest.md` 中的 `unknown / needs verification` 字段上升为既成版本事实。
 不要把 `docs/data_card.md` 中的 `recommended usage` 误读为最终 benchmark 定稿；这仍然只是当前治理口径下的使用边界，后续还需要 T20+ diagnostics。
