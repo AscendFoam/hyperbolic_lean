@@ -31,15 +31,15 @@
 
 ## 3. 当前唯一任务
 
-`T30`: 阅读现有 grouped retrieval training 代码，定位 binary edge classification 与 grouped retrieval 的错配点。
+`T31A`: 实现并校验 grouped ancestor retrieval 的 query-level split completeness。
 
 任务包：
 
 ```text
-docs/tasks/M3_training/T30_training_mismatch_audit.md
+docs/tasks/M3_training/T31A_query_level_split_completeness.md
 ```
 
-不要直接实现新 loss 或运行 seed sweep；当前先做只读训练错配审计，为 `T31` 的最小 query-grouped loss 改造定边界。
+不要直接实现 query-grouped loss 或运行 seed sweep；当前先修 query-level split completeness，为 `T31` 的最小 query-grouped loss 改造提供可靠 split。
 
 ## 4. 当前已知事实
 
@@ -140,12 +140,17 @@ Reviewer 默认只读。高风险任务使用 adversarial review。
 35. `T22` 已经过 reviewer 只读审查并判定为 PASS；Captain 已将 `T22` 标记完成，Milestone 2 闭合。
 36. T22 review 的三个 non-blocking issues 均 deferred：shallow forest flag condition 3 命名可能误导深层但碎片化图、report template 缺少 `multi-parent count` 行、`ancestor_added_nodes` 缺少内联定义。它们进入 R18 / D09，后续模板精修时处理。
 37. 当前唯一任务已切换到 `T30`；本轮只推荐下一任务，不执行 T30。
+38. `T30` 已由 worker 执行完成文档草案：新增 `docs/training_alignment_audit.md`，确认当前 GCN / HGCN 训练仍以 edge-level `BCEWithLogitsLoss` 为核心，而 grouped retrieval 只在训练后做 post-hoc 评测。
+39. `T30` 审计还发现一个更强的结构风险：`stratified_split_relation_examples(...)` 当前按正例边而不是按 `(src, relation)` query 切分，因此同一 grouped query 可能跨 `train / val / test` 被拆碎，进而让 val/test grouped eval 缺少完整 positive set。
+40. `T30` 已经过 reviewer 只读审查并判定为 PASS；Captain 已将 `T30` 标记完成。
+41. T30 review 的三个 non-blocking issues 均 deferred：Section 4 heading nesting、M6 mixed-language title、M3 rough impact estimate。它们进入 D11，后续文档精修或 split analysis 时处理。
+42. Captain 根据 T30 review 的 P0 建议插入 `T31A`，先修 query-level split completeness；当前唯一任务已切换到 `T31A`，本轮只推荐下一任务，不执行 T31A。
 
 ## 8. 下一步
 
-下一步把 `T30` 任务包交给 worker 执行。Worker 应只读审计现有 grouped retrieval training 相关代码，产出 `docs/training_alignment_audit.md`，列清当前 loss、batch/query 结构、negative sampling、eval 入口和最小改造点。
+下一步把 `T31A` 任务包交给 worker 执行。Worker 应只修 grouped ancestor retrieval 的 split completeness，保证同一 `(src, relation)` query 不跨 `train / val / test`，并提供最小 smoke 或静态验证。
 
-T30 完成后，把 diff 交给 reviewer 做只读审查。不要在同一轮直接执行 `T31` 或修改训练代码。
+T31A 完成后，把 diff 交给 adversarial reviewer 做只读审查。不要在同一轮直接执行 `T31` grouped loss。
 
 不要把 `docs/data_manifest.md` 中的 `unknown / needs verification` 字段上升为既成版本事实。
 不要把 `docs/data_card.md` 中的 `recommended usage` 误读为最终 benchmark 定稿；这仍然只是当前治理口径下的使用边界，后续还需要 T20+ diagnostics。

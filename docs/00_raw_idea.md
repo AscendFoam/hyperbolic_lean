@@ -76,3 +76,4 @@ Go，但主线已收束：
 - 2026-05-12：`T20` 已通过 reviewer 判定 `PASS_WITH_WARNINGS`；warnings 已延后到后续文档精修，当前唯一任务切换为 `T21`。
 - 2026-05-12：`T21` 已通过 reviewer 判定 `PASS`；module-level candidate scan audit 将 `Mathlib.Algebra.Order.Ring` 提升为最平衡的下一步候选，当前唯一任务切换为 `T22`。
 - 2026-05-13：`T22` 已通过 reviewer 判定 `PASS`；`docs/diagnostics_protocol.md` 成为 reviewed heuristic diagnostics protocol，当前唯一任务切换为 `T30`。
+- 2026-05-13：`T30` 已通过 reviewer 判定 `PASS`；审计确认训练仍是 edge-level BCE，且 grouped query 可能被 edge-level split 拆碎；当前唯一任务切换为 `T31A`，先修 query-level split completeness。

@@ -150,3 +150,12 @@
 - 决策：`T22` 判定为 PASS，标记完成；Milestone 2 诊断与候选图选择闭合；当前唯一任务切换到 `T30`。
 - Warning 分类：shallow forest flag condition 3 对深层但碎片化图的命名可能误导，为 deferred；report template 缺少 `multi-parent count` 行，为 deferred；`ancestor_added_nodes` 缺少内联定义，为 deferred；无 accepted 或 rejected warning。
 - 后果：`docs/diagnostics_protocol.md` 成为 reviewed heuristic diagnostics protocol。后续可以进入 training alignment，但必须先做 T30 只读错配审计，不直接修改 loss 或运行 seed sweep。
+
+## D019: T30 通过 review 并插入 T31A split-completeness 前置任务
+
+- 日期：2026-05-13
+- 状态：Accepted
+- 依据：`docs/review/T30_review.md`
+- 决策：`T30` 判定为 PASS，标记完成；不直接进入原 `T31` loss 实现，而是先插入 `T31A` 修复 grouped ancestor retrieval 的 query-level split completeness。
+- Warning 分类：Section 4 heading nesting 为 deferred；M6 mixed-language title 为 deferred；M3 rough impact estimate 为 deferred；无 accepted 或 rejected warning。
+- 后果：`docs/training_alignment_audit.md` 成为 reviewed training alignment audit。`R19` 被视为 grouped benchmark 前置风险；`T31A` 必须先保证同一 `(src, relation)` query 不跨 split，再由 `T31` 实现 query-grouped loss。

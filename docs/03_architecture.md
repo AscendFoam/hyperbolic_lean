@@ -123,7 +123,7 @@ Reviewer 默认只读，只检查 diff 是否完成任务、是否有伪实现�
 
 ## 7. 当前架构缺口
 
-1. T22 已形成 reviewed heuristic diagnostics protocol；T30 需要只读审计训练代码，定位 binary edge classification 与 grouped retrieval 评测错配，不直接修改训练实现。
+1. T30 已形成 reviewed training alignment audit；T31A 需要先修 grouped ancestor retrieval 的 query-level split completeness，再进入 T31 query-grouped loss。
 2. relation provenance split 需要从已有脚本能力推进到正式实验任务，并解决 per-edge provenance 字段边界。
 3. proof-side utility 尚未进入工程实现。
 4. `lean4-example`、LeanDojo、Python 环境等部分版本锚点仍需后续可复现实据补证。

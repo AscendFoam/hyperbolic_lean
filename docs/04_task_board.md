@@ -7,7 +7,7 @@
 ## Project Status
 
 - 状态：Continue
-- 当前阶段：Milestone 3 grouped retrieval training alignment；T22 已通过 review，当前推荐 T30 做训练/评测错配审计
+- 当前阶段：Milestone 3 grouped retrieval training alignment；T30 已通过 review，当前推荐 T31A 修 query-level split completeness
 - 当前主线：`benchmark / protocol / diagnostics`
 - 当前不主张：把“已经证明 HGCN 稳定优于 GCN”写成既成事实
 - 当前证据等级：已有真实实验与工程原型，但尚未冻结成正式 benchmark artifact
@@ -34,7 +34,8 @@
 
 ## Milestone 3: Grouped Retrieval Training Alignment
 
-- [ ] T30: 阅读现有 grouped retrieval training 代码，定位 binary edge classification 与 grouped retrieval 的错配点
+- [x] T30: 阅读现有 grouped retrieval training 代码，定位 binary edge classification 与 grouped retrieval 的错配点
+- [ ] T31A: 实现并校验 grouped ancestor retrieval 的 query-level split completeness
 - [ ] T31: 实现最小 query-grouped loss 方案，优先 `sampled softmax` 或 `InfoNCE`，只接一个现有 config
 - [ ] T32: 在 `Field.Subfield` 与 `Order.Ring` 上跑 GCN 5-seed grouped training 对照
 - [ ] T33: 在相同 split 与参数预算下跑 HGCN 5-seed grouped training 对照
@@ -56,30 +57,36 @@
 
 ## Current Unique Task
 
-`T30`: 阅读现有 grouped retrieval training 代码，定位 binary edge classification 与 grouped retrieval 的错配点。
+`T31A`: 实现并校验 grouped ancestor retrieval 的 query-level split completeness。
 
 任务包位置：
 
-`docs/tasks/M3_training/T30_training_mismatch_audit.md`
+`docs/tasks/M3_training/T31A_query_level_split_completeness.md`
 
 ## Why Now
 
-`T22` 已通过 review，Milestone 2 的诊断筛图与 heuristic protocol 已闭合。下一步应先只读审计现有训练代码，明确 binary edge classification 与 grouped retrieval 评测错配在哪里，再决定 `T31` 的最小 query-grouped loss 改造点。
+`T30` 已通过 review，并确认当前 edge-level split 可能把同一 `(src, relation)` grouped query 拆到多个 split。这个问题会污染 grouped val/test 的完整 positive set，因此应先作为 `T31A` 修复，再推进 `T31` query-grouped loss。
 
 ## Worker Package Summary
 
-- Task ID: `T30`
+- Task ID: `T31A`
 - Allowed files:
+  - `project_bootstrap/baseline_scaffold/src/relation_tasks.py`
+  - `project_bootstrap/baseline_scaffold/src/relation_baseline_common.py`
+  - `project_bootstrap/baseline_scaffold/src/run_relation_gcn_baseline.py`
+  - `project_bootstrap/baseline_scaffold/src/run_relation_hyperbolic_baseline.py`
+  - one new or updated smoke config under `project_bootstrap/baseline_scaffold/configs`
   - `docs/training_alignment_audit.md`
   - `docs/04_task_board.md`
   - `docs/07_handoff.md`
   - `docs/08_risks_and_open_questions.md`
 - Forbidden scope:
-  - 不修改训练代码
+  - 不实现 query-grouped loss
   - 不运行长 sweep
-  - 不提出未验证性能结论
+  - 不改 GCN / HGCN 架构
+  - 不把 smoke 结果写成正式 benchmark 结论
 - Verification:
-  - `rg -n "BCE|loss|grouped|query|negative|mismatch" docs\training_alignment_audit.md`
+  - `rg -n "query.*split|split.*query|src.*relation|ancestor_ranking|grouped" project_bootstrap\baseline_scaffold\src docs\training_alignment_audit.md`
 
 ## Execution Note
 
@@ -123,6 +130,10 @@
 - 2026-05-13：`docs/review/T22_review.md` 结论为 `PASS`，blocking issues 为 none；Captain 判定可标记完成。
 - 2026-05-13：T22 review 的 non-blocking issues 分类：shallow forest flag condition 3 语义可能误导、report template 缺少 `multi-parent count`、`ancestor_added_nodes` 缺少内联定义均为 deferred，写入 R18 / D09；不影响 T22 完成。
 - 2026-05-13：`T22` 标记完成，Milestone 2 闭合；当前唯一任务切换为 `T30`，本轮不执行 T30。
+- 2026-05-13：`T30` 已由 worker 产出 `docs/training_alignment_audit.md` 草案，并同步更新 `docs/07_handoff.md` 与 `docs/08_risks_and_open_questions.md`；随后进入 reviewer 只读审查。
+- 2026-05-13：`docs/review/T30_review.md` 结论为 `PASS`，blocking issues 为 none；Captain 判定可标记完成。
+- 2026-05-13：T30 review 的 non-blocking issues 分类：Section 4 heading nesting、M6 mixed-language title、M3 rough impact estimate 均为 deferred，写入 D11；不影响 T30 完成。
+- 2026-05-13：`T30` 标记完成；由于 R19 是 grouped benchmark 前置风险，Captain 插入 `T31A` query-level split completeness 任务，当前唯一任务切换为 `T31A`，本轮不执行 T31A。
 
 ## After Completion
 

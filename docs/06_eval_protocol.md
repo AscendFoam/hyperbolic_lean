@@ -274,5 +274,6 @@ T10 将负责把这些要求落成 version manifest。
 - `T14` 已通过 review，最小 GCN smoke 已确认 `grouped_test_ndcg_at_10` 与 hop bucket 平铺字段真实落盘。
 - `T21` 已通过 review，module-level candidate scan audit 已确认 `Mathlib.Algebra.Order.Ring` 是当前最平衡的 follow-up 候选，`Mathlib.Algebra.Order` 更适合作为 depth stress-test。
 - `T22` 已通过 review，`docs/diagnostics_protocol.md` 成为 reviewed heuristic diagnostics protocol；其中阈值仍只服务于当前 reviewed traced hierarchy diagnostics，不是理论证明或最终 benchmark 排名。
-- 当前唯一任务为 `T30`，负责只读审计现有训练代码中 binary edge classification 与 grouped retrieval 评测之间的错配点。
+- `T30` 已通过 review，`docs/training_alignment_audit.md` 成为 reviewed training alignment audit；当前训练仍是 edge-level BCE，且现有 split 可能拆碎 grouped query。
+- 当前唯一任务为 `T31A`，负责先实现并校验 grouped ancestor retrieval 的 query-level split completeness。
 - 不得把 T14 的 smoke output 写成正式 benchmark 结果。

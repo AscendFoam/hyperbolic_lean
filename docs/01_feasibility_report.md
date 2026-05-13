@@ -83,6 +83,7 @@ Go：
 - `T20` 已通过 review with warnings，现有诊断产物已经形成 provisional candidate priority；其中 `mathlib_algebra_order_d3` 是最强候选，`mathlib_algebra_order_ring_d4` 是实用 fallback，部分表格精修留作后续。
 - `T21` 已通过 review，module-level candidate scan audit 进一步确认 `Mathlib.Algebra.Order.Ring` 是当前最平衡的 follow-up 候选，`Mathlib.Algebra.Order` 更适合作为 depth stress-test；raw hierarchy score 偏向小而紧凑模块的风险已进入后续阈值治理。
 - `T22` 已通过 review，`docs/diagnostics_protocol.md` 把 shallow forest / star forest、positive scale、component ratio 与 closure expansion 等判断固化为 reviewed heuristic diagnostics protocol；该协议仍不是理论证明或最终 benchmark 排名。
+- `T30` 已通过 review，`docs/training_alignment_audit.md` 确认当前训练仍是 edge-level BCE，并发现 grouped retrieval 的 P0 前置风险：同一 `(src, relation)` query 可能跨 split 被拆碎。
 
 No-Go 条件：
 
@@ -90,4 +91,4 @@ No-Go 条件：
 - 若所有候选图都过浅且无法接 proof-side utility，则项目应转为纯经验报告或归档。
 - 若后续只剩“继续调 HGCN 直到赢”，则不应继续作为主线。
 
-当前下一步是执行 `T30`，只读审计现有 grouped retrieval training 代码中 binary edge classification 与 grouped retrieval 评测之间的错配点；`T02` 已按用户裁决视为当前阶段完成。
+当前下一步是执行 `T31A`，先实现并校验 grouped ancestor retrieval 的 query-level split completeness；`T02` 已按用户裁决视为当前阶段完成。
