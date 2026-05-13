@@ -1,6 +1,6 @@
 # 05 Decision Log
 
-> 更新时间：2026-05-12
+> 更新时间：2026-05-13
 >
 > 规则：只记录会影响后续任务选择、论文叙事、评测协议或项目状态的决策。
 
@@ -141,3 +141,12 @@
 - 决策：`T21` 判定为 PASS，标记完成；当前唯一任务切换到 `T22`。
 - Warning 分类：`depth` 列名歧义为 deferred；审计表覆盖范围说明不足为 deferred；mathlib module scan standalone config traceability gap 为 deferred；无 accepted 或 rejected warning。
 - 后果：`docs/candidate_graph_audit.md` 成为 reviewed module-level candidate scan audit。`Mathlib.Algebra.Order.Ring` 可作为下一轮默认候选的优先建议，但仍不是最终 benchmark 结论；T22 应把 shallow/star-forest 判断和 positive scale、component ratio、closure expansion 等门控写成 heuristic diagnostics protocol。
+
+## D018: T22 通过 review 并切换到 T30
+
+- 日期：2026-05-13
+- 状态：Accepted
+- 依据：`docs/review/T22_review.md`
+- 决策：`T22` 判定为 PASS，标记完成；Milestone 2 诊断与候选图选择闭合；当前唯一任务切换到 `T30`。
+- Warning 分类：shallow forest flag condition 3 对深层但碎片化图的命名可能误导，为 deferred；report template 缺少 `multi-parent count` 行，为 deferred；`ancestor_added_nodes` 缺少内联定义，为 deferred；无 accepted 或 rejected warning。
+- 后果：`docs/diagnostics_protocol.md` 成为 reviewed heuristic diagnostics protocol。后续可以进入 training alignment，但必须先做 T30 只读错配审计，不直接修改 loss 或运行 seed sweep。

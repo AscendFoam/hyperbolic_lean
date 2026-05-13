@@ -1,13 +1,13 @@
 # 04 Task Board
 
-> 更新时间：2026-05-12
+> 更新时间：2026-05-13
 >
 > Captain 原则：每轮只推进一个 `Current Unique Task`。Worker 不自动领取下一任务。
 
 ## Project Status
 
 - 状态：Continue
-- 当前阶段：Milestone 2 诊断与候选图选择；T21 已通过 review，当前推荐 T22 固化诊断阈值与报告模板
+- 当前阶段：Milestone 3 grouped retrieval training alignment；T22 已通过 review，当前推荐 T30 做训练/评测错配审计
 - 当前主线：`benchmark / protocol / diagnostics`
 - 当前不主张：把“已经证明 HGCN 稳定优于 GCN”写成既成事实
 - 当前证据等级：已有真实实验与工程原型，但尚未冻结成正式 benchmark artifact
@@ -30,7 +30,7 @@
 
 - [x] T20: 复查 `real_graphs_v1`、`hierarchy_focus_v1`、`mathlib_order_focus_v1` 诊断产物，形成候选图优先级表
 - [x] T21: 对 module-level candidate scan 输出做 data-quality 审计，标出更深、更连续、更适合双曲检验的图
-- [ ] T22: 为 shallow forest / star forest 判断写出可复用诊断阈值与报告模板
+- [x] T22: 为 shallow forest / star forest 判断写出可复用诊断阈值与报告模板
 
 ## Milestone 3: Grouped Retrieval Training Alignment
 
@@ -56,32 +56,30 @@
 
 ## Current Unique Task
 
-`T22`: 为 shallow forest / star forest 判断写出可复用诊断阈值与报告模板。
+`T30`: 阅读现有 grouped retrieval training 代码，定位 binary edge classification 与 grouped retrieval 的错配点。
 
 任务包位置：
 
-`docs/tasks/M2_diagnostics/T22_diagnostics_threshold_template.md`
+`docs/tasks/M3_training/T30_training_mismatch_audit.md`
 
 ## Why Now
 
-`T21` 已通过 review，并确认 raw hierarchy score 需要由 positive scale、component ratio 与 closure expansion 等质量门控约束。下一步应把这些判断固化为可复用 diagnostics protocol，避免后续 worker 把临时审计语言误写成最终 benchmark 结论。
+`T22` 已通过 review，Milestone 2 的诊断筛图与 heuristic protocol 已闭合。下一步应先只读审计现有训练代码，明确 binary edge classification 与 grouped retrieval 评测错配在哪里，再决定 `T31` 的最小 query-grouped loss 改造点。
 
 ## Worker Package Summary
 
-- Task ID: `T22`
+- Task ID: `T30`
 - Allowed files:
-  - `docs/diagnostics_protocol.md`
-  - `docs/06_eval_protocol.md`
+  - `docs/training_alignment_audit.md`
   - `docs/04_task_board.md`
   - `docs/07_handoff.md`
   - `docs/08_risks_and_open_questions.md`
 - Forbidden scope:
-  - 不把经验阈值写成理论证明
-  - 不修改实验代码
-  - 不启动训练或 seed sweep
-  - 不把 T21 audit priority 写成最终 benchmark conclusion
+  - 不修改训练代码
+  - 不运行长 sweep
+  - 不提出未验证性能结论
 - Verification:
-  - `rg -n "heuristic|shallow|star forest|longest chain|leaf ratio|template" docs\diagnostics_protocol.md`
+  - `rg -n "BCE|loss|grouped|query|negative|mismatch" docs\training_alignment_audit.md`
 
 ## Execution Note
 
@@ -121,6 +119,10 @@
 - 2026-05-12：`docs/review/T21_review.md` 结论为 `PASS`，blocking issues 为 none；Captain 判定可标记完成。
 - 2026-05-12：T21 review 的 non-blocking issues 分类：`depth` 列名歧义、审计表选择范围说明不足、mathlib module scan standalone config traceability gap 均为 deferred，写入 R15 / R16 / D08；不影响 T21 完成。
 - 2026-05-12：`T21` 标记完成，当前唯一任务切换为 `T22`；本轮不执行 T22。
+- 2026-05-12：`T22` 已由 worker 产出 `docs/diagnostics_protocol.md` 草案，并同步更新 `docs/06_eval_protocol.md`、`docs/07_handoff.md` 与 `docs/08_risks_and_open_questions.md`；随后进入 reviewer 只读审查。
+- 2026-05-13：`docs/review/T22_review.md` 结论为 `PASS`，blocking issues 为 none；Captain 判定可标记完成。
+- 2026-05-13：T22 review 的 non-blocking issues 分类：shallow forest flag condition 3 语义可能误导、report template 缺少 `multi-parent count`、`ancestor_added_nodes` 缺少内联定义均为 deferred，写入 R18 / D09；不影响 T22 完成。
+- 2026-05-13：`T22` 标记完成，Milestone 2 闭合；当前唯一任务切换为 `T30`，本轮不执行 T30。
 
 ## After Completion
 

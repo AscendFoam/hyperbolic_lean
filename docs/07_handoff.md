@@ -1,6 +1,6 @@
 # 07 Handoff
 
-> 更新时间：2026-05-12
+> 更新时间：2026-05-13
 >
 > 给下一位 Captain / Worker / Reviewer 的接手说明。
 
@@ -31,15 +31,15 @@
 
 ## 3. 当前唯一任务
 
-`T22`: 为 shallow forest / star forest 判断写出可复用诊断阈值与报告模板。
+`T30`: 阅读现有 grouped retrieval training 代码，定位 binary edge classification 与 grouped retrieval 的错配点。
 
 任务包：
 
 ```text
-docs/tasks/M2_diagnostics/T22_diagnostics_threshold_template.md
+docs/tasks/M3_training/T30_training_mismatch_audit.md
 ```
 
-不要跳到训练或论文结论；当前先把诊断阈值与报告模板固化为 heuristic protocol，不直接推进 T30+ 训练任务。
+不要直接实现新 loss 或运行 seed sweep；当前先做只读训练错配审计，为 `T31` 的最小 query-grouped loss 改造定边界。
 
 ## 4. 当前已知事实
 
@@ -135,12 +135,17 @@ Reviewer 默认只读。高风险任务使用 adversarial review。
 30. `T21` 已经过 reviewer 只读审查并判定为 PASS；Captain 已将 `T21` 标记完成。
 31. T21 review 的三个 non-blocking issues 均 deferred：`depth` 列名歧义、审计表选择范围说明不足、mathlib module scan standalone config traceability gap。前两个作为 candidate audit 文档精修跟踪，第三个作为可复现 traceability 风险跟踪。
 32. 当前唯一任务已切换到 `T22`；本轮只推荐下一任务，不执行 T22。
+33. `T22` 已由 worker 执行完成文档草案：新增 `docs/diagnostics_protocol.md`，把 shallow forest / star forest 判断、positive scale、component ratio 与 closure expansion 门控写成显式 `heuristic` 模板，并把 `Mathlib.Algebra.Order.Ring` 校准为 default follow-up candidate、`Mathlib.Algebra.Order` 校准为 depth stress-test、`Ring.Subring` / `Field.Subfield` 校准为 controlled probe。
+34. `T22` 同步把评测协议中的结构诊断部分链接到 `docs/diagnostics_protocol.md`，避免后续 worker 只引用 raw hierarchy score 就直接下 benchmark 结论。
+35. `T22` 已经过 reviewer 只读审查并判定为 PASS；Captain 已将 `T22` 标记完成，Milestone 2 闭合。
+36. T22 review 的三个 non-blocking issues 均 deferred：shallow forest flag condition 3 命名可能误导深层但碎片化图、report template 缺少 `multi-parent count` 行、`ancestor_added_nodes` 缺少内联定义。它们进入 R18 / D09，后续模板精修时处理。
+37. 当前唯一任务已切换到 `T30`；本轮只推荐下一任务，不执行 T30。
 
 ## 8. 下一步
 
-下一步把 `T22` 任务包交给 worker 执行。Worker 应先阅读 `docs/diagnostics_summary.md`、`docs/candidate_graph_audit.md`、现有 diagnostics report 与 `docs/02_experiment_plan.md`，然后产出 `docs/diagnostics_protocol.md`，把 shallow forest / star forest 判断和 T21 提出的 positive scale、component ratio、closure expansion 门控写成明确标注为 heuristic 的可复用模板。
+下一步把 `T30` 任务包交给 worker 执行。Worker 应只读审计现有 grouped retrieval training 相关代码，产出 `docs/training_alignment_audit.md`，列清当前 loss、batch/query 结构、negative sampling、eval 入口和最小改造点。
 
-T22 完成后，把 diff 交给 reviewer 做只读审查。不要在同一轮直接执行 T30 训练任务。
+T30 完成后，把 diff 交给 reviewer 做只读审查。不要在同一轮直接执行 `T31` 或修改训练代码。
 
 不要把 `docs/data_manifest.md` 中的 `unknown / needs verification` 字段上升为既成版本事实。
 不要把 `docs/data_card.md` 中的 `recommended usage` 误读为最终 benchmark 定稿；这仍然只是当前治理口径下的使用边界，后续还需要 T20+ diagnostics。

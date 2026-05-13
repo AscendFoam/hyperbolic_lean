@@ -1,6 +1,6 @@
 # 08 Risks and Open Questions
 
-> 更新时间：2026-05-12
+> 更新时间：2026-05-13
 
 ## 1. Active Risks
 
@@ -19,14 +19,16 @@
 | R11 | provenance split 目前主要通过派生图家族与诊断报告表达，而不是 `edges.csv` 中的一等字段，若直接下游消费容易误解 relation 语义 | Medium | Active | `docs/data_card.md` 明确 provenance 边界；Milestone 4 / T40-T43 继续把 provenance split 正式化 |
 | R12 | hop bucket flatten helper 若分散在多个 runner 中，未来维护时可能出现字段漂移 | Low | Mitigated | T14 已把 `flatten_grouped_hop_bucket_summary` 收敛到 `relation_baseline_common.py`；后续只需防止新重复回流 |
 | R13 | `docs/diagnostics_summary.md` 已通过 T20 review，但部分表格项使用 `n/a` 或未显式标注指标来源，可能降低文档精确性 | Low | Active | 后续文档精修时补全 plausible / hierarchy-focused 图的真实节点边数，并标注 longest-chain 等指标来源 |
-| R14 | module-level candidate scan 的 raw hierarchy score 可能高估“小而紧凑”的候选，若不额外检查 positive scale、component ratio 与 closure expansion，容易把高分误写成默认 benchmark | Medium | Active | `T21` 已把 `Mathlib.Algebra.Order.Ring`、`Mathlib.Algebra.Order`、`Ring.Subring`、`Field.Subfield` 分层，并要求后续任务把规模、连续性和 closure cost 作为显式门控 |
+| R14 | module-level candidate scan 的 raw hierarchy score 可能高估“小而紧凑”的候选，若不额外检查 positive scale、component ratio 与 closure expansion，容易把高分误写成默认 benchmark | Medium | Mitigated | `T21` 已把 `Mathlib.Algebra.Order.Ring`、`Mathlib.Algebra.Order`、`Ring.Subring`、`Field.Subfield` 分层；`T22` 已通过 review，并在 `docs/diagnostics_protocol.md` 中把规模、连续性和 closure cost 固化为显式 heuristic 门控 |
+| R17 | `T22` 新增的诊断阈值来自当前 reviewed artifacts 的经验校准，若后续 provenance split、训练对齐或更大 traced graph 改变结构分布，这些阈值可能失真 | Medium | Active | 把阈值明确标成 heuristic；在 `T30+` / `T40+` 后根据新图分布重新校准，不把当前模板当作永久边界 |
 | R15 | `docs/candidate_graph_audit.md` 的审计表存在轻微呈现歧义：`depth` 指 scan depth 而不是 structural depth，且 9 个入表模块的选择依据未完全展开 | Low | Active | 下次修改 candidate audit 时把 `depth` 改为 `scan depth`，并补一句选择范围说明；T21 review 判定不影响审计结论 |
 | R16 | mathlib module-level scan 的 standalone checked-in config 缺失，当前只能从 `summary.json` 追踪 scan settings | Medium | Active | 后续 config freeze 或 diagnostics protocol 任务应记录该 traceability gap；正式 benchmark 前需要补齐 config 或说明复现路径 |
+| R18 | `docs/diagnostics_protocol.md` 已通过 T22 review，但部分模板措辞仍可能让未来 worker 混淆“浅层风险”和“深层但碎片化风险”，且报告模板缺少 `multi-parent count` 行与 `ancestor_added_nodes` 内联定义 | Low | Active | 后续精修 diagnostics protocol 时处理；当前不影响 T22 完成或候选角色门控结果 |
 
 ## 2. Open Questions
 
-1. T22 应如何把 `Mathlib.Algebra.Order.Ring` 作为默认下一轮 benchmark 候选、`Mathlib.Algebra.Order` 作为 depth stress-test 的经验依据写成可复用模板？
-2. T22 是否应显式引入最小 positive scale、最小 component ratio 和最大 closure expansion 之类的阈值，避免 raw hierarchy score 偏向小而紧凑的模块？
+1. `docs/diagnostics_protocol.md` 中的经验阈值在 `T30+` / `T40+` 新证据进入后，是否仍应保持当前分层，还是需要重校准？
+2. `closure expansion ratio` 是否应继续作为主门控，还是在后续版本中改成更稳定的 closure-cost 组合指标？
 3. synthesized relation 是否真的降低 hierarchy 深度，还是主要改变候选分布和负采样难度？
 4. query-grouped loss 在 GCN 上是否已经足够改善训练/评测对齐？
 5. HGCN 若仍不赢，是否能在更深 hop bucket 或低维预算下形成局部价值？
@@ -48,6 +50,7 @@
 | D06 | 对真实数据跑完整 seed sweep 验证 hop bucket 报告 | 当前阶段禁止大规模 sweep，T13 静态验证已足够通过 review | T32/T33 或正式 benchmark sweep 启动时 |
 | D07 | 精修 `docs/diagnostics_summary.md` 的 `n/a` 数值与指标来源标注 | T20 review 确认不影响候选优先级或任务完成 | 下一次修改 diagnostics summary 或 candidate audit 文档时 |
 | D08 | 精修 `docs/candidate_graph_audit.md` 的 `depth` 列名和入表模块选择说明 | T21 review 确认这是可读性问题，不影响数值准确性、优先级判断或任务完成 | 下一次修改 candidate audit，或 T22 需要引用该表作为模板示例时 |
+| D09 | 精修 `docs/diagnostics_protocol.md` 的 flag 命名、report template 和字段定义 | T22 review 确认当前分类结果正确，问题只影响模板自洽性和可读性 | 下一次修改 diagnostics protocol 时，把 shallow forest condition 3 改名或加注为 fragmentation risk，补 `multi-parent count` 行，并内联定义 `ancestor_added_nodes` |
 
 ## 4. Risk Handling Rules
 

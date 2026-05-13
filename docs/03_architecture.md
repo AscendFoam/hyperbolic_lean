@@ -1,6 +1,6 @@
 # 03 Architecture
 
-> 更新时间：2026-05-12
+> 更新时间：2026-05-13
 >
 > 范围：当前仓库的工程资产、数据产物、实验入口和治理文档结构。
 
@@ -123,7 +123,7 @@ Reviewer 默认只读，只检查 diff 是否完成任务、是否有伪实现�
 
 ## 7. 当前架构缺口
 
-1. T21 已形成 module-level candidate scan data-quality audit；T22 需要把 shallow forest / star forest、positive scale、component ratio 与 closure expansion 等经验判断固化为可复用诊断阈值和报告模板。
+1. T22 已形成 reviewed heuristic diagnostics protocol；T30 需要只读审计训练代码，定位 binary edge classification 与 grouped retrieval 评测错配，不直接修改训练实现。
 2. relation provenance split 需要从已有脚本能力推进到正式实验任务，并解决 per-edge provenance 字段边界。
 3. proof-side utility 尚未进入工程实现。
 4. `lean4-example`、LeanDojo、Python 环境等部分版本锚点仍需后续可复现实据补证。

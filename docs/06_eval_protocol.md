@@ -1,6 +1,6 @@
 # 06 Eval Protocol
 
-> 更新时间：2026-05-12
+> 更新时间：2026-05-13
 >
 > 状态：T12 grouped protocol freeze、T13 hop bucket reporting 与 T14 smoke check 均已通过 review。Smoke artifact 只证明输出链可落盘，不是正式 benchmark 结果。
 
@@ -205,6 +205,30 @@ grouped multi-positive ancestor retrieval
 2. 是否存在更深、更连续、更有层级密度的候选子图。
 3. 当前图是否适合继续检验双曲优势。
 
+结构诊断的统一启发式门控见：
+
+```text
+docs/diagnostics_protocol.md
+```
+
+该协议把以下判断写成可复用模板，并明确标注为 `heuristic`：
+
+- shallow forest / star forest 风险
+- positive scale
+- component ratio
+- closure expansion / closure cost
+- `default follow-up candidate` / `depth stress-test` / `controlled probe` / `diagnostic-only` 角色分层
+
+当前经验阈值口径：
+
+1. `longest chain <= 4` 默认视为 shallow 风险。
+2. `longest chain <= 3` 且 `leaf ratio >= 0.75` 默认视为 star-forest 风险。
+3. `relation positive edges >= 250` 才有资格进入默认 follow-up 候选讨论。
+4. `component ratio >= 0.65` 才能视为连续性较好。
+5. `closure expansion ratio <= 0.60` 才能视为 closure 负担可接受。
+
+这些阈值服务于当前 reviewed traced hierarchy diagnostics，不得直接写成理论结论或最终 benchmark 排名。
+
 ## 7. 数据资产要求
 
 每次正式实验应绑定：
@@ -249,5 +273,6 @@ T10 将负责把这些要求落成 version manifest。
 - `T13` 已通过 adversarial review，已把 `hop_2 / hop_3 / hop_4_plus` 补入单次 `result_summary.json` 与 seed sweep `report.md` 的常规报告入口。
 - `T14` 已通过 review，最小 GCN smoke 已确认 `grouped_test_ndcg_at_10` 与 hop bucket 平铺字段真实落盘。
 - `T21` 已通过 review，module-level candidate scan audit 已确认 `Mathlib.Algebra.Order.Ring` 是当前最平衡的 follow-up 候选，`Mathlib.Algebra.Order` 更适合作为 depth stress-test。
-- 当前唯一任务为 `T22`，负责把 shallow forest / star forest 判断、positive scale、component ratio 与 closure expansion 等经验门控写成可复用诊断阈值与报告模板。
+- `T22` 已通过 review，`docs/diagnostics_protocol.md` 成为 reviewed heuristic diagnostics protocol；其中阈值仍只服务于当前 reviewed traced hierarchy diagnostics，不是理论证明或最终 benchmark 排名。
+- 当前唯一任务为 `T30`，负责只读审计现有训练代码中 binary edge classification 与 grouped retrieval 评测之间的错配点。
 - 不得把 T14 的 smoke output 写成正式 benchmark 结果。
