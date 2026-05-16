@@ -1,6 +1,6 @@
 # 01 Feasibility Report
 
-> 更新时间：2026-05-13
+> 更新时间：2026-05-16
 >
 > 结论：Go，条件是先完成协议冻结、数据资产化和任务治理，再推进新实验。
 
@@ -84,6 +84,8 @@ Go：
 - `T21` 已通过 review，module-level candidate scan audit 进一步确认 `Mathlib.Algebra.Order.Ring` 是当前最平衡的 follow-up 候选，`Mathlib.Algebra.Order` 更适合作为 depth stress-test；raw hierarchy score 偏向小而紧凑模块的风险已进入后续阈值治理。
 - `T22` 已通过 review，`docs/diagnostics_protocol.md` 把 shallow forest / star forest、positive scale、component ratio 与 closure expansion 等判断固化为 reviewed heuristic diagnostics protocol；该协议仍不是理论证明或最终 benchmark 排名。
 - `T30` 已通过 review，`docs/training_alignment_audit.md` 确认当前训练仍是 edge-level BCE，并发现 grouped retrieval 的 P0 前置风险：同一 `(src, relation)` query 可能跨 split 被拆碎。
+- `T31A` 已通过 adversarial review，grouped ancestor retrieval 的 query-level split completeness 已收口；同一 `(src, relation_type)` query 不再跨 `train / val / test`，且 disjointness 摘要已写入 run manifest。
+- `T31` 已通过 adversarial review，grouped retrieval runner 的最小 query-grouped loss 路径已收口；训练 query、split 与 eval 使用同一 `(src_id, relation_type)` key，best checkpoint 改由 grouped val MAP 驱动。
 
 No-Go 条件：
 
@@ -91,4 +93,4 @@ No-Go 条件：
 - 若所有候选图都过浅且无法接 proof-side utility，则项目应转为纯经验报告或归档。
 - 若后续只剩“继续调 HGCN 直到赢”，则不应继续作为主线。
 
-当前下一步是执行 `T31A`，先实现并校验 grouped ancestor retrieval 的 query-level split completeness；`T02` 已按用户裁决视为当前阶段完成。
+当前下一步是执行 `T32`，在 reviewed grouped runner 上运行 GCN 5-seed grouped training sweep；`T02` 已按用户裁决视为当前阶段完成。

@@ -1,6 +1,6 @@
 # 07 Handoff
 
-> 更新时间：2026-05-13
+> 更新时间：2026-05-16
 >
 > 给下一位 Captain / Worker / Reviewer 的接手说明。
 
@@ -31,15 +31,24 @@
 
 ## 3. 当前唯一任务
 
-`T31A`: 实现并校验 grouped ancestor retrieval 的 query-level split completeness。
+`T32`: 在 `Field.Subfield` 与 `Order.Ring` 上跑 GCN 5-seed grouped training 对照。
 
 任务包：
 
 ```text
-docs/tasks/M3_training/T31A_query_level_split_completeness.md
+docs/tasks/M3_training/T32_gcn_grouped_training_sweep.md
 ```
 
-不要直接实现 query-grouped loss 或运行 seed sweep；当前先修 query-level split completeness，为 `T31` 的最小 query-grouped loss 改造提供可靠 split。
+不要改 HGCN 代码，不要改变 T31 reviewed grouped training 协议，不要覆盖历史 artifact。当前只运行 GCN grouped training sweep，并产出可审查的 mean/std 报告。
+
+当前状态补充：
+
+- `T31A` 已通过 adversarial review，query-level split completeness 前置风险已收口。
+- `T31` 已通过 adversarial review，最小 grouped training 路径已收口：`run_relation_grouped_retrieval_baseline.py` 复用 `build_grouped_ranking_queries(...)` 构造训练 query，确保 grouped loss、split 与 eval 共用同一 `(src_id, relation_type)` key。
+- T31 smoke artifact 位于 `artifacts/smoke/relation_grouped_gcn_lean4_example_typeclass_precise_v2_ancestor_ranking_smoke_t31/`，其中 `grouped_training_summary.json`、`training_stats.json` 与 `result_summary.json` 均记录 `query_key_fields = [src_id, relation_type]` 与 `training_loss = sampled_softmax`。
+- T32 worker 必须使用 reviewed grouped retrieval runner / seed sweep path，不能退回旧 BCE runner。
+- T32 的正式 sweep config 必须显式设置 `negative_ratio`，不要依赖 grouped runner 默认值。
+- `.claude/settings.json` 有自动权限 diff，review 已要求排除提交；不要把它作为 T31/T32 产物提交。
 
 ## 4. 当前已知事实
 
@@ -145,12 +154,23 @@ Reviewer 默认只读。高风险任务使用 adversarial review。
 40. `T30` 已经过 reviewer 只读审查并判定为 PASS；Captain 已将 `T30` 标记完成。
 41. T30 review 的三个 non-blocking issues 均 deferred：Section 4 heading nesting、M6 mixed-language title、M3 rough impact estimate。它们进入 D11，后续文档精修或 split analysis 时处理。
 42. Captain 根据 T30 review 的 P0 建议插入 `T31A`，先修 query-level split completeness；当前唯一任务已切换到 `T31A`，本轮只推荐下一任务，不执行 T31A。
+43. `T31A` 已由 worker 完成代码草案：`ancestor_ranking` / grouped ancestor retrieval 现在走 query-level split，不再按正例边切分同一 `(src, relation)` query。
+44. `T31A` 还新增 split disjointness 摘要并在数据准备阶段做显式断言；当前设计是只影响 grouped ancestor retrieval 路径，不改 `parent_prediction` 等其他 task family。
+45. `T31A` 已经过 adversarial reviewer 只读审查并判定为 PASS；Captain 已将 `T31A` 标记完成。
+46. T31A review 的 non-blocking issues 已分类：query key 与 `ancestor_label_mode` 交互作为 T31 注意事项接受；R19 由 Active 改为 Mitigated；Section numbering 继续由 D11 跟踪；rare relation type 覆盖率留作后续 grouped benchmark 注意事项。
+47. 当前唯一任务已切换到 `T31`；本轮只推荐下一任务，不执行 T31。
+48. `T31` 本轮已由 worker 完成最小 grouped training 实现：`run_relation_grouped_retrieval_baseline.py` 现在直接复用 `build_grouped_ranking_queries(...)` 构造训练 query，训练 key 与 T31A 已 review 的 split / eval key 显式对齐到 `(src_id, relation_type)`。
+49. `T31` 同步新增最小 smoke config `project_bootstrap/baseline_scaffold/configs/relation_grouped_gcn_typeclass_precise_v2_ancestor_ranking_smoke_t31.json`，并完成单次 smoke 运行；artifact 落在 `artifacts/smoke/relation_grouped_gcn_lean4_example_typeclass_precise_v2_ancestor_ranking_smoke_t31/`。
+50. 上述 smoke 已确认 `grouped_training_summary.json`、`training_stats.json` 与 `result_summary.json` 写入 `training_loss = sampled_softmax`、`query_key_fields = [src_id, relation_type]`，且保留 `task_summary.query_split_summary` 作为 T31A split completeness 证据。
+51. `T31` 已经过 adversarial reviewer 只读审查并判定为 PASS；Captain 已将 `T31` 标记完成。
+52. T31 review 的 non-blocking issues 已分类：`grouped_loss="infonce"` 作为 `sampled_softmax` alias 为 accepted current behavior；grouped runner `negative_ratio` 默认值差异为 deferred 并写入 T32 明确配置要求；`total_loss` device 初始化清理为 deferred；Captain 级治理文档越界项为 accepted scope distinction；`.claude/settings.json` 自动权限 diff 为 rejected/excluded from commit。
+53. 当前唯一任务已切换到 `T32`；本轮只推荐下一任务，不执行 T32。
 
 ## 8. 下一步
 
-下一步把 `T31A` 任务包交给 worker 执行。Worker 应只修 grouped ancestor retrieval 的 split completeness，保证同一 `(src, relation)` query 不跨 `train / val / test`，并提供最小 smoke 或静态验证。
+下一步把 `T32` 任务包交给 worker 执行。Worker 应运行 GCN 5-seed grouped training sweep，优先覆盖 `Field.Subfield` 与 `Order.Ring`，并产出 `docs/experiment_reports/gcn_grouped_training.md`。
 
-T31A 完成后，把 diff 交给 adversarial reviewer 做只读审查。不要在同一轮直接执行 `T31` grouped loss。
+T32 的关键执行点是：必须使用 T31 reviewed grouped runner / seed sweep path；正式 sweep config 必须显式设置 `negative_ratio`；如果 `Field.Subfield` 或 `Order.Ring` 缺少可运行 config，应在任务边界内补齐 config 并记录阻塞或产物路径。
 
 不要把 `docs/data_manifest.md` 中的 `unknown / needs verification` 字段上升为既成版本事实。
 不要把 `docs/data_card.md` 中的 `recommended usage` 误读为最终 benchmark 定稿；这仍然只是当前治理口径下的使用边界，后续还需要 T20+ diagnostics。

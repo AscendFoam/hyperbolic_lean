@@ -1,0 +1,98 @@
+{
+  "run_id": "relation_gcn_lean4_example_typeclass_precise_v2_ancestor_ranking_query_split_smoke_t31a",
+  "task": "ancestor_ranking",
+  "graph_root": "data/processed/declaration_graph/lean4_example_typeclass_precise_v2",
+  "artifacts_root": "artifacts/smoke/relation_gcn_lean4_example_typeclass_precise_v2_ancestor_ranking_query_split_smoke_t31a",
+  "seed": 42,
+  "dry_run": false,
+  "config_snapshot": {
+    "run_id": "relation_gcn_lean4_example_typeclass_precise_v2_ancestor_ranking_query_split_smoke_t31a",
+    "task": "ancestor_ranking",
+    "graph_root": "data/processed/declaration_graph/lean4_example_typeclass_precise_v2",
+    "artifacts_root": "artifacts/smoke/relation_gcn_lean4_example_typeclass_precise_v2_ancestor_ranking_query_split_smoke_t31a",
+    "val_ratio": 0.1,
+    "test_ratio": 0.1,
+    "seed": 42,
+    "negative_ratio": 1.0,
+    "negative_strategy": "same_module",
+    "negative_fallback_strategy": "random",
+    "target_relation_types": [
+      "extends",
+      "instance_of"
+    ],
+    "message_relation_types": [
+      "uses",
+      "instance_of",
+      "extends"
+    ],
+    "hierarchy_relation_types": [
+      "extends",
+      "instance_of"
+    ],
+    "ancestor_label_mode": "source_kind",
+    "ancestor_min_hops": 1,
+    "class_like_decl_kinds": [
+      "class",
+      "structure"
+    ],
+    "exclude_held_out_direct_edges": true,
+    "dry_run": false,
+    "symmetrize_graph": true,
+    "input_dim": 8,
+    "hidden_dim": 8,
+    "output_dim": 8,
+    "dropout": 0.2,
+    "epochs": 1,
+    "eval_every": 1,
+    "early_stopping_patience": 1,
+    "learning_rate": 0.01,
+    "weight_decay": 0.0001
+  },
+  "graph_summary": {
+    "num_declarations": 2136,
+    "num_edges": 3733,
+    "num_covered_nodes": 1933,
+    "isolated_node_count": 203,
+    "decl_kind_counts": {
+      "class": 2,
+      "instance": 971,
+      "structure": 1163
+    },
+    "edge_type_counts": {
+      "extends": 19,
+      "instance_of": 959,
+      "uses": 2755
+    }
+  },
+  "dependency_status": {
+    "torch": true,
+    "numpy": true,
+    "sklearn": true
+  },
+  "task_summary": {
+    "num_positive_examples": 1212,
+    "relation_type_counts": {
+      "extends_ancestor": 35,
+      "instance_ancestor": 1177
+    },
+    "query_split_summary": {
+      "split_strategy": "query_level",
+      "query_counts": {
+        "train": 780,
+        "val": 96,
+        "test": 96
+      },
+      "positive_example_counts": {
+        "train": 942,
+        "val": 127,
+        "test": 143
+      },
+      "overlap_counts": {
+        "train_val": 0,
+        "train_test": 0,
+        "val_test": 0
+      },
+      "is_query_level_disjoint": true
+    }
+  }
+}

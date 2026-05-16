@@ -14,6 +14,7 @@ from common import (
     write_json,
 )
 from relation_tasks import (
+    assert_query_level_split_disjoint,
     build_relation_candidate_pools,
     build_grouped_ranking_queries,
     build_task_positive_examples,
@@ -23,6 +24,7 @@ from relation_tasks import (
     hop_bucket_name,
     sample_negative_relation_examples,
     stratified_split_relation_examples,
+    stratified_split_relation_examples_by_query,
     summarize_ranking_ranks,
     summarize_relation_examples,
     write_relation_split_csv,
@@ -360,6 +362,13 @@ def prepare_relation_run_data(config: dict) -> dict:
             ancestor_label_mode=ancestor_label_mode,
             min_hops=ancestor_min_hops,
         )
+        split = stratified_split_relation_examples_by_query(
+            examples=positive_examples,
+            val_ratio=float(config["val_ratio"]),
+            test_ratio=float(config["test_ratio"]),
+            seed=int(config["seed"]),
+        )
+        query_split_summary = assert_query_level_split_disjoint(split)
     else:
         positive_examples = build_task_positive_examples(
             declarations=declarations,
@@ -370,12 +379,13 @@ def prepare_relation_run_data(config: dict) -> dict:
             ancestor_label_mode=ancestor_label_mode,
             ancestor_min_hops=ancestor_min_hops,
         )
-    split = stratified_split_relation_examples(
-        examples=positive_examples,
-        val_ratio=float(config["val_ratio"]),
-        test_ratio=float(config["test_ratio"]),
-        seed=int(config["seed"]),
-    )
+        split = stratified_split_relation_examples(
+            examples=positive_examples,
+            val_ratio=float(config["val_ratio"]),
+            test_ratio=float(config["test_ratio"]),
+            seed=int(config["seed"]),
+        )
+        query_split_summary = None
 
     prediction_relation_types = sorted({relation_type for _, _, relation_type in positive_examples})
     message_relation_types = list(config.get("message_relation_types", target_relation_types))
@@ -418,6 +428,7 @@ def prepare_relation_run_data(config: dict) -> dict:
     manifest["task_summary"] = {
         "num_positive_examples": len(positive_examples),
         "relation_type_counts": summarize_relation_examples(positive_examples),
+        "query_split_summary": query_split_summary,
     }
     write_json(artifacts_root / "run_manifest.json", manifest)
     write_json(artifacts_root / "negative_sampling_stats.json", negative_sampling_stats)

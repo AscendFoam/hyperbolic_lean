@@ -1,13 +1,13 @@
 # 04 Task Board
 
-> 更新时间：2026-05-13
+> 更新时间：2026-05-16
 >
 > Captain 原则：每轮只推进一个 `Current Unique Task`。Worker 不自动领取下一任务。
 
 ## Project Status
 
 - 状态：Continue
-- 当前阶段：Milestone 3 grouped retrieval training alignment；T30 已通过 review，当前推荐 T31A 修 query-level split completeness
+- 当前阶段：Milestone 3 grouped retrieval training alignment；T31 已通过 adversarial review，当前推荐 T32 运行 GCN grouped training 5-seed sweep
 - 当前主线：`benchmark / protocol / diagnostics`
 - 当前不主张：把“已经证明 HGCN 稳定优于 GCN”写成既成事实
 - 当前证据等级：已有真实实验与工程原型，但尚未冻结成正式 benchmark artifact
@@ -35,8 +35,8 @@
 ## Milestone 3: Grouped Retrieval Training Alignment
 
 - [x] T30: 阅读现有 grouped retrieval training 代码，定位 binary edge classification 与 grouped retrieval 的错配点
-- [ ] T31A: 实现并校验 grouped ancestor retrieval 的 query-level split completeness
-- [ ] T31: 实现最小 query-grouped loss 方案，优先 `sampled softmax` 或 `InfoNCE`，只接一个现有 config
+- [x] T31A: 实现并校验 grouped ancestor retrieval 的 query-level split completeness
+- [x] T31: 实现最小 query-grouped loss 方案，优先 `sampled softmax` 或 `InfoNCE`，只接一个现有 config
 - [ ] T32: 在 `Field.Subfield` 与 `Order.Ring` 上跑 GCN 5-seed grouped training 对照
 - [ ] T33: 在相同 split 与参数预算下跑 HGCN 5-seed grouped training 对照
 - [ ] T34: 汇总 grouped training 与旧 binary training 的差异，写入诊断报告
@@ -57,36 +57,39 @@
 
 ## Current Unique Task
 
-`T31A`: 实现并校验 grouped ancestor retrieval 的 query-level split completeness。
+`T32`: 在 `Field.Subfield` 与 `Order.Ring` 上跑 GCN 5-seed grouped training 对照。
 
 任务包位置：
 
-`docs/tasks/M3_training/T31A_query_level_split_completeness.md`
+`docs/tasks/M3_training/T32_gcn_grouped_training_sweep.md`
 
 ## Why Now
 
-`T30` 已通过 review，并确认当前 edge-level split 可能把同一 `(src, relation)` grouped query 拆到多个 split。这个问题会污染 grouped val/test 的完整 positive set，因此应先作为 `T31A` 修复，再推进 `T31` query-grouped loss。
+`T31` 已通过 adversarial review，确认 grouped retrieval runner 的训练 query、split 与 eval 均使用 `(src_id, relation_type)` key，且 best checkpoint 由 grouped val MAP 驱动。下一步需要先跑 GCN 5-seed grouped training sweep，建立欧氏 baseline，再进入 HGCN 对照。
 
 ## Worker Package Summary
 
-- Task ID: `T31A`
+- Task ID: `T32`
 - Allowed files:
-  - `project_bootstrap/baseline_scaffold/src/relation_tasks.py`
-  - `project_bootstrap/baseline_scaffold/src/relation_baseline_common.py`
-  - `project_bootstrap/baseline_scaffold/src/run_relation_gcn_baseline.py`
-  - `project_bootstrap/baseline_scaffold/src/run_relation_hyperbolic_baseline.py`
-  - one new or updated smoke config under `project_bootstrap/baseline_scaffold/configs`
-  - `docs/training_alignment_audit.md`
+  - new artifacts under `artifacts/baselines/relation_seed_sweeps/`
+  - related configs under `project_bootstrap/**/configs`
+  - `docs/experiment_reports/gcn_grouped_training.md`
   - `docs/04_task_board.md`
   - `docs/07_handoff.md`
   - `docs/08_risks_and_open_questions.md`
 - Forbidden scope:
-  - 不实现 query-grouped loss
-  - 不运行长 sweep
-  - 不改 GCN / HGCN 架构
-  - 不把 smoke 结果写成正式 benchmark 结论
+  - 不改 HGCN 代码
+  - 不改变 T31 定义的 grouped training 协议
+  - 不覆盖历史 artifact
+  - 不改 grouped runner 训练目标，除非只是修复运行参数或配置引用
+  - 不把 smoke 结果当作正式 benchmark 结论
+- T32-specific notes:
+  - 必须使用 T31 reviewed grouped retrieval runner / seed sweep path，不能退回旧 BCE runner。
+  - 每个正式 sweep config 必须显式设置 `negative_ratio`，不要依赖 grouped runner 默认值。
+  - 如果 `Field.Subfield` 或 `Order.Ring` 缺少可直接运行 config，worker 应先在 Allowed files 内补齐 config，并记录无法运行的具体阻塞。
 - Verification:
-  - `rg -n "query.*split|split.*query|src.*relation|ancestor_ranking|grouped" project_bootstrap\baseline_scaffold\src docs\training_alignment_audit.md`
+  - `Get-ChildItem artifacts\baselines\relation_seed_sweeps`
+  - `rg -n "mean|std|Recall|MAP|nDCG|grouped|hop|negative_ratio" docs\experiment_reports\gcn_grouped_training.md project_bootstrap\**\configs`
 
 ## Execution Note
 
@@ -134,6 +137,15 @@
 - 2026-05-13：`docs/review/T30_review.md` 结论为 `PASS`，blocking issues 为 none；Captain 判定可标记完成。
 - 2026-05-13：T30 review 的 non-blocking issues 分类：Section 4 heading nesting、M6 mixed-language title、M3 rough impact estimate 均为 deferred，写入 D11；不影响 T30 完成。
 - 2026-05-13：`T30` 标记完成；由于 R19 是 grouped benchmark 前置风险，Captain 插入 `T31A` query-level split completeness 任务，当前唯一任务切换为 `T31A`，本轮不执行 T31A。
+- 2026-05-13：`T31A` 已由 worker 完成代码与文档草案：`ancestor_ranking` 路径改为 query-level split，并把 split disjointness 摘要写入 `run_manifest.json -> task_summary`；随后进入 adversarial reviewer 只读审查。
+- 2026-05-13：`docs/review/T31A_review.md` 结论为 `PASS`，blocking issues 为 none；Captain 判定可标记完成。
+- 2026-05-13：T31A review 的 non-blocking issues 处理：`ancestor_label_mode` 与 query key 交互写入 T31 注意事项；R19 从 Active 更新为 Mitigated；Section numbering 继续由 D11 跟踪；rare relation type 的 split 覆盖率作为后续 grouped benchmark 注意事项保留，不阻塞 T31A。
+- 2026-05-13：`T31A` 标记完成；当前唯一任务切换为 `T31`，本轮只推荐下一任务，不执行 T31。
+- 2026-05-13：`T31` 已由 worker 完成最小 grouped training 实现：`run_relation_grouped_retrieval_baseline.py` 复用 `build_grouped_ranking_queries(...)` 构造训练 query，训练 key 与 T31A 已 review 的 split / eval key 显式对齐到 `(src_id, relation_type)`。
+- 2026-05-13：`T31` 新增最小 smoke config `project_bootstrap/baseline_scaffold/configs/relation_grouped_gcn_typeclass_precise_v2_ancestor_ranking_smoke_t31.json`，并完成单次 smoke；artifact 落在 `artifacts/smoke/relation_grouped_gcn_lean4_example_typeclass_precise_v2_ancestor_ranking_smoke_t31/`。
+- 2026-05-16：`docs/review/T31_review.md` 结论为 `PASS`，blocking issues 为 none；Captain 判定可标记完成。
+- 2026-05-16：T31 review 的 non-blocking issues 处理：`infonce` 作为 `sampled_softmax` alias 为 accepted current behavior；`negative_ratio` 默认差异与 `total_loss` device 初始化清理为 deferred；Captain 级治理文档更新为 accepted scope distinction；`.claude/settings.json` 自动权限 diff 为 rejected/excluded from commit。
+- 2026-05-16：`T31` 标记完成；当前唯一任务切换为 `T32`，本轮只推荐下一任务，不执行 T32。
 
 ## After Completion
 

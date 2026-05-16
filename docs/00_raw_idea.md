@@ -1,6 +1,6 @@
 # 00 Raw Idea
 
-> 更新时间：2026-05-13
+> 更新时间：2026-05-16
 >
 > 项目名称：形式化图谱双曲化
 >
@@ -77,3 +77,5 @@ Go，但主线已收束：
 - 2026-05-12：`T21` 已通过 reviewer 判定 `PASS`；module-level candidate scan audit 将 `Mathlib.Algebra.Order.Ring` 提升为最平衡的下一步候选，当前唯一任务切换为 `T22`。
 - 2026-05-13：`T22` 已通过 reviewer 判定 `PASS`；`docs/diagnostics_protocol.md` 成为 reviewed heuristic diagnostics protocol，当前唯一任务切换为 `T30`。
 - 2026-05-13：`T30` 已通过 reviewer 判定 `PASS`；审计确认训练仍是 edge-level BCE，且 grouped query 可能被 edge-level split 拆碎；当前唯一任务切换为 `T31A`，先修 query-level split completeness。
+- 2026-05-13：`T31A` 已通过 adversarial reviewer 判定 `PASS`；`ancestor_ranking` / grouped ancestor retrieval 已切到 query-level split，并通过 smoke 验证 `run_manifest.json` 中 query overlap 为 0；当前唯一任务切换为 `T31`，用于实现最小 query-grouped loss。
+- 2026-05-16：`T31` 已通过 adversarial reviewer 判定 `PASS`；grouped retrieval runner 已具备最小 query-grouped training 路径，训练、split 与 eval 共用 `(src_id, relation_type)` query key，并用 grouped val MAP 做模型选择；当前唯一任务切换为 `T32`，用于运行 GCN 5-seed grouped training sweep。

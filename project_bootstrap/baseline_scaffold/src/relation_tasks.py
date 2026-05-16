@@ -9,6 +9,7 @@ from common import build_declaration_metadata
 
 
 RelationExample = tuple[str, str, str]
+RelationQueryKey = tuple[str, str]
 
 
 def filter_edges_by_types(edges: list[dict], relation_types: Iterable[str]) -> list[dict]:
@@ -54,6 +55,87 @@ def stratified_split_relation_examples(
     for split_name in split:
         rng.shuffle(split[split_name])
     return split
+
+
+def query_key_for_relation_example(example: RelationExample) -> RelationQueryKey:
+    return (example[0], example[2])
+
+
+def stratified_split_relation_examples_by_query(
+    examples: list[RelationExample],
+    val_ratio: float,
+    test_ratio: float,
+    seed: int,
+) -> dict[str, list[RelationExample]]:
+    grouped_queries: dict[str, dict[RelationQueryKey, list[RelationExample]]] = defaultdict(lambda: defaultdict(list))
+    for example in examples:
+        relation_type = example[2]
+        grouped_queries[relation_type][query_key_for_relation_example(example)].append(example)
+
+    rng = random.Random(seed)
+    split = {"train": [], "val": [], "test": []}
+    for relation_type, query_rows in grouped_queries.items():
+        query_items = list(query_rows.items())
+        rng.shuffle(query_items)
+        n_total = len(query_items)
+        n_val = int(n_total * val_ratio)
+        n_test = int(n_total * test_ratio)
+        n_train = max(0, n_total - n_val - n_test)
+
+        split["train"].extend(
+            example
+            for _, rows in query_items[:n_train]
+            for example in rows
+        )
+        split["val"].extend(
+            example
+            for _, rows in query_items[n_train:n_train + n_val]
+            for example in rows
+        )
+        split["test"].extend(
+            example
+            for _, rows in query_items[n_train + n_val:n_train + n_val + n_test]
+            for example in rows
+        )
+
+    for split_name in split:
+        rng.shuffle(split[split_name])
+    return split
+
+
+def summarize_query_level_split(split: dict[str, list[RelationExample]]) -> dict:
+    query_sets = {
+        split_name: {query_key_for_relation_example(example) for example in rows}
+        for split_name, rows in split.items()
+    }
+    overlap_counts = {
+        "train_val": len(query_sets["train"] & query_sets["val"]),
+        "train_test": len(query_sets["train"] & query_sets["test"]),
+        "val_test": len(query_sets["val"] & query_sets["test"]),
+    }
+    return {
+        "split_strategy": "query_level",
+        "query_counts": {
+            split_name: len(query_sets[split_name])
+            for split_name in ["train", "val", "test"]
+        },
+        "positive_example_counts": {
+            split_name: len(split.get(split_name, []))
+            for split_name in ["train", "val", "test"]
+        },
+        "overlap_counts": overlap_counts,
+        "is_query_level_disjoint": all(count == 0 for count in overlap_counts.values()),
+    }
+
+
+def assert_query_level_split_disjoint(split: dict[str, list[RelationExample]]) -> dict:
+    summary = summarize_query_level_split(split)
+    if not summary["is_query_level_disjoint"]:
+        raise ValueError(
+            "Query-level split completeness violated for grouped ancestor retrieval: "
+            f"{summary['overlap_counts']}"
+        )
+    return summary
 
 
 def build_relation_candidate_pools(

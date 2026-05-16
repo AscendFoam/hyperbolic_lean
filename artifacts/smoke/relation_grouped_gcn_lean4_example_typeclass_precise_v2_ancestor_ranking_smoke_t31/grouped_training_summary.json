@@ -1,0 +1,29 @@
+{
+  "query_key_fields": [
+    "src_id",
+    "relation_type"
+  ],
+  "num_queries": 780,
+  "relation_type_counts": {
+    "extends_ancestor": 11,
+    "instance_ancestor": 769
+  },
+  "positives_per_query": {
+    "count": 780,
+    "mean": 1.2076923076923076,
+    "min": 1,
+    "max": 8
+  },
+  "negatives_per_query": {
+    "count": 780,
+    "mean": 1.2076923076923076,
+    "min": 1,
+    "max": 8
+  },
+  "candidate_pool_size": {
+    "count": 780,
+    "mean": 1165.0,
+    "min": 1165,
+    "max": 1165
+  }
+}

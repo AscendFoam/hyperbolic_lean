@@ -1,0 +1,14 @@
+{
+  "best_epoch": 1,
+  "best_val_average_precision": 0.6933726038401784,
+  "num_train_examples": 1884,
+  "num_val_examples": 254,
+  "history": [
+    {
+      "epoch": 1,
+      "train_loss": 0.6998213529586792,
+      "val_average_precision": 0.6933726038401784,
+      "val_auroc": 0.7061504123008245
+    }
+  ]
+}

@@ -1,8 +1,9 @@
-"""Relation-aware grouped retrieval training with InfoNCE loss.
+"""Relation-aware grouped retrieval training with sampled-softmax / InfoNCE loss.
 
-Replaces binary edge classification with query-grouped softmax training,
-aligning the training objective with grouped multi-positive retrieval evaluation.
-Supports both GCN and HGCN encoders via ``model_type`` config flag.
+Replaces binary edge classification with query-grouped training over sampled
+relation-aware candidate sets, aligning the training objective with grouped
+multi-positive retrieval evaluation. Supports both GCN and HGCN encoders via
+``model_type`` config flag.
 """
 
 from __future__ import annotations
@@ -10,7 +11,7 @@ from __future__ import annotations
 import argparse
 import copy
 import random
-from collections import defaultdict
+from collections import Counter
 from pathlib import Path
 
 from common import load_config, set_global_random_seed, write_json
@@ -27,14 +28,14 @@ from relation_baseline_common import (
     load_relation_split_triplets,
     prepare_relation_run_data,
 )
-from relation_tasks import build_message_edges_for_training
+from relation_tasks import build_grouped_ranking_queries, build_message_edges_for_training
 from run_relation_gcn_baseline import RelationAwareGCNLinkPredictor
 from run_relation_hyperbolic_baseline import RelationAwareHyperbolicLinkPredictor
 
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description="Grouped retrieval training with InfoNCE loss."
+        description="Grouped retrieval training with sampled-softmax / InfoNCE loss."
     )
     parser.add_argument("--config", required=True, type=Path)
     return parser.parse_args()
@@ -44,41 +45,58 @@ def parse_args() -> argparse.Namespace:
 # query group construction
 # ---------------------------------------------------------------------------
 
+def _sample_negative_ids(
+    src_id: str,
+    relation_type: str,
+    positive_ids: list[str],
+    candidate_ids: list[str],
+    all_positive_set: set[tuple],
+    negative_ratio: float,
+    rng: random.Random,
+) -> list[str]:
+    negative_candidates = [
+        candidate_id
+        for candidate_id in candidate_ids
+        if candidate_id != src_id and (src_id, candidate_id, relation_type) not in all_positive_set
+    ]
+    if not negative_candidates:
+        return []
+    requested_negatives = max(1, int(len(positive_ids) * negative_ratio))
+    if len(negative_candidates) <= requested_negatives:
+        return list(negative_candidates)
+    return rng.sample(negative_candidates, requested_negatives)
+
+
 def build_query_groups(
-    split_examples: list[tuple],
+    positive_examples: list[tuple[str, str, str]],
     all_positive_set: set[tuple],
     candidate_pools: dict[str, list[str]],
     negative_ratio: float,
     rng: random.Random,
 ) -> list[dict]:
-    """Organize training examples into query groups for grouped softmax.
-
-    Each group: (src, relation) -> {positives, negatives}.
-    """
-    grouped: dict[tuple, list[str]] = defaultdict(list)
-    for src, dst, rel, label in split_examples:
-        if label == 1:
-            grouped[(src, rel)].append(dst)
-
+    """Build grouped training queries using the same key semantics as eval."""
+    grouped_queries = build_grouped_ranking_queries(positive_examples, candidate_pools)
     query_groups: list[dict] = []
-    for (src, rel), positives in grouped.items():
-        pool = candidate_pools.get(rel, [])
-        # Exclude true positives and self from negative candidates
-        neg_candidates = [
-            c for c in pool
-            if c != src and (src, c, rel) not in all_positive_set
-        ]
-        n_neg = max(1, int(len(positives) * negative_ratio))
-        if len(neg_candidates) < n_neg:
-            neg_sample = list(neg_candidates)
-        else:
-            neg_sample = rng.sample(neg_candidates, n_neg)
-
+    for query in grouped_queries:
+        src_id = str(query["src_id"])
+        relation_type = str(query["relation_type"])
+        positive_ids = list(query["positive_ids"])
+        candidate_ids = list(query["candidate_ids"])
+        negative_ids = _sample_negative_ids(
+            src_id=src_id,
+            relation_type=relation_type,
+            positive_ids=positive_ids,
+            candidate_ids=candidate_ids,
+            all_positive_set=all_positive_set,
+            negative_ratio=negative_ratio,
+            rng=rng,
+        )
         query_groups.append({
-            "src": src,
-            "relation": rel,
-            "positives": positives,
-            "negatives": neg_sample,
+            "src_id": src_id,
+            "relation_type": relation_type,
+            "positive_ids": positive_ids,
+            "negative_ids": negative_ids,
+            "candidate_pool_size": len(candidate_ids),
         })
     return query_groups
 
@@ -93,37 +111,62 @@ def resample_negatives(
     """Resample negatives for existing query groups (keeps positives fixed)."""
     new_groups = []
     for g in query_groups:
-        src, rel, positives = g["src"], g["relation"], g["positives"]
-        pool = candidate_pools.get(rel, [])
-        neg_candidates = [
-            c for c in pool
-            if c != src and (src, c, rel) not in all_positive_set
-        ]
-        n_neg = max(1, int(len(positives) * negative_ratio))
-        if len(neg_candidates) < n_neg:
-            neg_sample = list(neg_candidates)
-        else:
-            neg_sample = rng.sample(neg_candidates, n_neg)
+        src_id = str(g["src_id"])
+        relation_type = str(g["relation_type"])
+        positive_ids = list(g["positive_ids"])
+        candidate_ids = list(candidate_pools.get(relation_type, []))
+        negative_ids = _sample_negative_ids(
+            src_id=src_id,
+            relation_type=relation_type,
+            positive_ids=positive_ids,
+            candidate_ids=candidate_ids,
+            all_positive_set=all_positive_set,
+            negative_ratio=negative_ratio,
+            rng=rng,
+        )
         new_groups.append({
-            "src": src,
-            "relation": rel,
-            "positives": positives,
-            "negatives": neg_sample,
+            "src_id": src_id,
+            "relation_type": relation_type,
+            "positive_ids": positive_ids,
+            "negative_ids": negative_ids,
+            "candidate_pool_size": len(candidate_ids),
         })
     return new_groups
 
 
 # ---------------------------------------------------------------------------
-# grouped softmax loss
+# grouped loss
 # ---------------------------------------------------------------------------
 
-def grouped_softmax_loss(scores, positive_mask, torch, F):
-    """InfoNCE: negative mean log-prob of positives under softmax over candidates."""
+def sampled_softmax_loss(scores, positive_mask, torch, F):
+    """InfoNCE / sampled softmax over one `(src_id, relation_type)` query."""
     log_probs = F.log_softmax(scores, dim=0)
     pos_log_probs = log_probs[positive_mask]
     if pos_log_probs.numel() == 0:
-        return torch.tensor(0.0, requires_grad=True)
+        return scores.new_zeros(())
     return -pos_log_probs.mean()
+
+
+def _summarize_counts(values: list[int]) -> dict[str, float | int | None]:
+    if not values:
+        return {"count": 0, "mean": None, "min": None, "max": None}
+    return {
+        "count": len(values),
+        "mean": float(sum(values) / len(values)),
+        "min": int(min(values)),
+        "max": int(max(values)),
+    }
+
+
+def summarize_query_groups(query_groups: list[dict]) -> dict:
+    return {
+        "query_key_fields": ["src_id", "relation_type"],
+        "num_queries": len(query_groups),
+        "relation_type_counts": dict(sorted(Counter(str(group["relation_type"]) for group in query_groups).items())),
+        "positives_per_query": _summarize_counts([len(group["positive_ids"]) for group in query_groups]),
+        "negatives_per_query": _summarize_counts([len(group["negative_ids"]) for group in query_groups]),
+        "candidate_pool_size": _summarize_counts([int(group["candidate_pool_size"]) for group in query_groups]),
+    }
 
 
 # ---------------------------------------------------------------------------
@@ -150,6 +193,7 @@ def train_grouped_retrieval(
     roc_auc_score,
     negative_ratio: float,
     resample_negatives_flag: bool,
+    grouped_loss_name: str,
 ):
     learning_rate = float(config.get("learning_rate", 0.01))
     weight_decay = float(config.get("weight_decay", 1e-4))
@@ -179,15 +223,15 @@ def train_grouped_retrieval(
         n_queries = 0
 
         for g in query_groups_train:
-            src_idx = node_to_idx[g["src"]]
-            rel_idx = relation_to_idx[g["relation"]]
-            all_dst = g["positives"] + g["negatives"]
-            pos_mask = [True] * len(g["positives"]) + [False] * len(g["negatives"])
+            src_idx = node_to_idx[g["src_id"]]
+            rel_idx = relation_to_idx[g["relation_type"]]
+            all_dst = g["positive_ids"] + g["negative_ids"]
+            pos_mask = [True] * len(g["positive_ids"]) + [False] * len(g["negative_ids"])
 
             dst_indices = [node_to_idx[d] for d in all_dst if d in node_to_idx]
             if len(dst_indices) != len(all_dst):
                 valid = [d for d in all_dst if d in node_to_idx]
-                valid_pos = [d for d in g["positives"] if d in node_to_idx]
+                valid_pos = [d for d in g["positive_ids"] if d in node_to_idx]
                 pos_mask = [True] * len(valid_pos) + [False] * (len(valid) - len(valid_pos))
                 all_dst = valid
                 dst_indices = [node_to_idx[d] for d in all_dst]
@@ -202,13 +246,12 @@ def train_grouped_retrieval(
             pos_mask_t = torch.tensor(pos_mask, dtype=torch.bool)
 
             scores = model.decode(embeddings, edge_index, rel_ids)
-            total_loss = total_loss + grouped_softmax_loss(scores, pos_mask_t, torch, F)
+            total_loss = total_loss + sampled_softmax_loss(scores, pos_mask_t, torch, F)
             n_queries += 1
 
-        if n_queries > 0:
-            avg_loss = total_loss / n_queries
-        else:
-            avg_loss = total_loss
+        if n_queries <= 0:
+            raise ValueError("Grouped retrieval training produced zero valid `(src_id, relation_type)` queries.")
+        avg_loss = total_loss / n_queries
 
         optimizer.zero_grad()
         avg_loss.backward()
@@ -285,7 +328,7 @@ def train_grouped_retrieval(
     return final_embeddings.detach().cpu().numpy(), {
         "best_epoch": best_epoch,
         "best_val_grouped_map": None if best_val_grouped_map == float("-inf") else float(best_val_grouped_map),
-        "training_loss": "grouped_softmax",
+        "training_loss": grouped_loss_name,
         "history": history,
     }
 
@@ -297,6 +340,11 @@ def train_grouped_retrieval(
 def run_grouped_retrieval_experiment(config: dict) -> dict:
     data = prepare_relation_run_data(config)
     artifacts_root = data["artifacts_root"]
+    grouped_loss_name = str(config.get("grouped_loss", "sampled_softmax")).strip().lower()
+    if grouped_loss_name == "grouped_softmax":
+        grouped_loss_name = "sampled_softmax"
+    if grouped_loss_name not in {"sampled_softmax", "infonce"}:
+        raise ValueError(f"Unsupported grouped_loss: {grouped_loss_name}")
 
     if config.get("dry_run", False):
         notes = {"mode": "dry_run", "message": "Grouped retrieval dry run."}
@@ -360,7 +408,7 @@ def run_grouped_retrieval_experiment(config: dict) -> dict:
     rng = random.Random(int(config["seed"]))
 
     train_positives = [
-        (src, dst, rel, label)
+        (src, dst, rel)
         for src, dst, rel, label in split_examples["train"]
         if label == 1
     ]
@@ -368,6 +416,8 @@ def run_grouped_retrieval_experiment(config: dict) -> dict:
         train_positives, all_positive_set,
         data["relation_candidate_pools"], negative_ratio, rng,
     )
+    grouped_training_summary = summarize_query_groups(query_groups_train)
+    write_json(artifacts_root / "grouped_training_summary.json", grouped_training_summary)
     print(f"[info] {len(query_groups_train)} query groups in training set")
 
     # Build model
@@ -413,7 +463,10 @@ def run_grouped_retrieval_experiment(config: dict) -> dict:
         roc_auc_score=roc_auc_score,
         negative_ratio=negative_ratio,
         resample_negatives_flag=resample_flag,
+        grouped_loss_name=grouped_loss_name,
     )
+    train_stats["query_group_summary"] = grouped_training_summary
+    train_stats["resample_negatives_every_epoch"] = resample_flag
 
     np.save(artifacts_root / "node_embeddings.npy", embeddings)
     write_json(artifacts_root / "training_stats.json", train_stats)
@@ -453,7 +506,7 @@ def run_grouped_retrieval_experiment(config: dict) -> dict:
         "run_id": config["run_id"],
         "task": config["task"],
         "model_type": model_type,
-        "training_loss": "grouped_softmax",
+        "training_loss": grouped_loss_name,
         "relations": prediction_relation_types,
         "best_epoch": train_stats["best_epoch"],
         "val_average_precision": metrics["val"]["average_precision"],
@@ -462,6 +515,8 @@ def run_grouped_retrieval_experiment(config: dict) -> dict:
         "test_auroc": metrics["test"]["auroc"],
         "test_f1": metrics["test"]["f1"],
         "calibrated_test_f1": metrics["calibrated"]["test"]["f1"],
+        "task_summary": data["task_summary"],
+        "query_group_summary": grouped_training_summary,
     }
     if "ranking" in metrics:
         result_summary["ranking_test_mrr"] = metrics["ranking"]["test"]["mrr"]
@@ -480,7 +535,7 @@ def run_grouped_retrieval_experiment(config: dict) -> dict:
     write_json(artifacts_root / "result_summary.json", result_summary)
 
     print(f"[done] relation-aware {model_label} grouped retrieval training completed")
-    print(f"[done] task: {config['task']}, loss: grouped_softmax")
+    print(f"[done] task: {config['task']}, loss: {grouped_loss_name}")
     print(f"[done] relations: {', '.join(prediction_relation_types)}")
     print(f"[done] val AP: {fmt_metric(metrics['val']['average_precision'])}")
     print(f"[done] test AP: {fmt_metric(metrics['test']['average_precision'])}")
@@ -494,6 +549,9 @@ def run_grouped_retrieval_experiment(config: dict) -> dict:
     return {
         "config": copy.deepcopy(config),
         "artifacts_root": str(artifacts_root),
+        "graph_summary": data["graph_summary"],
+        "task_summary": data["task_summary"],
+        "negative_sampling_stats": data["negative_sampling_stats"],
         "metrics": metrics,
         "training_stats": train_stats,
         "result_summary": result_summary,

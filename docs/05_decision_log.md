@@ -1,6 +1,6 @@
 # 05 Decision Log
 
-> 更新时间：2026-05-13
+> 更新时间：2026-05-16
 >
 > 规则：只记录会影响后续任务选择、论文叙事、评测协议或项目状态的决策。
 
@@ -159,3 +159,21 @@
 - 决策：`T30` 判定为 PASS，标记完成；不直接进入原 `T31` loss 实现，而是先插入 `T31A` 修复 grouped ancestor retrieval 的 query-level split completeness。
 - Warning 分类：Section 4 heading nesting 为 deferred；M6 mixed-language title 为 deferred；M3 rough impact estimate 为 deferred；无 accepted 或 rejected warning。
 - 后果：`docs/training_alignment_audit.md` 成为 reviewed training alignment audit。`R19` 被视为 grouped benchmark 前置风险；`T31A` 必须先保证同一 `(src, relation)` query 不跨 split，再由 `T31` 实现 query-grouped loss。
+
+## D020: T31A 通过 adversarial review 并切换到 T31
+
+- 日期：2026-05-13
+- 状态：Accepted
+- 依据：`docs/review/T31A_review.md`
+- 决策：`T31A` 判定为 PASS，标记完成；当前唯一任务切换到 `T31`。
+- Warning 分类：`ancestor_label_mode` 与 query key 的交互作为 accepted follow-up note 写入 T31 注意事项；R19 状态更新为 Mitigated；Section numbering 延续 D11 deferred；rare relation type split 覆盖率作为后续 grouped benchmark 注意事项保留。
+- 后果：grouped ancestor retrieval 的 split completeness 前置风险已关闭。`T31` 可以专注最小 query-grouped loss，但必须沿用 T31A 已 review 的 `(src_id, relation_type)` query key 语义，尤其注意 `source_kind` label 下的 `extends_ancestor` / `instance_ancestor`。
+
+## D021: T31 通过 adversarial review 并切换到 T32
+
+- 日期：2026-05-16
+- 状态：Accepted
+- 依据：`docs/review/T31_review.md`
+- 决策：`T31` 判定为 PASS，标记完成；当前唯一任务切换到 `T32`。
+- Non-blocking 分类：`grouped_loss="infonce"` 作为 `sampled_softmax` 别名为 accepted current behavior；grouped runner `negative_ratio` 默认值差异为 deferred 并写入 T32 明确配置要求；`total_loss` device 初始化清理为 deferred；Captain 级治理文档越界项为 accepted scope distinction；`.claude/settings.json` 自动权限 diff 为 rejected/excluded from commit。
+- 后果：T32/T33 可以使用 reviewed grouped retrieval runner 进行同口径 seed sweep，但必须显式设置 `negative_ratio`，且不得退回旧 BCE runner。

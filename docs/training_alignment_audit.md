@@ -2,7 +2,7 @@
 
 > 更新时间：2026-05-13
 >
-> 状态：T30 reviewed training alignment audit。本文是只读训练错配审计；不修改训练代码，不运行新 sweep，不给出未验证性能结论。
+> 状态：T30 reviewed audit + T31A reviewed split fix + T31 reviewed minimal grouped-loss path。本文保留 T30 的只读错配审计，补充 T31A 对 query-level split completeness 的修复状态，并记录 T31 最小 grouped-loss 路径的实现边界；不把 smoke 结果写成正式 benchmark 结论。
 
 ## 1. Scope
 
@@ -121,6 +121,44 @@ edge-level BCE training -> binary AP/AUROC checkpoint selection -> post-hoc grou
 - grouped val/test 指标可能把“真祖先”当成假负例处理。
 - 即使未来换成 grouped loss，只要 split 仍是 edge-level，query-complete 评测仍然不可靠。
 
+## 4.1 T31A Fix Status
+
+`T31A` 已在代码路径上补入 grouped ancestor retrieval 的 query-level split completeness：
+
+1. `relation_tasks.py`
+   - 新增 `query_key_for_relation_example(...)`
+   - 新增 `stratified_split_relation_examples_by_query(...)`
+   - 新增 `summarize_query_level_split(...)`
+   - 新增 `assert_query_level_split_disjoint(...)`
+
+2. `relation_baseline_common.py`
+   - 对 `task == "ancestor_ranking"` 改为走 `stratified_split_relation_examples_by_query(...)`
+   - 在数据准备阶段立即运行 `assert_query_level_split_disjoint(...)`
+   - 把 `query_split_summary` 写入 `run_manifest.json -> task_summary`
+
+当前语义是：
+
+```text
+only ancestor_ranking uses query-level split;
+other task families keep their current split path.
+```
+
+这符合 `T31A` 的任务边界，也避免在本轮误改 `parent_prediction` 等无关任务。
+
+## 4.2 Post-Fix Interpretation
+
+`T31A` 之后，M3 的结论需要改成更精确的版本：
+
+1. 对 `ancestor_ranking` / grouped ancestor retrieval 路径，query-level split completeness 已被显式修复。
+2. val/test grouped eval 现在应以“同一 `(src, relation)` query 不跨 split”为前提运行。
+3. `T31` 因而可以把重点收缩到 grouped loss、query-aware negatives 和 grouped checkpoint selection。
+
+仍然保留的边界：
+
+- 这次修复没有把训练单位改成 query；那仍属于 `T31`。
+- 这次修复没有把局部 sampled negatives 改成更强的 query-aware candidate competition；那也仍属于 `T31`。
+- 这次修复没有给出任何新性能结论。
+
 ## M4. Negative-sampling mismatch: training negatives are local sampled edges, eval candidates are full query pools
 
 代码事实：
@@ -186,15 +224,58 @@ edge-level BCE training -> binary AP/AUROC checkpoint selection -> post-hoc grou
    - 当前 edge-level split 会让 grouped query 不完整。
    - 这是 grouped training alignment 的前置风险，不应被忽略。
 
+## 5.1 T31 Reviewed Status
+
+`T31` 已通过 adversarial review。该任务在最小边界内落地到 grouped retrieval runner 路径，重点是把训练 query 语义和 `T31A` 已 review 的 split/eval 语义真正对齐。
+
+代码层面已完成：
+
+1. `run_relation_grouped_retrieval_baseline.py`
+   - 训练 query 构造不再走临时 ad hoc 聚合，而是直接复用 `build_grouped_ranking_queries(...)`。
+   - grouped training query key 与 split/eval 显式统一为 `(src_id, relation_type)`。
+   - 每个 query 现在显式记录 `positive_ids`、sampled `negative_ids`、`candidate_pool_size`。
+   - 训练统计补充 `grouped_loss_name`、`query_group_summary`，并把 grouped training 侧摘要单独写入 `grouped_training_summary.json`。
+   - `training_stats.json` 与 `result_summary.json` 现在同时保留 grouped training 侧摘要与 `task_summary.query_split_summary`，便于核对 T31A -> T31 的语义连续性。
+
+2. config / smoke
+   - 新增 `project_bootstrap/baseline_scaffold/configs/relation_grouped_gcn_typeclass_precise_v2_ancestor_ranking_smoke_t31.json`。
+   - 已完成单次 smoke，artifact 位于：
+     `artifacts/smoke/relation_grouped_gcn_lean4_example_typeclass_precise_v2_ancestor_ranking_smoke_t31/`
+
+当前可确认的实现口径：
+
+```text
+query-level split (T31A) -> grouped training queries keyed by (src_id, relation_type) -> grouped val/test reporting on the same key
+```
+
+本轮刻意没有做的事：
+
+- 不回头重写 edge-level BCE 的 GCN / HGCN runner。
+- 不运行长 seed sweep。
+- 不把 smoke artifact 写成正式 benchmark 结果。
+
+T31 review 确认：
+
+- query key alignment is solid：T31A split、T31 training 与 T31 eval 均使用 `(src_id, relation_type)`。
+- model selection uses grouped val MAP，而不是 binary AP。
+- `sampled_softmax_loss` 是真实的 InfoNCE / sampled-softmax family objective，没有 mock、stub 或 hardcode。
+- 旧 BCE runners 未在 T31 中改动；后续正式 grouped sweep 必须使用 grouped runner。
+
+当前残留边界：
+
+- 该 grouped-loss 路径目前只在 grouped retrieval runner 上 smoke 过，尚未额外 smoke HGCN config。
+- `grouped_loss="infonce"` 当前只作为最小兼容配置入口接受，尚未引入与 `sampled_softmax` 明确区分的单独实现；T31 review 接受该行为作为当前最小实现。
+- grouped runner 默认 `negative_ratio = 10.0`，但 T31 smoke config 显式设为 `1.0`。T32/T33 正式 sweep config 必须显式设置该字段。
+
 ## 6. Recommended Priority Order
 
 基于当前代码事实，建议优先级如下：
 
 1. **P0: query-level split completeness**
-   - 先保证同一 `(src, relation)` 不跨 split。
+   - `T31A` 已完成代码修复；review 通过后，这一项可以从前置风险降级为已收口实现项。
 
 2. **P1: grouped loss branch**
-   - 在 `ancestor_ranking` 上加最小 query-grouped loss。
+   - `T31` 已通过 adversarial review；grouped retrieval runner 已具备最小 query-grouped loss、grouped val MAP model selection 和可追踪 artifact 字段。
 
 3. **P2: query-aware negative/candidate sampling**
    - 让训练看到的竞争集更接近 grouped eval candidate pool。

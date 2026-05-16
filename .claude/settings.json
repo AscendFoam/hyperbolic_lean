@@ -15,7 +15,8 @@
       "Bash(python3 -c ' *)",
       "Bash(conda run -n DLEnv python3 -c ' *)",
       "Bash(conda run *)",
-      "Bash(git status *)"
+      "Bash(git status *)",
+      "Bash(git diff *)"
     ]
   }
 }

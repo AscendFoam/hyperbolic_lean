@@ -1,6 +1,6 @@
 # 03 Architecture
 
-> 更新时间：2026-05-13
+> 更新时间：2026-05-16
 >
 > 范围：当前仓库的工程资产、数据产物、实验入口和治理文档结构。
 
@@ -123,7 +123,7 @@ Reviewer 默认只读，只检查 diff 是否完成任务、是否有伪实现�
 
 ## 7. 当前架构缺口
 
-1. T30 已形成 reviewed training alignment audit；T31A 需要先修 grouped ancestor retrieval 的 query-level split completeness，再进入 T31 query-grouped loss。
+1. T30 已形成 reviewed training alignment audit；T31A 已修复 grouped ancestor retrieval 的 query-level split completeness；T31 已在 grouped retrieval runner 中补入 reviewed 最小 query-grouped loss。下一架构缺口是 T32/T33：在相同 grouped runner、split、seed 和显式 `negative_ratio` 下运行 GCN/HGCN 对照。
 2. relation provenance split 需要从已有脚本能力推进到正式实验任务，并解决 per-edge provenance 字段边界。
 3. proof-side utility 尚未进入工程实现。
 4. `lean4-example`、LeanDojo、Python 环境等部分版本锚点仍需后续可复现实据补证。

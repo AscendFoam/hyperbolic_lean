@@ -1,0 +1,38 @@
+{
+  "train": {
+    "requested": 942,
+    "sampled": 942,
+    "negative_strategy": "same_module",
+    "negative_fallback_strategy": "random",
+    "strategy_usage": {
+      "random": 572,
+      "same_module": 370,
+      "same_namespace": 0,
+      "same_decl_kind": 0
+    }
+  },
+  "val": {
+    "requested": 127,
+    "sampled": 127,
+    "negative_strategy": "same_module",
+    "negative_fallback_strategy": "random",
+    "strategy_usage": {
+      "random": 84,
+      "same_module": 43,
+      "same_namespace": 0,
+      "same_decl_kind": 0
+    }
+  },
+  "test": {
+    "requested": 143,
+    "sampled": 143,
+    "negative_strategy": "same_module",
+    "negative_fallback_strategy": "random",
+    "strategy_usage": {
+      "random": 95,
+      "same_module": 48,
+      "same_namespace": 0,
+      "same_decl_kind": 0
+    }
+  }
+}

@@ -1,8 +1,8 @@
 # 06 Eval Protocol
 
-> 更新时间：2026-05-13
+> 更新时间：2026-05-16
 >
-> 状态：T12 grouped protocol freeze、T13 hop bucket reporting 与 T14 smoke check 均已通过 review。Smoke artifact 只证明输出链可落盘，不是正式 benchmark 结果。
+> 状态：T12 grouped protocol freeze、T13 hop bucket reporting、T14 smoke check、T31A query-level split 与 T31 minimal query-grouped loss 均已通过 review。Smoke artifact 只证明输出链可落盘，不是正式 benchmark 结果。
 
 ## 1. 默认任务
 
@@ -101,6 +101,17 @@ grouped multi-positive ancestor retrieval
 - `exclude_held_out_direct_edges`
 - `negative_strategy`
 - `negative_fallback_strategy`
+- `model_type`
+- `grouped_loss`
+- `negative_ratio`
+
+当前 grouped training 约定：
+
+- T31 reviewed grouped runner path 使用 `(src_id, relation_type)` 作为训练、split 与 eval 的统一 query key。
+- `grouped_loss = "sampled_softmax"` 是当前 reviewed 最小实现。
+- `grouped_loss = "infonce"` 当前只是同一实现族的兼容配置名，不代表另一个独立 contrastive variant。
+- grouped runner 的正式 sweep config 必须显式设置 `negative_ratio`，不得依赖 runner 默认值。
+- best checkpoint 应由 grouped validation metric 驱动；T31 当前使用 grouped val MAP。
 
 当前冻结的 grouped 输出字段：
 
@@ -275,5 +286,7 @@ T10 将负责把这些要求落成 version manifest。
 - `T21` 已通过 review，module-level candidate scan audit 已确认 `Mathlib.Algebra.Order.Ring` 是当前最平衡的 follow-up 候选，`Mathlib.Algebra.Order` 更适合作为 depth stress-test。
 - `T22` 已通过 review，`docs/diagnostics_protocol.md` 成为 reviewed heuristic diagnostics protocol；其中阈值仍只服务于当前 reviewed traced hierarchy diagnostics，不是理论证明或最终 benchmark 排名。
 - `T30` 已通过 review，`docs/training_alignment_audit.md` 成为 reviewed training alignment audit；当前训练仍是 edge-level BCE，且现有 split 可能拆碎 grouped query。
-- 当前唯一任务为 `T31A`，负责先实现并校验 grouped ancestor retrieval 的 query-level split completeness。
+- `T31A` 已通过 adversarial review，grouped ancestor retrieval 已改为 query-level split；run manifest 的 `query_split_summary` 记录 `split_strategy = query_level`、query overlap 为 0、`is_query_level_disjoint = true`。
+- `T31` 已通过 adversarial review，grouped retrieval runner 已实现最小 query-grouped loss，训练、split 与 eval 共用 `(src_id, relation_type)` query key，并用 grouped val MAP 做模型选择。
+- 当前唯一任务为 `T32`，负责在 reviewed grouped runner 上运行 GCN 5-seed grouped training sweep。
 - 不得把 T14 的 smoke output 写成正式 benchmark 结果。
