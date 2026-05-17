@@ -1,0 +1,6 @@
+{
+  "base_config": "grouped_gcn_field_subfield_anc_t32.json",
+  "model_type": "grouped_gcn",
+  "output_root": "artifacts/baselines/relation_seed_sweeps/grouped_gcn_field_subfield_t32",
+  "seeds": [7, 42, 123, 2026, 3407]
+}

@@ -1,91 +1,155 @@
 # CLAUDE
 
-This file defines the default reviewer behavior for Claude Code in this repository.
+This file defines the default worker or reviewer behavior for Claude Code in this repository.
 
-## Default Stance
+## 1. Roles
 
-- Review is read-only by default.
-- Do not edit files unless a Captain explicitly asks for a follow-up implementation round.
-- Treat the task package and the worker's final report as the review contract.
+Claude Code can act as either a **Worker** or a **Reviewer** depending on the task assignment.
 
-## Review Focus
+### 1.1 Worker Role
 
-Check the diff for:
+When assigned as a Worker, Claude Code is responsible for one task package only.
 
-1. real task completion against the task package
-2. edits outside `Allowed files`
-3. violations of `Forbidden scope`
-4. documentation that turns plans into completed facts
-5. missing or weak verification
-6. regressions, pseudo-implementation, hardcoded shortcuts, or over-engineering
+Worker must:
 
-## Required Output Format
+1. Read:
+   - `README.md`
+   - `docs/02_experiment_plan.md`
+   - `docs/04_task_board.md`
+   - `docs/07_handoff.md`
+   - the assigned task package
+2. Modify only files listed in `Allowed files`.
+3. Avoid everything listed in `Forbidden scope`.
+4. Keep changes narrowly scoped.
+5. Run the task's `Verification` commands, or clearly explain why a command could not run.
+6. Update only the docs named in `Docs to update`.
+7. Stop after the assigned task and report:
+   - what changed
+   - verification results
+   - remaining risks
+
+Worker must not:
+
+1. Claim the next task.
+2. Mark the task as complete in `docs/04_task_board.md`.
+3. Modify unrelated files.
+4. Revert user changes.
+5. Add mock, stub, or hardcoded behavior unless the task explicitly asks for a prototype placeholder and documents it as such.
+
+### 1.2 Reviewer Role
+
+When assigned as a Reviewer, Claude Code acts as a read-only reviewer unless explicitly instructed otherwise.
+
+The reviewer should inspect the diff for one assigned task package and decide whether the work satisfies the task.
+
+Valid verdicts:
+
+1. `PASS`
+2. `PASS_WITH_WARNINGS`
+3. `BLOCK`
+
+Default posture: prioritize bugs, behavioral regressions, fake completion, missing tests, unsafe execution, and documentation that overstates implemented capability.
+
+---
+
+## 2. Files To Read Before Review
+
+For every review, read:
+
+1. `docs/02_experiment_plan.md`
+2. `docs/04_task_board.md`
+3. `docs/07_handoff.md`
+4. `docs/08_risks_and_open_questions.md`
+5. The assigned task package under `docs/tasks/`
+
+For implementation tasks, also inspect the relevant changed files and the git diff.
+
+---
+
+## 3. Review Checklist
+
+Check:
+
+1. Did the worker complete the task goal?
+2. Did the worker stay within `Allowed files`?
+3. Did the worker avoid `Forbidden scope`?
+4. Are there mocks, stubs, hardcoded outputs, or fake success paths?
+5. Are tests or verification adequate for the risk level?
+6. Did the change break existing chat/runtime/benchmark/release behavior?
+7. Are model/data contracts clear and JSON-serializable where needed?
+8. Are safety limits present for execution-related work?
+9. Are docs updated without claiming planned work is already complete?
+10. Are remaining risks documented in `docs/08_risks_and_open_questions.md` when relevant?
+
+For high-risk tasks marked `adversarial`, be stricter about:
+
+1. execution safety
+2. data leakage
+3. benchmark validity
+4. release packaging regressions
+5. over-engineering or hidden coupling
+
+---
+
+## 4. Required Output
+
+Write the review to:
+
+`docs/review/<TaskID>_review.md`
 
 Use this structure:
 
-```text
-Verdict: PASS | PASS_WITH_WARNINGS | BLOCK
+```markdown
+# Review: <TaskID>
 
-Blocking issues
-- ...
+Verdict: PASS / PASS_WITH_WARNINGS / BLOCK
 
-Non-blocking issues
-- ...
+## Blocking Issues
 
-Missing tests or verification
-- ...
+## Non-Blocking Issues
 
-Suspicious implementation details
-- ...
+## Missing Tests
 
-Recommended next action
-- ...
+## Suspicious Implementation Details
+
+## Recommended Next Action
 ```
 
-If a section has no items, write `- None`.
+Also write a human-facing explanation to:
 
-## Verdict Rules
+`docs/for_human/<TaskID>_review_explanation.md`
 
-### PASS
+It should explain:
 
-Use when:
+1. What the task is trying to accomplish in plain language.
+2. What the implementation changed.
+3. Why the review verdict was given.
+4. What the next step should be.
 
-- the task package goal is met
-- verification is adequate for the task
-- no blocking scope or correctness issue remains
+---
 
-### PASS_WITH_WARNINGS
+## 5. Verdict Guidance
 
-Use when:
+Use `PASS` when:
 
-- the core task is complete
-- there are non-blocking concerns, follow-ups, or minor clarity gaps
+1. The task goal is met.
+2. Verification is adequate.
+3. No blocking issue remains.
+4. Documentation matches reality.
 
-### BLOCK
+Use `PASS_WITH_WARNINGS` when:
 
-Use when:
+1. The task is usable.
+2. Remaining issues are real but can be deferred.
+3. Risks are documented.
 
-- the task is not actually complete
-- the worker edited outside scope
-- verification is missing for a change that needed it
-- the change introduces material correctness, governance, or regression risk
+Use `BLOCK` when:
 
-## Adversarial Review Triggers
+1. The task goal is not met.
+2. The worker modified forbidden files or unrelated behavior.
+3. A safety issue exists.
+4. Tests/verification are missing for a risky change.
+5. The implementation is fake, hardcoded, or mostly stubbed.
+6. Documentation claims future work as completed.
 
-Escalate to adversarial review for:
-
-- core algorithm changes
-- experiment metric or evaluation protocol changes
-- data pipeline changes
-- architecture changes
-- migration of old results into new claims
-- anything that could distort the repo's evidence level or paper narrative
-
-## Current Review Boundary
-
-For the active task, pay special attention to:
-
-- whether the task package and diff match the current `docs/04_task_board.md` entry
-- whether `README.md`, `AGENTS.md`, and `CLAUDE.md` reflect the current benchmark / protocol / diagnostics positioning
-- whether the docs avoid claiming hyperbolic superiority as an established fact
-- whether `docs/04_task_board.md` and `docs/07_handoff.md` stay consistent about the next task and review flow
+---

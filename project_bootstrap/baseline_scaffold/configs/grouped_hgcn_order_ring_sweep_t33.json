@@ -1,0 +1,10 @@
+{
+  "model_type": "grouped_hgcn",
+  "base_config": "grouped_hgcn_order_ring_anc_t33.json",
+  "output_root": "artifacts/baselines/relation_seed_sweeps/grouped_hgcn_order_ring_t33",
+  "seeds": [7, 42, 123, 2026, 3407],
+  "run_name_template": "{base_run_id}_seed{seed}",
+  "shared_overrides": {
+    "model_type": "hgcn"
+  }
+}

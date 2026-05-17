@@ -1,0 +1,20 @@
+{
+  "_t40_frozen": true,
+  "_description": "Provenance split for Mathlib.Algebra.Order.Ring candidate graph (T40 freeze). Splits extends/instance_of edges into explicit-only, synthesized-only, and hierarchy-mixed sub-graphs.",
+  "source_graphs": [
+    {
+      "name": "mathlib_order_ring_v1",
+      "graph_root": "artifacts/diagnostics/module_hierarchy_scan_mathlib_algebra_order_index_v1/candidate_graphs/04_d4_Mathlib_Algebra_Order_Ring"
+    }
+  ],
+  "output_root": "data/processed/declaration_graph",
+  "origin_map": {
+    "extends": "explicit",
+    "instance_of": "synthesized"
+  },
+  "splits": {
+    "explicit_only": ["explicit"],
+    "synthesized_only": ["synthesized"],
+    "hierarchy_mixed": ["explicit", "synthesized"]
+  }
+}

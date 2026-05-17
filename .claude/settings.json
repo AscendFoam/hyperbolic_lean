@@ -16,7 +16,12 @@
       "Bash(conda run -n DLEnv python3 -c ' *)",
       "Bash(conda run *)",
       "Bash(git status *)",
-      "Bash(git diff *)"
+      "Bash(git diff *)",
+      "Bash(python -m json.tool)",
+      "Bash(python -c \"import sys,json; d=json.load\\(sys.stdin\\); [print\\(f'{k}: {v[\\\\\"mean\\\\\"]:.4f} +/- {v[\\\\\"std\\\\\"]:.4f}'\\) for k,v in d['metrics'].items\\(\\) if 'grouped' in k]\")",
+      "Bash(python -c \"import sys,json; d=json.load\\(sys.stdin\\); [print\\(f'{k}: {v}'\\) for k,v in d.items\\(\\) if 'hop' in k]\")",
+      "Bash(python -c \"import sys,json; d=json.load\\(sys.stdin\\); [print\\(k\\) for k in d['metrics'].keys\\(\\) if 'hop' in k]\")",
+      "Bash(python -c ' *)"
     ]
   }
 }

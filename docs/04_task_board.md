@@ -1,13 +1,14 @@
 # 04 Task Board
 
-> 更新时间：2026-05-16
+> 更新时间：2026-05-17
 >
 > Captain 原则：每轮只推进一个 `Current Unique Task`。Worker 不自动领取下一任务。
 
 ## Project Status
 
+- 2026-05-17 captain update: `T34` 已通过 milestone review，Milestone 3 收口完成。
 - 状态：Continue
-- 当前阶段：Milestone 3 grouped retrieval training alignment；T31 已通过 adversarial review，当前推荐 T32 运行 GCN grouped training 5-seed sweep
+- 当前阶段：Milestone 4 relation provenance split；T40 已通过 adversarial review，当前推荐 T41 生成 provenance split 图并运行结构诊断
 - 当前主线：`benchmark / protocol / diagnostics`
 - 当前不主张：把“已经证明 HGCN 稳定优于 GCN”写成既成事实
 - 当前证据等级：已有真实实验与工程原型，但尚未冻结成正式 benchmark artifact
@@ -37,14 +38,14 @@
 - [x] T30: 阅读现有 grouped retrieval training 代码，定位 binary edge classification 与 grouped retrieval 的错配点
 - [x] T31A: 实现并校验 grouped ancestor retrieval 的 query-level split completeness
 - [x] T31: 实现最小 query-grouped loss 方案，优先 `sampled softmax` 或 `InfoNCE`，只接一个现有 config
-- [ ] T32: 在 `Field.Subfield` 与 `Order.Ring` 上跑 GCN 5-seed grouped training 对照
-- [ ] T33: 在相同 split 与参数预算下跑 HGCN 5-seed grouped training 对照
-- [ ] T34: 汇总 grouped training 与旧 binary training 的差异，写入诊断报告
+- [x] T32: 在 `Field.Subfield` 与 `Order.Ring` 上跑 GCN 5-seed grouped training 对照
+- [x] T33: 在相同 split 与参数预算下跑 HGCN 5-seed grouped training 对照
+- [x] T34: 汇总 grouped training 与旧 binary training 的差异，写入诊断报告
 
 ## Milestone 4: Relation Provenance Split
 
-- [ ] T40: 冻结 `explicit-only / synthesized-only / mixed` 三类图的生成配置与输出位置
-- [ ] T41: 对三类 provenance 图运行结构诊断，比较深度、叶子比例、连通性与 hyperbolicity proxy
+- [x] T40: 冻结 `explicit-only / synthesized-only / mixed` 三类图的生成配置与输出位置
+- [ ] T41: 生成三类 provenance 图并运行结构诊断，比较深度、叶子比例、连通性与 hyperbolicity proxy
 - [ ] T42: 对三类 provenance 图运行 grouped retrieval / parent prediction 的 GCN 与 HGCN seed sweep
 - [ ] T43: 汇总 provenance split 结果，回答 synthesized relation 是否削弱双曲优势
 
@@ -57,39 +58,38 @@
 
 ## Current Unique Task
 
-`T32`: 在 `Field.Subfield` 与 `Order.Ring` 上跑 GCN 5-seed grouped training 对照。
+`T41`: 生成三类 provenance 图并运行结构诊断，比较深度、叶子比例、连通性与 hyperbolicity proxy。
 
 任务包位置：
 
-`docs/tasks/M3_training/T32_gcn_grouped_training_sweep.md`
+`docs/tasks/M4_provenance/T41_provenance_diagnostics.md`
 
 ## Why Now
 
-`T31` 已通过 adversarial review，确认 grouped retrieval runner 的训练 query、split 与 eval 均使用 `(src_id, relation_type)` key，且 best checkpoint 由 grouped val MAP 驱动。下一步需要先跑 GCN 5-seed grouped training sweep，建立欧氏 baseline，再进入 HGCN 对照。
+T40 已完成 provenance split 配置与协议冻结。下一步必须先把 frozen config 实际落成六个 provenance split 图目录，校验预期边数与 `hierarchy_mixed = full source graph` identity，再进入 T42 的模型对比。
 
 ## Worker Package Summary
 
-- Task ID: `T32`
+- Task ID: `T41`
 - Allowed files:
-  - new artifacts under `artifacts/baselines/relation_seed_sweeps/`
-  - related configs under `project_bootstrap/**/configs`
-  - `docs/experiment_reports/gcn_grouped_training.md`
+  - new data under `data/processed/declaration_graph/`
+  - new artifacts under `artifacts/diagnostics/`
+  - `docs/experiment_reports/provenance_diagnostics.md`
   - `docs/04_task_board.md`
   - `docs/07_handoff.md`
   - `docs/08_risks_and_open_questions.md`
 - Forbidden scope:
-  - 不改 HGCN 代码
-  - 不改变 T31 定义的 grouped training 协议
-  - 不覆盖历史 artifact
-  - 不改 grouped runner 训练目标，除非只是修复运行参数或配置引用
-  - 不把 smoke 结果当作正式 benchmark 结论
-- T32-specific notes:
-  - 必须使用 T31 reviewed grouped retrieval runner / seed sweep path，不能退回旧 BCE runner。
-  - 每个正式 sweep config 必须显式设置 `negative_ratio`，不要依赖 grouped runner 默认值。
-  - 如果 `Field.Subfield` 或 `Order.Ring` 缺少可直接运行 config，worker 应先在 Allowed files 内补齐 config，并记录无法运行的具体阻塞。
+  - 不运行模型训练或 seed sweep
+  - 不覆盖已有 diagnostics
+  - 不把 proxy 写成严格 hyperbolicity 定理
+  - 不改动 T40 冻结的 provenance 语义或 config 约定
+- T41-specific notes:
+  - 必须先运行 frozen config 生成六个 provenance split 图目录，再运行结构诊断。
+  - 必须校验输出边数与 `docs/provenance_split_protocol.md` 中的预期值一致。
+  - 必须程序化验证当前两组候选图上的 `hierarchy_mixed = full source graph` identity，而不是口头假设。
 - Verification:
-  - `Get-ChildItem artifacts\baselines\relation_seed_sweeps`
-  - `rg -n "mean|std|Recall|MAP|nDCG|grouped|hop|negative_ratio" docs\experiment_reports\gcn_grouped_training.md project_bootstrap\**\configs`
+  - `rg -n "explicit_only|synthesized_only|hierarchy_mixed|longest|leaf|delta|component|identity|edge count" docs\experiment_reports\provenance_diagnostics.md`
+  - `rg -n "\"num_edges\"|\"edge_type_counts\"" data\processed\declaration_graph\*_explicit_only\stats.json data\processed\declaration_graph\*_synthesized_only\stats.json data\processed\declaration_graph\*_hierarchy_mixed\stats.json`
 
 ## Execution Note
 
@@ -146,6 +146,28 @@
 - 2026-05-16：`docs/review/T31_review.md` 结论为 `PASS`，blocking issues 为 none；Captain 判定可标记完成。
 - 2026-05-16：T31 review 的 non-blocking issues 处理：`infonce` 作为 `sampled_softmax` alias 为 accepted current behavior；`negative_ratio` 默认差异与 `total_loss` device 初始化清理为 deferred；Captain 级治理文档更新为 accepted scope distinction；`.claude/settings.json` 自动权限 diff 为 rejected/excluded from commit。
 - 2026-05-16：`T31` 标记完成；当前唯一任务切换为 `T32`，本轮只推荐下一任务，不执行 T32。
+- 2026-05-17：`T32` 本轮已由 worker 补齐正式 grouped GCN configs：`grouped_gcn_field_subfield_anc_t32.json`、`grouped_gcn_field_subfield_sweep_t32.json`、`grouped_gcn_order_ring_anc_t32.json`、`grouped_gcn_order_ring_sweep_t32.json`。两份 base config 均显式设置 `grouped_loss = "sampled_softmax"` 与 `negative_ratio = 10.0`。
+- 2026-05-17：`T32` 已使用 reviewed grouped retrieval runner / seed sweep path 完成两组真实 5-seed GCN grouped training sweep；artifact 位于 `artifacts/baselines/relation_seed_sweeps/grouped_gcn_field_subfield_t32/` 与 `artifacts/baselines/relation_seed_sweeps/grouped_gcn_order_ring_t32/`，两组 sweep 均 `failed_runs = []`。
+- 2026-05-17：`T32` 已新增 `docs/experiment_reports/gcn_grouped_training.md`，汇总精确命令、config 路径、artifact 路径、seed 列表、grouped mean/std 指标与 hop bucket 聚合。
+- 2026-05-17：`docs/review/T32_review.md` 结论为 `PASS`，blocking issues 为 none；Captain 判定可标记完成。
+- 2026-05-17：T32 review 的 non-blocking issues 处理：Section 5 hop bucket 表呈现精简为 accepted presentation choice；`grouped MAP` / `gMAP` 混用为 deferred wording cleanup；无 rejected warning。
+- 2026-05-17：`T32` 标记完成；当前唯一任务切换为 `T33`，本轮只推荐下一任务，不执行 T33。
+- 2026-05-17：`docs/review/T33_review.md` 结论为 `PASS`，无 blocking issues。
+- 2026-05-17：`T33` 标记完成；当前唯一任务切换为 `T34`，本轮只推荐下一任务，不执行 T34。
+- 2026-05-17：`docs/review/T34_review.md` 结论为 `PASS`，无 blocking issues。
+- 2026-05-17：`T34` 标记完成；Milestone 3 闭合；当前唯一任务切换为 `T40`，本轮只推荐下一任务，不执行 T40。
+- 2026-05-17：`docs/review/M3_review.md` 结论为 `PASS_WITH_WARNINGS`；允许进入 Milestone 4，但 clean-environment reproducibility 仍保留警告。
+- 2026-05-17：`T40` 本轮已由 worker 完成配置冻结与协议文档草案。新增两份 provenance split config：`provenance_split_field_subfield_t40.json`、`provenance_split_order_ring_t40.json`；新增 `docs/provenance_split_protocol.md`，冻结三类 provenance 图的生成配置、输出目录约定、origin_map 与 split 语义，并为 T41/T42 提供直接可复用的协议入口。Worker 未运行 seed sweep，未修改数据语义，未覆盖历史配置。随后进入 adversarial reviewer 只读审查。
+- 2026-05-17：`docs/review/T40_review.md` 结论为 `PASS`，无 blocking issues。Captain 判定 `T40` 完成并将当前唯一任务切换到 `T41`。reviewer 的 non-blocking notes 已转成 `T41` 执行要求：必须校验预期边数，并程序化验证 `hierarchy_mixed = full source graph` identity。
+
+## T33 Completion Update (2026-05-17)
+
+- Worker 已在 `T32` 所使用的 reviewed grouped runner / split / seed path 下，完成 `Field.Subfield` 与 `Order.Ring` 两组正式 HGCN grouped 5-seed sweep。
+- 新增正式配置：`grouped_hgcn_field_subfield_anc_t33.json`、`grouped_hgcn_field_subfield_sweep_t33.json`、`grouped_hgcn_order_ring_anc_t33.json`、`grouped_hgcn_order_ring_sweep_t33.json`。
+- 新增 artifact 根目录：`artifacts/baselines/relation_seed_sweeps/grouped_hgcn_field_subfield_t33/` 与 `artifacts/baselines/relation_seed_sweeps/grouped_hgcn_order_ring_t33/`；两组 sweep 均 `failed_runs = []`。
+- 新增报告：`docs/experiment_reports/hgcn_grouped_training.md`。
+- 结果摘要：在 matched grouped protocol 下，HGCN 没有在任一目标图上超过 reviewed 的 T32 GCN grouped baseline。
+- Review 结论：`PASS`。`T34` 可作为 summary-only 后续任务推进，但不应重新打开 T33 实现范围。
 
 ## After Completion
 
@@ -155,3 +177,10 @@ Worker 完成后需要 reviewer 只读审查。Captain 根据 review 结果更�
 - `docs/07_handoff.md`
 - `docs/08_risks_and_open_questions.md`
 - `docs/05_decision_log.md`（如果产生关键决策）
+## T34 Completion Update (2026-05-17)
+
+- Worker 已完成 `docs/experiment_reports/grouped_training_summary.md`，作为 summary-only 后续收口报告。
+- 报告明确区分了 matched grouped `T32`/`T33` 的直接可比性，与历史 grouped-vs-binary 证据之间的边界。
+- 报告明确写出：`T32` 与 `T33` 可直接比较，而早期 grouped-vs-binary gain 仅作为 alignment evidence，不可直接与 formal matched sweep 数值混排。
+- Worker 未改动任何 sweep artifact，也未重新打开 `T32` 或 `T33`。
+- Review 结论：`PASS`。Milestone 3 可以闭合，项目可切换到 `T40`。

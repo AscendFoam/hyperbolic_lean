@@ -1,8 +1,8 @@
 # 06 Eval Protocol
 
-> 更新时间：2026-05-16
+> 更新时间：2026-05-17
 >
-> 状态：T12 grouped protocol freeze、T13 hop bucket reporting、T14 smoke check、T31A query-level split 与 T31 minimal query-grouped loss 均已通过 review。Smoke artifact 只证明输出链可落盘，不是正式 benchmark 结果。
+> 状态：T12 grouped protocol freeze、T13 hop bucket reporting、T14 smoke check、T31A query-level split、T31 minimal query-grouped loss 与 T32 GCN grouped baseline 均已通过 review。Smoke artifact 只证明输出链可落盘，不是正式 benchmark 结果。
 
 ## 1. 默认任务
 
@@ -288,5 +288,6 @@ T10 将负责把这些要求落成 version manifest。
 - `T30` 已通过 review，`docs/training_alignment_audit.md` 成为 reviewed training alignment audit；当前训练仍是 edge-level BCE，且现有 split 可能拆碎 grouped query。
 - `T31A` 已通过 adversarial review，grouped ancestor retrieval 已改为 query-level split；run manifest 的 `query_split_summary` 记录 `split_strategy = query_level`、query overlap 为 0、`is_query_level_disjoint = true`。
 - `T31` 已通过 adversarial review，grouped retrieval runner 已实现最小 query-grouped loss，训练、split 与 eval 共用 `(src_id, relation_type)` query key，并用 grouped val MAP 做模型选择。
-- 当前唯一任务为 `T32`，负责在 reviewed grouped runner 上运行 GCN 5-seed grouped training sweep。
+- `T34` 已通过 milestone review，Milestone 3 的 grouped-vs-binary 诊断总结已收口。
+- `T40` 已通过 adversarial review，provenance split 配置与协议入口已冻结；当前唯一任务为 `T41`，负责实际生成 provenance split 图、校验预期边数并运行结构诊断。
 - 不得把 T14 的 smoke output 写成正式 benchmark 结果。

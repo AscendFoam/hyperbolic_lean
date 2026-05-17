@@ -1,6 +1,6 @@
 # 00 Raw Idea
 
-> 更新时间：2026-05-16
+> 更新时间：2026-05-17
 >
 > 项目名称：形式化图谱双曲化
 >
@@ -79,3 +79,8 @@ Go，但主线已收束：
 - 2026-05-13：`T30` 已通过 reviewer 判定 `PASS`；审计确认训练仍是 edge-level BCE，且 grouped query 可能被 edge-level split 拆碎；当前唯一任务切换为 `T31A`，先修 query-level split completeness。
 - 2026-05-13：`T31A` 已通过 adversarial reviewer 判定 `PASS`；`ancestor_ranking` / grouped ancestor retrieval 已切到 query-level split，并通过 smoke 验证 `run_manifest.json` 中 query overlap 为 0；当前唯一任务切换为 `T31`，用于实现最小 query-grouped loss。
 - 2026-05-16：`T31` 已通过 adversarial reviewer 判定 `PASS`；grouped retrieval runner 已具备最小 query-grouped training 路径，训练、split 与 eval 共用 `(src_id, relation_type)` query key，并用 grouped val MAP 做模型选择；当前唯一任务切换为 `T32`，用于运行 GCN 5-seed grouped training sweep。
+- 2026-05-17：`T32` 已通过 adversarial reviewer 判定 `PASS`；已完成两组真实 5-seed GCN grouped training sweep，当前唯一任务切换为 `T33`，用于在相同 split 和参数预算下运行 HGCN 对照。
+- 2026-05-17：`T33` 已通过 adversarial reviewer 判定 `PASS`；HGCN grouped 5-seed 对照已在与 `T32` 完全匹配的 grouped protocol 下收口，当前唯一任务切换为 `T34`，用于汇总 grouped training 与旧 binary training 的差异并写出可比性诊断。
+- 2026-05-17：`T34` 已通过 milestone reviewer 判定 `PASS`；Milestone 3 的 grouped-vs-binary 总结已收口，当前唯一任务切换为 `T40`，进入 provenance split 配置冻结。
+- 2026-05-17：`M3_review` 判定为 `PASS_WITH_WARNINGS`；允许进入 Milestone 4，但不应把当前证据升级为“已完成 clean-room reproducibility”或“已证明 HGCN 整体优于 GCN”。
+- 2026-05-17：`T40` 已通过 adversarial reviewer 判定 `PASS`；provenance split 配置与协议冻结已完成，当前唯一任务切换为 `T41`，用于实际生成六个 provenance split 图目录、校验预期边数并运行结构诊断。

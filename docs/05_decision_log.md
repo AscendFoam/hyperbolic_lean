@@ -1,6 +1,6 @@
 # 05 Decision Log
 
-> 更新时间：2026-05-16
+> 更新时间：2026-05-17
 >
 > 规则：只记录会影响后续任务选择、论文叙事、评测协议或项目状态的决策。
 
@@ -177,3 +177,47 @@
 - 决策：`T31` 判定为 PASS，标记完成；当前唯一任务切换到 `T32`。
 - Non-blocking 分类：`grouped_loss="infonce"` 作为 `sampled_softmax` 别名为 accepted current behavior；grouped runner `negative_ratio` 默认值差异为 deferred 并写入 T32 明确配置要求；`total_loss` device 初始化清理为 deferred；Captain 级治理文档越界项为 accepted scope distinction；`.claude/settings.json` 自动权限 diff 为 rejected/excluded from commit。
 - 后果：T32/T33 可以使用 reviewed grouped retrieval runner 进行同口径 seed sweep，但必须显式设置 `negative_ratio`，且不得退回旧 BCE runner。
+
+## D022: T32 通过 adversarial review 并切换到 T33
+
+- 日期：2026-05-17
+- 状态：Accepted
+- 依据：`docs/review/T32_review.md`
+- 决策：`T32` 判定为 PASS，标记完成；当前唯一任务切换到 `T33`。
+- Non-blocking 分类：Section 5 hop bucket 表呈现精简为 accepted presentation choice；`grouped MAP` / `gMAP` 混用为 deferred wording cleanup；无 rejected warning。
+- 后果：T32 的 GCN grouped 5-seed baseline 已作为 reviewed 欧氏基线收口。`T33` 可以在相同 split、候选、seed 和参数预算下继续做 HGCN 对照。
+
+## D023: T33 通过 adversarial review 并切换到 T34
+
+- 日期：2026-05-17
+- 状态：Accepted
+- 依据：`docs/review/T33_review.md`
+- 决策：`T33` 判定为 PASS，标记完成；当前唯一任务切换到 `T34`。
+- Non-blocking 处理：显式 GCN-vs-HGCN config diff 表与可比性声明记入 `T34` summary 要求；R24 中英混杂问题直接在治理文档中收口为中文；无 blocking issue，无需返工 T33。
+- 后果：Milestone 3 的 matched grouped GCN/HGCN 结果已收口。`T34` 作为 summary-only 任务负责补入显式 config diff、跨协议可比性声明，以及 grouped-vs-binary 诊断结论；不新增实验。
+## D024: T34 通过 milestone review 并切换到 T40
+
+- 日期：2026-05-17
+- 状态：Accepted
+- 依据：`docs/review/T34_review.md`
+- 决策：`T34` 判定为 PASS，标记完成；当前唯一任务切换到 `T40`。
+- Non-blocking 分类：D024 中英混杂问题直接在治理文档中收口为中文 accepted cleanup；Section 5 缺少 Recall 对比列为 deferred；Section 6 历史来源未写具体文件路径为 deferred；`08_risks_and_open_questions.md` 底部英文 draft note 为 accepted cleanup。
+- 后果：Milestone 3 的 grouped-vs-binary 总结已收口，项目可进入 Milestone 4 provenance split，但不应把当前结果升级为“已证明 HGCN 整体优于 GCN”。
+
+## D025: Milestone 3 综合审查通过，但保留可复现性警告
+
+- 日期：2026-05-17
+- 状态：Accepted
+- 依据：`docs/review/M3_review.md`
+- 决策：Milestone 3 判定为 `PASS_WITH_WARNINGS`；允许进入 `T40` / Milestone 4。
+- Warning 分类：全新干净环境复现未闭合为 deferred；T34 报告 Recall 汇总与历史来源路径精修为 deferred；治理文档中英混杂主问题已由本轮 Captain 直接修正，记为 accepted cleanup。
+- 后果：项目主线正式从 grouped training alignment 切换到 provenance split；对外叙事仍应保持“协议已修正、GCN 当前总体领先、双曲优势仍待条件化解释”的窄结论。
+
+## D026: T40 通过 adversarial review 并切换到 T41
+
+- 日期：2026-05-17
+- 状态：Accepted
+- 依据：`docs/review/T40_review.md`
+- 决策：`T40` 判定为 `PASS`，标记完成；当前唯一任务切换到 `T41`。
+- Non-blocking 处理：硬编码的预期边数快照记为 accepted frozen-protocol choice，但要求 `T41` 实测校验；`_t40_frozen` 仅是治理标记，记为 accepted；`hierarchy_mixed = full source graph` 只对当前候选图成立，记为 `T41/T42` 必须程序化验证的执行约束；`docs/05_decision_log.md` 的既有脏工作树变更记为非 T40 问题，不影响结论。
+- 后果：项目可以从“配置冻结”推进到“实际 split 生成与结构诊断”；在 `T41` 完成前，仍不得把 provenance split 写成已经落盘验证完成的事实。
