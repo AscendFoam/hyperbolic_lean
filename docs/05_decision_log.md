@@ -1,4 +1,4 @@
-# 05 Decision Log
+﻿# 05 Decision Log
 
 > 更新时间：2026-05-17
 >
@@ -221,3 +221,11 @@
 - 决策：`T40` 判定为 `PASS`，标记完成；当前唯一任务切换到 `T41`。
 - Non-blocking 处理：硬编码的预期边数快照记为 accepted frozen-protocol choice，但要求 `T41` 实测校验；`_t40_frozen` 仅是治理标记，记为 accepted；`hierarchy_mixed = full source graph` 只对当前候选图成立，记为 `T41/T42` 必须程序化验证的执行约束；`docs/05_decision_log.md` 的既有脏工作树变更记为非 T40 问题，不影响结论。
 - 后果：项目可以从“配置冻结”推进到“实际 split 生成与结构诊断”；在 `T41` 完成前，仍不得把 provenance split 写成已经落盘验证完成的事实。
+## D027: T41 通过 adversarial review 并切换到 T42
+
+- 日期：2026-05-17
+- 状态：Accepted
+- 依据：`docs/review/T41_review.md`
+- 决策：`T41` 判定为 `PASS`，标记完成；当前唯一任务切换到 `T42`。
+- Non-blocking 处理：`relation_split_summary.json` 单文件覆盖记为 accepted script-output limitation，不回滚、不阻断；`graph_diagnostics_provenance_split_t41.json` 越出 T41 Allowed Files 记为 accepted low-severity packaging gap，并通过细化 `T42` 任务包补齐 tool-side config 边界；`synthesized_only` longest chain = 1 记为 active execution constraint，要求 `T42` 将其仅作为 controlled diagnostic。
+- 后果：项目从“split 落盘与结构诊断”推进到“provenance-aware seed sweep”；下一轮只应执行 `T42`，并重点判断 HGCN 是否仅在 `explicit_only` 图上表现出结构性优势。

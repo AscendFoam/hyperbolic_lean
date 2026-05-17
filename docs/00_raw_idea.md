@@ -1,4 +1,4 @@
-# 00 Raw Idea
+﻿# 00 Raw Idea
 
 > 更新时间：2026-05-17
 >
@@ -84,3 +84,6 @@ Go，但主线已收束：
 - 2026-05-17：`T34` 已通过 milestone reviewer 判定 `PASS`；Milestone 3 的 grouped-vs-binary 总结已收口，当前唯一任务切换为 `T40`，进入 provenance split 配置冻结。
 - 2026-05-17：`M3_review` 判定为 `PASS_WITH_WARNINGS`；允许进入 Milestone 4，但不应把当前证据升级为“已完成 clean-room reproducibility”或“已证明 HGCN 整体优于 GCN”。
 - 2026-05-17：`T40` 已通过 adversarial reviewer 判定 `PASS`；provenance split 配置与协议冻结已完成，当前唯一任务切换为 `T41`，用于实际生成六个 provenance split 图目录、校验预期边数并运行结构诊断。
+- 2026-05-17：T41 已通过 adversarial reviewer 判定 PASS；六个 provenance split 图已真实落盘并完成结构诊断，结论表明 explicit_only 才承载层级深度，synthesized_only 是 trivial controlled diagnostic，hierarchy_mixed 只作为 full-graph reproducibility check；当前唯一任务切换为 T42。
+
+

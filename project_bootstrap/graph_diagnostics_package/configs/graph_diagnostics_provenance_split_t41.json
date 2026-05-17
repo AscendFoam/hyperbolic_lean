@@ -1,0 +1,39 @@
+{
+  "output_root": "artifacts/diagnostics/provenance_split_t41",
+  "seed": 42,
+  "distance_sample_sources": 16,
+  "hyperbolicity_landmarks": 12,
+  "max_hyperbolicity_quadruples": 256,
+  "graphs": [
+    {
+      "name": "field_subfield_explicit_only",
+      "graph_root": "data/processed/declaration_graph/mathlib_field_subfield_v1_explicit_only",
+      "relation_edge_types": ["extends"]
+    },
+    {
+      "name": "field_subfield_synthesized_only",
+      "graph_root": "data/processed/declaration_graph/mathlib_field_subfield_v1_synthesized_only",
+      "relation_edge_types": ["instance_of"]
+    },
+    {
+      "name": "field_subfield_hierarchy_mixed",
+      "graph_root": "data/processed/declaration_graph/mathlib_field_subfield_v1_hierarchy_mixed",
+      "relation_edge_types": ["extends", "instance_of"]
+    },
+    {
+      "name": "order_ring_explicit_only",
+      "graph_root": "data/processed/declaration_graph/mathlib_order_ring_v1_explicit_only",
+      "relation_edge_types": ["extends"]
+    },
+    {
+      "name": "order_ring_synthesized_only",
+      "graph_root": "data/processed/declaration_graph/mathlib_order_ring_v1_synthesized_only",
+      "relation_edge_types": ["instance_of"]
+    },
+    {
+      "name": "order_ring_hierarchy_mixed",
+      "graph_root": "data/processed/declaration_graph/mathlib_order_ring_v1_hierarchy_mixed",
+      "relation_edge_types": ["extends", "instance_of"]
+    }
+  ]
+}

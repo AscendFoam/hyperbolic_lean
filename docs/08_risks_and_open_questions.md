@@ -1,4 +1,4 @@
-# 08 Risks and Open Questions
+﻿# 08 Risks and Open Questions
 
 > 更新时间：2026-05-17
 
@@ -11,7 +11,7 @@
 | R03 | 数据快照、版本和 config 仍有部分 unknown，导致结果不可复现 | High | Active | T10 reviewed manifest 与 T11 reviewed data card 已保留 unknown 限制；后续只能用可复现实据关闭未知字段 |
 | R04 | relation layer 过浅，双曲价值不足 | High | Active | `T20` 已确认大多数 real-graph / hierarchy-focused relation layer 仍偏浅；后续优先转向 `mathlib_order_focus_v1` 中更深的模块级候选，但在训练验证前仍不把双曲设为主承诺 |
 | R05 | full Mathlib trace 成本过高或再次卡住 | Medium | Active | 优先已有产物、模块级 probe、小仓库 trace |
-| R06 | synthesized relation 语义复杂，负采样或层级解释失真 | High | Active | Milestone 4 做 provenance split |
+| R06 | synthesized relation 语义复杂，负采样或层级解释失真 | High | Mitigated | `T41` provenance diagnostics 已确认：`synthesized_only` 图在两组候选上均为 longest chain = 1、multi-parent = 0、cycle rank = 0 的浅层星状森林；synthesized 边不贡献层级深度，只贡献叶子膨胀和碎片化。该结构性发现替代了原先对"负采样失真"的泛化担忧，使风险从语义不确定收窄为明确的结构事实。剩余风险：synthesized 边在 T42 模型训练中是否仍可能通过 degree 或 degree-correlated pattern 间接影响 retrieval 性能 |
 | R07 | binary training 与 grouped retrieval 评测错配 | High | Mitigated | `T31` 已通过 adversarial review；reviewed grouped retrieval runner 已补入最小 query-grouped training 分支，并用 grouped val MAP 做 checkpoint selection。`T32` 也已在 `Field.Subfield` 与 `Order.Ring` 上用该路径完成真实 5-seed GCN grouped sweep。旧 BCE runners 仍保留为 legacy/auxiliary path，后续正式 grouped sweep 必须继续使用 grouped runner |
 | R08 | 后续 worker 越界修改或重复做历史任务 | Medium | Active | `docs/04_task_board.md`、`docs/tasks/` 与根目录入口文档明确 Allowed files 与 Forbidden scope |
 | R09 | 论文贡献被已有 Lean graph/export 工作稀释 | Medium | Active | 强调协议、诊断、条件性双曲结论和 proof-side bridge |
@@ -31,13 +31,14 @@
 | R23 | `Field.Subfield` 作为 controlled probe 在 reviewed grouped GCN 5-seed sweep 下方差较大，若在 T33/T34 中与 `Order.Ring` 等权解读，可能放大小图 seed/split 敏感性 | Medium | Active | 将 `Field.Subfield` 继续视为 controlled probe，把 `Order.Ring` 视为 primary balanced candidate；T33/T34 汇总时同时报告两图，但不要让 `Field.Subfield` 单独主导总体结论 |
 | R24 | `T33` 协议不匹配风险已关闭：matched grouped HGCN sweep 已完成 | Low | Mitigated | `T33` 使用了与 `T32` 相同的 grouped runner、split、seed list 与参数预算；报告与 artifact bundle 已成功生成并通过 review。 |
 | R25 | Milestone 3 虽已有 smoke、正式 sweep 和 summary 报告，但尚未完成”从全新干净环境重新拉起正式 grouped benchmark”的独立复现闭环 | Medium | Active | 允许进入 T40/T41/T42，但对外结论继续保持”已有 reviewed 运行证据”而非”已完成 clean-room reproducibility”；后续需用环境锁定证据或 fresh-environment rerun 关闭该风险 |
-| R26 | T40 冻结了 provenance split 配置与协议，但 split 实际生成（运行 `split_relations_by_provenance.py`）尚未执行；T41/T42 开始前必须先运行 split 生成、验证输出与协议中预期边数一致，并程序化校验当前两组候选图上的 `hierarchy_mixed = full source graph` identity | Medium | Active | T41 先运行 frozen config 生成 provenance-split 图；校验 `stats.json` 中的边数与协议中预期值一致，并把 `hierarchy_mixed` identity 校验写入 diagnostics 报告 |
+| R26 | T40 冻结了 provenance split 配置与协议，但 split 实际生成尚未执行 | Medium | Mitigated | `T41` 已运行 T40 冻结配置生成六个 provenance split 图目录；所有边数与协议预期一致；`hierarchy_mixed = full source graph` identity 已程序化验证 |
+| R27 | `synthesized_only` 图在两组候选上均为 longest chain = 1 的平坦星状森林，grouped retrieval 几乎无排序难度，T42 若在此图上训练模型可能导致退化为 trivial task | Medium | Active | `T41` 已经通过 review 并确认该结构事实；T42 必须把 `synthesized_only` sweep 视为 controlled diagnostic，不要期望其检索指标能支持模型对比结论；`explicit_only` 才是检验双曲优势的 primary provenance split |
 
 ## 2. Open Questions
 
 1. `docs/diagnostics_protocol.md` 中的经验阈值在 `T30+` / `T40+` 新证据进入后，是否仍应保持当前分层，还是需要重校准？
 2. `closure expansion ratio` 是否应继续作为主门控，还是在后续版本中改成更稳定的 closure-cost 组合指标？
-3. synthesized relation 是否真的降低 hierarchy 深度，还是主要改变候选分布和负采样难度？
+3. synthesized relation 是否真的降低 hierarchy 深度，还是主要改变候选分布和负采样难度？**Partially answered by T41**: synthesized 边在两组候选图上确实不贡献层级深度（longest chain = 1, multi-parent = 0），而是引入叶子膨胀和碎片化；对负采样和候选分布的影响仍需 T42 模型训练确认。
 4. provenance split 后，`explicit-only / synthesized-only / mixed` 是否会改变当前 “GCN 整体领先、HGCN 未建立优势” 的 grouped 结论？
 5. HGCN 若仍不赢，是否能在更深 hop bucket 或低维预算下形成局部价值？
 6. proof-side utility 应优先选择 ancestor explanation、declaration recommendation，还是 premise retrieval 正则化？
@@ -84,3 +85,5 @@
   - 跨协议绝对数值不应被揉成一个平面排行榜。
 - 当前保留风险：
   - 读者仍可能把早期 grouped-vs-binary gain 误读成与 `T32` / `T33` 完全同口径的 formal sweep；`T34` 已显式提示，但后续文档精修仍应继续压缩这种误读空间。
+
+

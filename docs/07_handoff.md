@@ -1,4 +1,4 @@
-# 07 Handoff
+﻿# 07 Handoff
 
 > 更新时间：2026-05-17
 >
@@ -31,34 +31,14 @@
 
 ## 3. 当前唯一任务
 
-`T41`: 生成三类 provenance 图并运行结构诊断，比较深度、叶子比例、连通性与 hyperbolicity proxy。
-
-任务包：
+`T42`: 对三类 provenance 图运行 grouped retrieval / parent prediction 的 GCN 与 HGCN seed sweep。
+任务包如下：
 
 ```text
-docs/tasks/M4_provenance/T41_provenance_diagnostics.md
+docs/tasks/M4_provenance/T42_provenance_seed_sweeps.md
 ```
 
-先运行 T40 冻结配置，把 `Field.Subfield` 与 `Order.Ring` 的 `explicit_only / synthesized_only / hierarchy_mixed` 六个 split 图目录真实落盘；随后运行结构诊断，比较深度、叶子比例、连通性与 hyperbolicity proxy。不要运行模型训练，不要覆盖已有 diagnostics，不要改动 T40 冻结的 provenance 语义或 config 约定。
-
-当前状态补充：
-
-- `T31A` 已通过 adversarial review，query-level split completeness 前置风险已收口。
-- `T31` 已通过 adversarial review，最小 grouped training 路径已收口：`run_relation_grouped_retrieval_baseline.py` 复用 `build_grouped_ranking_queries(...)` 构造训练 query，确保 grouped loss、split 与 eval 共用同一 `(src_id, relation_type)` key。
-- T31 smoke artifact 位于 `artifacts/smoke/relation_grouped_gcn_lean4_example_typeclass_precise_v2_ancestor_ranking_smoke_t31/`，其中 `grouped_training_summary.json`、`training_stats.json` 与 `result_summary.json` 均记录 `query_key_fields = [src_id, relation_type]` 与 `training_loss = sampled_softmax`。
-- `T34` 已通过 milestone review；Milestone 3 summary 已明确 grouped-vs-binary 协议差异、matched GCN-vs-HGCN config diff 和可比性边界。
-- `M3_review.md` 已给出综合结论：Milestone 3 可以关闭并进入 Milestone 4，但 full clean-environment reproducibility 仍未闭合。
-- `.claude/settings.json` 有自动权限 diff，review 已要求排除提交；不要把它作为 T31/T32/T33/T34/T40/T41 产物提交。
-- `T32` 已完成：新增四份正式 grouped GCN config，分别覆盖 `Field.Subfield` 与 `Order.Ring` 的 base+sweep 配置。
-- `T32` 已成功运行两组真实 5-seed GCN grouped training sweep，artifact 位于：
-  - `artifacts/baselines/relation_seed_sweeps/grouped_gcn_field_subfield_t32/`
-  - `artifacts/baselines/relation_seed_sweeps/grouped_gcn_order_ring_t32/`
-- `T32` 报告已写入 `docs/experiment_reports/gcn_grouped_training.md`。当前 key metrics：
-  - `Field.Subfield`: grouped MAP `0.4839 ± 0.0783`，grouped nDCG `0.6428 ± 0.0653`，grouped nDCG@10 `0.5273 ± 0.0850`
-  - `Order.Ring`: grouped MAP `0.5789 ± 0.0346`，grouped nDCG `0.7293 ± 0.0340`，grouped nDCG@10 `0.6129 ± 0.0506`
-- `T34` 已通过 milestone review；Milestone 3 已闭合。
-- `T40` 已通过 adversarial review；当前唯一任务已切到 `T41`，本轮 Captain 只推荐下一任务，不执行 `T41`。
-
+先读取 T40/T41 的 frozen split 与 diagnostics 结论，再对 `Field.Subfield` 与 `Order.Ring` 的 `explicit_only / synthesized_only / hierarchy_mixed` 运行 grouped retrieval / parent prediction 的 GCN/HGCN seed sweeps。`explicit_only` 是 primary split，`synthesized_only` 只作 controlled diagnostic，`hierarchy_mixed` 只作与 T32/T33 对齐的 reproducibility check。不要改动 T40/T41 冻结的 provenance 语义，不要覆盖历史 seed sweep artifact。
 ## 4. 当前已知事实
 
 1. 目前没有稳定证据证明 HGCN 在真实 traced Lean hierarchy 图上优于 GCN。
@@ -188,22 +168,16 @@ Reviewer 默认只读。高风险任务使用 adversarial review。
 65. `T40` 本轮已由 worker 完成 provenance split 配置冻结与协议文档草案：新增 `provenance_split_field_subfield_t40.json`、`provenance_split_order_ring_t40.json` 两份 frozen config，以及 `docs/provenance_split_protocol.md` 协议文档。协议冻结了 origin_map（`extends→explicit, instance_of→synthesized`）、三类 split（`explicit_only / synthesized_only / hierarchy_mixed`）、输出目录约定（`data/processed/declaration_graph/{source_name}_{split_name}/`）、生成命令和 T41/T42 usage guide。Worker 未运行 sweep，未修改数据语义，未覆盖历史配置。随后进入 adversarial reviewer 只读审查。
 66. `docs/review/T40_review.md` 结论为 `PASS`。Captain 判定 `T40` 完成；reviewer 的 non-blocking notes 已转化为 `T41` 的执行要求：必须校验协议中的预期边数，并程序化验证当前两组候选图上的 `hierarchy_mixed = full source graph` identity。
 67. 当前唯一任务切换为 `T41`；从治理状态看，允许提交当前阶段成果并继续派发下一轮 worker，但 staging 时仍应排除 `.claude/settings.json` 之类的越界本地权限变更。
+68. `T41` 本轮已由 worker 完成执行。六个 provenance split 图目录已真实落盘于 `data/processed/declaration_graph/`，所有边数与协议预期一致；`hierarchy_mixed = full source graph` identity 已程序化验证（两组候选均确认）。六个 split 图的结构诊断已完成，artifact 位于 `artifacts/diagnostics/provenance_split_t41/`。报告 `docs/experiment_reports/provenance_diagnostics.md` 已产出，核心发现：`synthesized_only` 图在两组候选上均为 longest chain = 1、multi-parent = 0、cycle rank = 0 的浅层星状森林；所有层级深度来自 `explicit_only`；混合图从 synthesized 边继承叶子膨胀和碎片化。Worker 未运行模型训练，未覆盖已有 diagnostics，未改动 T40 冻结语义。随后进入 adversarial reviewer 只读审查。
+69. docs/review/T41_review.md 结论为 PASS。Captain 判定 T41 完成并将当前唯一任务切换为 T42。reviewer 的非阻塞意见不要求返修，但已转成 T42 的执行约束：explicit_only 作为 primary split，synthesized_only 作为 controlled diagnostic，hierarchy_mixed 作为 T32/T33 reproducibility check；同时 T42 任务包已补入 tool-side config Allowed Files，避免再次越界写入。
 
 ## 8. 下一步
-
-下一步执行 `T41`。Worker 已有可复用的 frozen config 与协议文档；本轮不需要再回头补 T40，而是应直接：
-
-1. 运行 `split_relations_by_provenance.py`，为 `Field.Subfield` 与 `Order.Ring` 生成 `explicit_only / synthesized_only / hierarchy_mixed` 六个 split 图目录。
-2. 校验每个 split 的 `stats.json` 是否与 `docs/provenance_split_protocol.md` 的 expected edge counts 一致。
-3. 对六个 split 图运行结构诊断，写出 `docs/experiment_reports/provenance_diagnostics.md`。
-4. 在报告中程序化验证当前两组候选图上的 `hierarchy_mixed = full source graph` identity，并明确这只是当前数据不含 `uses` 边时的事实，不是逻辑必然。
-
-如果 `T41` 通过 adversarial review，再进入 `T42` 的 provenance split grouped retrieval / parent prediction seed sweep。
-
-不要把 `docs/data_manifest.md` 中的 `unknown / needs verification` 字段上升为既成版本事实。
-不要把 `docs/data_card.md` 中的 `recommended usage` 误读为最终 benchmark 定稿；这仍然只是当前治理口径下的使用边界，后续还需要 T20+ diagnostics。
-不要把 legacy `task = ancestor_ranking` 误读为旧单正例协议仍然有效；在 reviewed grouped protocol freeze 中，它只是 grouped multi-positive ancestor retrieval 的兼容执行键。
-
+下一步直接进入 `T42`：对三类 provenance 图运行 grouped retrieval / parent prediction 的 GCN 与 HGCN seed sweep。
+T41 核心结构发现已经固定为 T42 config 设计约束：
+- `synthesized_only` 图是 longest chain = 1 的平坦星状森林，grouped retrieval 只能作为 controlled diagnostic。
+- `explicit_only` 图才是最值得检验 hyperbolic 优势的结构：它承载最长链、多父分支与更真实的层级深度。
+- `hierarchy_mixed` 图在当前两组候选上等同 full source graph，T42 只需把 mixed 结果作为与 T32/T33 对齐的 reproducibility check。
+- `T42` 若需要新增 runner/config 文件，只能写入任务包允许的 tool-side config 路径。
 ## T33 Completion Note
 
 - HGCN grouped 5-seed sweeps 已在与 `T32` 相同的 grouped runner / split / seed path 下完成，覆盖 `Field.Subfield` 与 `Order.Ring`。
@@ -230,3 +204,5 @@ Reviewer 默认只读。高风险任务使用 adversarial review。
   - Milestone 4 可以继续推进。
 - 剩余 warning：
   - clean-environment reproducibility 仍未完全闭合，不应被夸大表述。
+
+

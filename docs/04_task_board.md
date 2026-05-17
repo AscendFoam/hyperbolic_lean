@@ -1,4 +1,4 @@
-# 04 Task Board
+﻿# 04 Task Board
 
 > 更新时间：2026-05-17
 >
@@ -8,7 +8,7 @@
 
 - 2026-05-17 captain update: `T34` 已通过 milestone review，Milestone 3 收口完成。
 - 状态：Continue
-- 当前阶段：Milestone 4 relation provenance split；T40 已通过 adversarial review，当前推荐 T41 生成 provenance split 图并运行结构诊断
+- 当前阶段：Milestone 4 relation provenance split；T41 已通过 adversarial review，当前唯一任务切换为 T42 provenance seed sweeps
 - 当前主线：`benchmark / protocol / diagnostics`
 - 当前不主张：把“已经证明 HGCN 稳定优于 GCN”写成既成事实
 - 当前证据等级：已有真实实验与工程原型，但尚未冻结成正式 benchmark artifact
@@ -45,7 +45,7 @@
 ## Milestone 4: Relation Provenance Split
 
 - [x] T40: 冻结 `explicit-only / synthesized-only / mixed` 三类图的生成配置与输出位置
-- [ ] T41: 生成三类 provenance 图并运行结构诊断，比较深度、叶子比例、连通性与 hyperbolicity proxy
+- [x] T41: 生成三类 provenance 图并运行结构诊断，比较深度、叶子比例、连通性与 hyperbolicity proxy
 - [ ] T42: 对三类 provenance 图运行 grouped retrieval / parent prediction 的 GCN 与 HGCN seed sweep
 - [ ] T43: 汇总 provenance split 结果，回答 synthesized relation 是否削弱双曲优势
 
@@ -58,41 +58,40 @@
 
 ## Current Unique Task
 
-`T41`: 生成三类 provenance 图并运行结构诊断，比较深度、叶子比例、连通性与 hyperbolicity proxy。
+`T42`: 对三类 provenance 图运行 grouped retrieval / parent prediction 的 GCN 与 HGCN seed sweep。
+任务包如下：
 
-任务包位置：
-
-`docs/tasks/M4_provenance/T41_provenance_diagnostics.md`
+`docs/tasks/M4_provenance/T42_provenance_seed_sweeps.md`
 
 ## Why Now
 
-T40 已完成 provenance split 配置与协议冻结。下一步必须先把 frozen config 实际落成六个 provenance split 图目录，校验预期边数与 `hierarchy_mixed = full source graph` identity，再进入 T42 的模型对比。
-
+T41 已完成 provenance split 落盘、协议边数校验与 `hierarchy_mixed = full source graph` identity 验证。下一步应在不改动 T40/T41 语义的前提下，对三类 provenance 图运行正式 seed sweep，其中 `explicit_only` 是 primary split，`synthesized_only` 只作为 controlled diagnostic，`hierarchy_mixed` 只作为与 T32/T33 对齐的 reproducibility check。
 ## Worker Package Summary
 
-- Task ID: `T41`
+- Task ID: `T42`
 - Allowed files:
-  - new data under `data/processed/declaration_graph/`
-  - new artifacts under `artifacts/diagnostics/`
-  - `docs/experiment_reports/provenance_diagnostics.md`
+  - new artifacts under `artifacts/baselines/relation_seed_sweeps/`
+  - `docs/experiment_reports/provenance_seed_sweeps.md`
+  - relevant configs under `project_bootstrap/baseline_scaffold/configs/`
+  - relevant configs under `project_bootstrap/graph_diagnostics_package/configs/`
   - `docs/04_task_board.md`
   - `docs/07_handoff.md`
   - `docs/08_risks_and_open_questions.md`
 - Forbidden scope:
-  - 不运行模型训练或 seed sweep
-  - 不覆盖已有 diagnostics
-  - 不把 proxy 写成严格 hyperbolicity 定理
-  - 不改动 T40 冻结的 provenance 语义或 config 约定
-- T41-specific notes:
-  - 必须先运行 frozen config 生成六个 provenance split 图目录，再运行结构诊断。
-  - 必须校验输出边数与 `docs/provenance_split_protocol.md` 中的预期值一致。
-  - 必须程序化验证当前两组候选图上的 `hierarchy_mixed = full source graph` identity，而不是口头假设。
+  - 不要修改 T40/T41 冻结的 provenance 语义、split 目录或结构诊断结论
+  - 不要把 `synthesized_only` 的结果写成 primary model comparison evidence
+  - 不要把 `hierarchy_mixed` 重新表述成新图族；它只作为 full source graph reproducibility check
+  - 不要覆盖已有 seed sweep 历史 artifact
+- T42-specific notes:
+  - 必须把 `explicit_only` 作为 primary provenance split，重点判断 HGCN 是否只在该 split 上出现结构性优势。
+  - `synthesized_only` 只允许作为 controlled diagnostic 报告，不得拿来支撑主结论；报告中必须明确 longest chain = 1 的 trivial-task 背景。
+  - `hierarchy_mixed` 结果必须与 T32/T33 的 full source graph 结果做并列复核，作为 reproducibility check，而不是新的发现。
+  - 若任务需要新增 runner/config 文件，必须限制在 task package 列出的 tool-side config 目录内。
 - Verification:
-  - `rg -n "explicit_only|synthesized_only|hierarchy_mixed|longest|leaf|delta|component|identity|edge count" docs\experiment_reports\provenance_diagnostics.md`
-  - `rg -n "\"num_edges\"|\"edge_type_counts\"" data\processed\declaration_graph\*_explicit_only\stats.json data\processed\declaration_graph\*_synthesized_only\stats.json data\processed\declaration_graph\*_hierarchy_mixed\stats.json`
+  - `rg -n "explicit_only|synthesized_only|hierarchy_mixed|GCN|HGCN|mean|std|Recall|MAP|nDCG|controlled diagnostic|reproducibility" docs\experiment_reports\provenance_seed_sweeps.md`
+  - `rg -n "explicit_only|synthesized_only|hierarchy_mixed" artifacts\baselines\relation_seed_sweeps\**\report.md`
 
 ## Execution Note
-
 - 2026-05-10：`T00` 已通过 review，根目录入口文档与相关 handoff 文档已收口。
 - 2026-05-10：当前唯一任务切换为 `T01`，用于复查治理文档之间的一致性。
 - 2026-05-10：`docs/reference/AI_coding_workflow.md` 中与 `T00` 无关的 reviewer prompt 微调，已并入 `T01` 的一致性复查范围，不再作为悬置改动单独跟踪。
@@ -159,7 +158,9 @@ T40 已完成 provenance split 配置与协议冻结。下一步必须先把 fro
 - 2026-05-17：`docs/review/M3_review.md` 结论为 `PASS_WITH_WARNINGS`；允许进入 Milestone 4，但 clean-environment reproducibility 仍保留警告。
 - 2026-05-17：`T40` 本轮已由 worker 完成配置冻结与协议文档草案。新增两份 provenance split config：`provenance_split_field_subfield_t40.json`、`provenance_split_order_ring_t40.json`；新增 `docs/provenance_split_protocol.md`，冻结三类 provenance 图的生成配置、输出目录约定、origin_map 与 split 语义，并为 T41/T42 提供直接可复用的协议入口。Worker 未运行 seed sweep，未修改数据语义，未覆盖历史配置。随后进入 adversarial reviewer 只读审查。
 - 2026-05-17：`docs/review/T40_review.md` 结论为 `PASS`，无 blocking issues。Captain 判定 `T40` 完成并将当前唯一任务切换到 `T41`。reviewer 的 non-blocking notes 已转成 `T41` 执行要求：必须校验预期边数，并程序化验证 `hierarchy_mixed = full source graph` identity。
+- 2026-05-17：`T41` 本轮已由 worker 完成执行。已运行 T40 冻结配置生成六个 provenance split 图目录，所有边数与协议预期一致；已程序化验证 `hierarchy_mixed = full source graph` identity（两组候选图均确认）；已对六个 split 图运行结构诊断，artifact 位于 `artifacts/diagnostics/provenance_split_t41/`；已产出 `docs/experiment_reports/provenance_diagnostics.md`。核心发现：`synthesized_only` 图在两组候选上均为 longest chain = 1、multi-parent = 0、cycle rank = 0 的浅层星状森林；所有层级深度和多父节点分支均来自 `explicit_only`（`extends`）边；混合图从 synthesized 边继承的是叶子膨胀和碎片化，不是深度。Worker 未运行模型训练，未覆盖已有 diagnostics，未改动 T40 冻结语义。随后进入 adversarial reviewer 只读审查。
 
+- 2026-05-17：`docs/review/T41_review.md` 结论为 `PASS`，无 blocking issues。Captain 判定 `T41` 完成并将当前唯一任务切换到 `T42`；reviewer 的非阻塞意见不要求返修，但已转成 `T42` 执行约束：`explicit_only` 作为 primary split，`synthesized_only` 作为 controlled diagnostic，`hierarchy_mixed` 作为 T32/T33 reproducibility check，同时任务包补入 tool-side config Allowed Files。
 ## T33 Completion Update (2026-05-17)
 
 - Worker 已在 `T32` 所使用的 reviewed grouped runner / split / seed path 下，完成 `Field.Subfield` 与 `Order.Ring` 两组正式 HGCN grouped 5-seed sweep。
@@ -184,3 +185,6 @@ Worker 完成后需要 reviewer 只读审查。Captain 根据 review 结果更�
 - 报告明确写出：`T32` 与 `T33` 可直接比较，而早期 grouped-vs-binary gain 仅作为 alignment evidence，不可直接与 formal matched sweep 数值混排。
 - Worker 未改动任何 sweep artifact，也未重新打开 `T32` 或 `T33`。
 - Review 结论：`PASS`。Milestone 3 可以闭合，项目可切换到 `T40`。
+
+
+

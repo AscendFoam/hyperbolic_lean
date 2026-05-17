@@ -1,116 +1,86 @@
 {
-  "config": "project_bootstrap\\leandojo_graph_scaffold\\configs\\relation_split_batteries_v1.json",
+  "config": "project_bootstrap\\leandojo_graph_scaffold\\configs\\provenance_split_order_ring_t40.json",
   "origin_map": {
     "extends": "explicit",
-    "instance_of": "synthesized",
-    "uses": "unknown"
+    "instance_of": "synthesized"
   },
   "split_names": [
     "explicit_only",
     "synthesized_only",
-    "hierarchy_mixed",
-    "full_with_uses"
+    "hierarchy_mixed"
   ],
   "sources": [
     {
-      "source_name": "batteries_full_precise_coverage_v1",
-      "source_graph_root": "data\\processed\\declaration_graph\\batteries_full_precise_coverage_v1",
+      "source_name": "mathlib_order_ring_v1",
+      "source_graph_root": "artifacts\\diagnostics\\module_hierarchy_scan_mathlib_algebra_order_index_v1\\candidate_graphs\\04_d4_Mathlib_Algebra_Order_Ring",
       "origin_map": {
         "extends": "explicit",
-        "instance_of": "synthesized",
-        "uses": "unknown"
+        "instance_of": "synthesized"
       },
-      "source_total_nodes": 7314,
-      "source_total_edges": 8738,
+      "source_total_nodes": 253,
+      "source_total_edges": 300,
       "source_edge_type_counts": {
-        "extends": 125,
-        "instance_of": 4595,
-        "uses": 4018
+        "extends": 180,
+        "instance_of": 120
       },
       "source_edge_origin_counts": {
-        "explicit": 125,
-        "synthesized": 4595,
-        "unknown": 4018
+        "explicit": 180,
+        "synthesized": 120
       },
       "splits": {
         "explicit_only": {
-          "source_name": "batteries_full_precise_coverage_v1",
+          "source_name": "mathlib_order_ring_v1",
           "split": "explicit_only",
-          "num_nodes": 163,
-          "num_edges": 125,
+          "num_nodes": 125,
+          "num_edges": 180,
           "edge_type_counts": {
-            "extends": 125
+            "extends": 180
           },
           "edge_origin_counts": {
-            "explicit": 125
+            "explicit": 180
           },
           "decl_kind_counts": {
-            "class": 57,
-            "structure": 106
+            "class": 100,
+            "structure": 25
           },
-          "output_dir": "data\\processed\\declaration_graph\\batteries_full_precise_coverage_v1_explicit_only"
+          "output_dir": "data\\processed\\declaration_graph\\mathlib_order_ring_v1_explicit_only"
         },
         "synthesized_only": {
-          "source_name": "batteries_full_precise_coverage_v1",
+          "source_name": "mathlib_order_ring_v1",
           "split": "synthesized_only",
-          "num_nodes": 4813,
-          "num_edges": 4595,
+          "num_nodes": 183,
+          "num_edges": 120,
           "edge_type_counts": {
-            "instance_of": 4595
+            "instance_of": 120
           },
           "edge_origin_counts": {
-            "synthesized": 4595
+            "synthesized": 120
           },
           "decl_kind_counts": {
-            "class": 218,
-            "instance": 4595
+            "class": 63,
+            "instance": 120
           },
-          "output_dir": "data\\processed\\declaration_graph\\batteries_full_precise_coverage_v1_synthesized_only"
+          "output_dir": "data\\processed\\declaration_graph\\mathlib_order_ring_v1_synthesized_only"
         },
         "hierarchy_mixed": {
-          "source_name": "batteries_full_precise_coverage_v1",
+          "source_name": "mathlib_order_ring_v1",
           "split": "hierarchy_mixed",
-          "num_nodes": 4919,
-          "num_edges": 4720,
+          "num_nodes": 253,
+          "num_edges": 300,
           "edge_type_counts": {
-            "extends": 125,
-            "instance_of": 4595
+            "extends": 180,
+            "instance_of": 120
           },
           "edge_origin_counts": {
-            "explicit": 125,
-            "synthesized": 4595
+            "explicit": 180,
+            "synthesized": 120
           },
           "decl_kind_counts": {
-            "class": 218,
-            "instance": 4595,
-            "structure": 106
+            "class": 108,
+            "instance": 120,
+            "structure": 25
           },
-          "output_dir": "data\\processed\\declaration_graph\\batteries_full_precise_coverage_v1_hierarchy_mixed"
-        },
-        "full_with_uses": {
-          "source_name": "batteries_full_precise_coverage_v1",
-          "split": "full_with_uses",
-          "num_nodes": 6983,
-          "num_edges": 8738,
-          "edge_type_counts": {
-            "extends": 125,
-            "instance_of": 4595,
-            "uses": 4018
-          },
-          "edge_origin_counts": {
-            "explicit": 125,
-            "synthesized": 4595,
-            "unknown": 4018
-          },
-          "decl_kind_counts": {
-            "class": 221,
-            "def": 779,
-            "inductive": 22,
-            "instance": 4602,
-            "structure": 131,
-            "theorem": 1228
-          },
-          "output_dir": "data\\processed\\declaration_graph\\batteries_full_precise_coverage_v1_full_with_uses"
+          "output_dir": "data\\processed\\declaration_graph\\mathlib_order_ring_v1_hierarchy_mixed"
         }
       }
     }

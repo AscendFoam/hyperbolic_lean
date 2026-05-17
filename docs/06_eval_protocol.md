@@ -1,4 +1,4 @@
-# 06 Eval Protocol
+﻿# 06 Eval Protocol
 
 > 更新时间：2026-05-17
 >
@@ -289,5 +289,7 @@ T10 将负责把这些要求落成 version manifest。
 - `T31A` 已通过 adversarial review，grouped ancestor retrieval 已改为 query-level split；run manifest 的 `query_split_summary` 记录 `split_strategy = query_level`、query overlap 为 0、`is_query_level_disjoint = true`。
 - `T31` 已通过 adversarial review，grouped retrieval runner 已实现最小 query-grouped loss，训练、split 与 eval 共用 `(src_id, relation_type)` query key，并用 grouped val MAP 做模型选择。
 - `T34` 已通过 milestone review，Milestone 3 的 grouped-vs-binary 诊断总结已收口。
-- `T40` 已通过 adversarial review，provenance split 配置与协议入口已冻结；当前唯一任务为 `T41`，负责实际生成 provenance split 图、校验预期边数并运行结构诊断。
+- `T41` 已通过 adversarial review，六个 provenance split 图已真实生成并完成边数与 identity 校验；当前唯一任务为 `T42`，负责在 `explicit_only / synthesized_only / hierarchy_mixed` 三类图上运行 GCN/HGCN grouped seed sweeps，其中 `explicit_only` 为 primary split，`synthesized_only` 为 controlled diagnostic，`hierarchy_mixed` 为 reproducibility check。
 - 不得把 T14 的 smoke output 写成正式 benchmark 结果。
+
+

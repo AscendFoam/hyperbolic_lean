@@ -1,4 +1,4 @@
-# 01 Feasibility Report
+﻿# 01 Feasibility Report
 
 > 更新时间：2026-05-17
 >
@@ -94,4 +94,6 @@ No-Go 条件：
 - 若所有候选图都过浅且无法接 proof-side utility，则项目应转为纯经验报告或归档。
 - 若后续只剩“继续调 HGCN 直到赢”，则不应继续作为主线。
 
-当前下一步是执行 `T41`：先按 `T40` 冻结配置实际生成 `explicit_only / synthesized_only / hierarchy_mixed` 六个 provenance split 图目录，再校验预期边数并运行结构诊断。Milestone 3 已通过综合审查，但 clean-environment reproducibility 仍未完全闭合。`T02` 已按用户裁决视为当前阶段完成。
+当前下一步是执行 `T42`：在 `T41` 已落盘并审过的 `explicit_only / synthesized_only / hierarchy_mixed` 六个 provenance split 图上运行 GCN/HGCN grouped seed sweeps，并把 `explicit_only` 作为 primary split、`synthesized_only` 作为 controlled diagnostic、`hierarchy_mixed` 作为与 T32/T33 对齐的 reproducibility check。Milestone 3 已通过综合审查，但 clean-environment reproducibility 仍未完全闭合。`T02` 已按用户裁决视为当前阶段完成。
+
+
