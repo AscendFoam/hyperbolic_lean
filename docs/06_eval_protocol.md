@@ -1,6 +1,6 @@
 ﻿# 06 Eval Protocol
 
-> 更新时间：2026-05-18（T51 review 后同步）
+> 更新时间：2026-05-18（T52 review 后同步）
 >
 > 状态：T12 grouped protocol freeze、T13 hop bucket reporting、T14 smoke check、T31A query-level split、T31 minimal query-grouped loss 与 T32 GCN grouped baseline 均已通过 review。Smoke artifact 只证明输出链可落盘，不是正式 benchmark 结果。
 
@@ -289,7 +289,7 @@ T10 将负责把这些要求落成 version manifest。
 - `T31A` 已通过 adversarial review，grouped ancestor retrieval 已改为 query-level split；run manifest 的 `query_split_summary` 记录 `split_strategy = query_level`、query overlap 为 0、`is_query_level_disjoint = true`。
 - `T31` 已通过 adversarial review，grouped retrieval runner 已实现最小 query-grouped loss，训练、split 与 eval 共用 `(src_id, relation_type)` query key，并用 grouped val MAP 做模型选择。
 - `T34` 已通过 milestone review，Milestone 3 的 grouped-vs-binary 诊断总结已收口。
-- `T41` 已通过 adversarial review，六个 provenance split 图已真实生成并完成边数与 identity 校验；`T42` 已通过 adversarial review，provenance-aware GCN/HGCN grouped seed sweeps 已完成，并确认 `explicit_only` 为 primary evidence、`synthesized_only` 为 controlled diagnostic、`hierarchy_mixed` 为 reproducibility check；`T43` 已通过 milestone review，Milestone 4 的正式结论固定为 provenance-conditional；`T50` 已通过 review 并产出 `docs/paper_outline.md`；`T51` 已通过 review 并正式选定 ancestor explanation 作为 proof-side MVP。当前唯一任务为 `T52`，负责把该 MVP 继续收敛成唯一的最小 demo implementation package。对外 paper-facing 文稿仍需保留 `R28`（aggregate/per-seed 口径差异）与 `R29`（T43 summary 表格单元错误）的精度边界。
+- `T41` 已通过 adversarial review，六个 provenance split 图已真实生成并完成边数与 identity 校验；`T42` 已通过 adversarial review，provenance-aware GCN/HGCN grouped seed sweeps 已完成，并确认 `explicit_only` 为 primary evidence、`synthesized_only` 为 controlled diagnostic、`hierarchy_mixed` 为 reproducibility check；`T43` 已通过 milestone review，Milestone 4 的正式结论固定为 provenance-conditional；`T50` 已通过 review 并产出 `docs/paper_outline.md`；`T51` 已通过 review 并正式选定 ancestor explanation 作为 proof-side MVP；`T52` 已通过 review 并把该 MVP 收敛成唯一的最小 demo implementation package。当前唯一任务为 `T52a`，负责实现 ancestor explanation demo CLI 与 demo report。对外 paper-facing 文稿仍需保留 `R28`（aggregate/per-seed 口径差异）与 `R29`（T43 summary 表格单元错误）的精度边界。
 - 不得把 T14 的 smoke output 写成正式 benchmark 结果。
 
 

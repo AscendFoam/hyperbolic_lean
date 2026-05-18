@@ -1,6 +1,6 @@
 ﻿# 05 Decision Log
 
-> 更新时间：2026-05-18（T51 review 后更新）
+> 更新时间：2026-05-18（T52 review 后更新）
 >
 > 规则：只记录会影响后续任务选择、论文叙事、评测协议或项目状态的决策。
 
@@ -266,3 +266,11 @@
 - 决策：选择 **ancestor explanation** 作为 proof-side utility MVP。比较了三个候选方向：(1) ancestor explanation（低复杂度，直接映射 C2/C4，零新依赖）；(2) relation-aware declaration recommendation（中复杂度，需要新任务定义）；(3) premise retrieval demo（高复杂度，需要 LeanDojo 桥接，违反 forbidden scope）。选择 ancestor explanation 的核心理由是它把 provenance-conditional finding 从表格数字变成用户可体验的 hierarchy navigation 质量差异，且与 ITP/CPP venue fit 高度对齐。
 - R31 回应：ancestor explanation 不是"列出祖先"，而是 provenance-aware quality comparison tool——用户可直观看到同一 declaration 在 `explicit_only` vs `hierarchy_mixed` 上的 retrieval 质量差异和 hop-depth-dependent gradient。这满足 CPP tool demo 的 "artifact is functional and solves a real problem" 标准。
 - 后果：`T52` 应基于此选择编写 ancestor explanation 的最小 demo 任务包，包括 CLI 入口、model artifact loading、provenance comparison mode 输出格式和验收命令。不引入新依赖、不重新训练模型、不修改已有 protocol。
+
+## D032: T52 ancestor explanation demo 任务包设计决策
+
+- 日期：2026-05-18
+- 状态：Accepted
+- 依据：`docs/proof_side_mvp.md`、`docs/paper_outline.md`、T42 reviewed artifacts 结构
+- 决策：`T52_review` 判定为 `PASS`，`T52` 正式完成。`T52a` 任务包作为唯一下一任务被接受并冻结以下设计决策：(1) **artifact loading 策略**：直接加载 T42 provenance sweep 的 `node_embeddings.npy`，不重新 inference 或加载 checkpoint；(2) **代码入口**：新建独立脚本 `proof_side_ancestor_explanation.py`，不修改已有 runner；(3) **node ordering 对齐**：必须复用 `common.load_declaration_graph()` 的节点顺序，否则 embedding 行号会错位；(4) **comparison mode 为硬边界**：`explicit_vs_mixed` comparison mode 不是可选增强项而是验收条件的一部分；(5) **reviewer type 为 adversarial**：因为涉及 artifact 数据对齐和 provenance narrative 正确性；(6) **artifact path pattern 必须精确**：使用 `provenance_{model}_{candidate}_{provenance}_t42/provenance_{model}_{candidate}_{provenance}_t42_seed{seed}`；(7) **declaration-name 必须精确匹配**：按 `declarations.csv` 中的完整字符串匹配，不做模糊匹配。
+- 后果：当前唯一任务切换为 `T52a`。后续 worker 按该任务包实现 demo，不引入新依赖、不重新训练、不修改已有代码；实现完成后进入 adversarial review。

@@ -1,6 +1,6 @@
 ﻿# 07 Handoff
 
-> 更新时间：2026-05-18（T51 review 后更新）
+> 更新时间：2026-05-18（T52 review 后更新）
 >
 > 给下一位 Captain / Worker / Reviewer 的接手说明。
 
@@ -31,14 +31,14 @@
 
 ## 3. 当前唯一任务
 
-`T52`: 为已选定的 ancestor explanation MVP 编写最小 demo 实现任务包，不承诺端到端 theorem proving。
+`T52a`: 实现 ancestor explanation proof-side demo CLI，直接加载 T42 reviewed embeddings，支持 single-query 与 `explicit_vs_mixed` provenance comparison。
 任务包如下：
 
 ```text
-docs/tasks/M5_paper/T52_proof_side_demo_package.md
+docs/tasks/M5_paper/T52a_ancestor_explanation_demo.md
 ```
 
-先读取 `docs/proof_side_mvp.md`、`docs/review/T51_review.md`、`docs/paper_outline.md`、`docs/06_eval_protocol.md` 与相关代码入口，再把 ancestor explanation MVP 拆成一个可直接派给后续 worker 的最小 demo 实现任务包。必须写清推荐代码入口、允许依赖的 reviewed artifacts、CLI/输出格式、验证命令、Allowed files、Forbidden scope，并明确不实现 demo、不修改代码、不新增训练或新依赖。
+先读取 `docs/proof_side_mvp.md`、`docs/tasks/M5_paper/T52_proof_side_demo_package.md`、`docs/review/T52_review.md`、`docs/paper_outline.md`、`docs/06_eval_protocol.md` 与相关代码入口，再按 `T52a` 任务包实现 demo。必须保留 provenance-aware comparison mode、精确 artifact path、`declarations.csv` 精确 declaration 匹配，以及 node ordering sanity check。
 
 ## 8. 下一步
 
@@ -193,12 +193,13 @@ Reviewer 默认只读。高风险任务使用 adversarial review。
 73. `T50` 本轮已由 worker 完成 paper skeleton 草案：新增 `docs/paper_outline.md`，包含 working title、positioning、central claim 与 non-claim 边界、5 条 contributions（C1–C5）、evidence ladder、figures/tables plan、threats to validity、venue fit（ITP/CPP/FM）、proof-side bridge、provenance-precision boundaries 和 draft section outline。所有内容保持 provenance-conditional 口径，绕开 R28/R29。同步更新治理文档。Worker 未标记任务完成，等待 reviewer 只读审查。
 74. `docs/review/T50_review.md` 已给出 `PASS_WITH_WARNINGS`。Captain 已完成 warning 分类：`docs/00_raw_idea.md`、`docs/01_feasibility_report.md`、`docs/03_architecture.md`、`docs/06_eval_protocol.md` 的治理状态同步越界编辑记为 accepted low-severity hygiene；worker 修改 `docs/tasks/**/*.md` 记为 rejected future precedent，不要求返修但后续不应再发生；`R30` 与 `R31` 记为 deferred 并继续保留在风险表中；`.claude/settings.json` 继续 excluded from commit。`T50` 已标记完成，当前唯一任务切换为 `T51`。
 75. `T51` 本轮已由 worker 完成执行。已产出 `docs/proof_side_mvp.md`，比较了三个候选 MVP 方向（ancestor explanation / declaration recommendation / premise retrieval），选择 ancestor explanation 作为 proof-side utility MVP。核心理由：直接映射 C2 和 C4、零新依赖零新训练、把 provenance-conditional finding 变成可体验的 hierarchy navigation 工具、与 ITP/CPP venue fit 高度对齐。已正面回应 R31：ancestor explanation 不是简单"列出祖先"而是 provenance-aware quality comparison tool，满足 CPP tool demo 标准。已明确 MVP 的输入、输出、验收标准、失败标准和不做事项。同步更新治理文档。Worker 未标记任务完成，等待 reviewer 只读审查。
+76. `T52` 本轮已由 worker 完成执行。已重写 `docs/tasks/M5_paper/T52a_ancestor_explanation_demo.md` 作为唯一下游 demo 实现任务包。该包明确：(1) 新建 `proof_side_ancestor_explanation.py` CLI 脚本；(2) 加载 T42 provenance sweep 的 `node_embeddings.npy`（不重训、不加载 checkpoint）；(3) 支持 single-query mode 和 `explicit_vs_mixed` provenance comparison mode；(4) 包含 critical implementation note 关于 node ordering alignment（必须复用 `common.load_declaration_graph()` 的节点顺序）；(5) 要求新建 demo report；(6) Allowed files 限定为 2 新文件 + 4 治理文档，禁止修改任何已有代码；(7) reviewer type 为 adversarial。同步更新治理文档。Worker 未标记任务完成，等待 reviewer 只读审查。
 
 ## 8. 下一步
 
-`T51` 已通过 `PASS` review 并正式收口。已产出 `docs/proof_side_mvp.md`，选择 ancestor explanation 作为 MVP，并且 reviewer 已接受其对 `R31` 的回应。
+`T52` 已通过 `PASS` review 并正式收口。已确认 `docs/tasks/M5_paper/T52a_ancestor_explanation_demo.md` 作为唯一下游 demo 实现任务包。
 
-下一轮应推进 `T52`：基于 `docs/proof_side_mvp.md` 的 MVP 规格，编写 ancestor explanation 的最小 demo 实现任务包，不引入新依赖、不重新训练模型、不修改已有 protocol，并把 provenance-aware comparison mode 写成硬边界而不是可选增强项。
+下一轮应推进 `T52a`：基于 `T52a` 任务包实现 ancestor explanation demo CLI 脚本，加载 T42 reviewed artifacts 的 node embeddings，提供 single-query 和 provenance comparison 两种模式，并新建 demo report 文档。实现中必须注意 node ordering alignment（复用 `common.load_declaration_graph()` 的节点顺序）、精确 artifact path、以及 `--declaration-name` 对 `declarations.csv` 的精确匹配；comparison mode 为硬边界而非可选增强。
 
 T50/T51 继承的核心事实边界：
 - `explicit_only` 是 primary evidence，HGCN 在该 split 上稳定领先（FS MAP +0.1247, OR MAP +0.0557）。
