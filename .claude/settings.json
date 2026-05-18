@@ -26,7 +26,22 @@
       "Bash(C:/ProgramData/anaconda3/envs/DLEnv/python.exe project_bootstrap/leandojo_graph_scaffold/src/split_relations_by_provenance.py --config project_bootstrap/leandojo_graph_scaffold/configs/provenance_split_order_ring_t40.json)",
       "Bash(C:/ProgramData/anaconda3/envs/DLEnv/python.exe project_bootstrap/baseline_scaffold/src/run_graph_diagnostics.py --config project_bootstrap/graph_diagnostics_package/configs/graph_diagnostics_provenance_split_t41.json)",
       "Bash(rg -n \"\\\\\"num_edges\\\\\"|\\\\\"edge_type_counts\\\\\"\" data/processed/declaration_graph/*_explicit_only/stats.json data/processed/declaration_graph/*_synthesized_only/stats.json data/processed/declaration_graph/*_hierarchy_mixed/stats.json)",
-      "Bash(git check-ignore *)"
+      "Bash(git check-ignore *)",
+      "Bash(C:/ProgramData/anaconda3/envs/DLEnv/python.exe project_bootstrap/baseline_scaffold/src/run_relation_seed_sweep.py --config project_bootstrap/baseline_scaffold/configs/provenance_gcn_field_subfield_explicit_only_sweep_t42.json)",
+      "Bash(C:/ProgramData/anaconda3/envs/DLEnv/python.exe project_bootstrap/baseline_scaffold/src/run_relation_seed_sweep.py --config project_bootstrap/baseline_scaffold/configs/provenance_gcn_field_subfield_synthesized_only_sweep_t42.json)",
+      "Bash(C:/ProgramData/anaconda3/envs/DLEnv/python.exe project_bootstrap/baseline_scaffold/src/run_relation_seed_sweep.py --config project_bootstrap/baseline_scaffold/configs/provenance_gcn_field_subfield_hierarchy_mixed_sweep_t42.json)",
+      "Bash(C:/ProgramData/anaconda3/envs/DLEnv/python.exe project_bootstrap/baseline_scaffold/src/run_relation_seed_sweep.py --config project_bootstrap/baseline_scaffold/configs/provenance_gcn_order_ring_explicit_only_sweep_t42.json)",
+      "Bash(C:/ProgramData/anaconda3/envs/DLEnv/python.exe project_bootstrap/baseline_scaffold/src/run_relation_seed_sweep.py --config project_bootstrap/baseline_scaffold/configs/provenance_gcn_order_ring_synthesized_only_sweep_t42.json)",
+      "Bash(C:/ProgramData/anaconda3/envs/DLEnv/python.exe project_bootstrap/baseline_scaffold/src/run_relation_seed_sweep.py --config project_bootstrap/baseline_scaffold/configs/provenance_gcn_order_ring_hierarchy_mixed_sweep_t42.json)",
+      "Bash(C:/ProgramData/anaconda3/envs/DLEnv/python.exe project_bootstrap/baseline_scaffold/src/run_relation_seed_sweep.py --config project_bootstrap/baseline_scaffold/configs/provenance_hgcn_field_subfield_explicit_only_sweep_t42.json)",
+      "Bash(C:/ProgramData/anaconda3/envs/DLEnv/python.exe project_bootstrap/baseline_scaffold/src/run_relation_seed_sweep.py --config project_bootstrap/baseline_scaffold/configs/provenance_hgcn_field_subfield_synthesized_only_sweep_t42.json)",
+      "Bash(C:/ProgramData/anaconda3/envs/DLEnv/python.exe project_bootstrap/baseline_scaffold/src/run_relation_seed_sweep.py --config project_bootstrap/baseline_scaffold/configs/provenance_hgcn_field_subfield_hierarchy_mixed_sweep_t42.json)",
+      "Bash(C:/ProgramData/anaconda3/envs/DLEnv/python.exe project_bootstrap/baseline_scaffold/src/run_relation_seed_sweep.py --config project_bootstrap/baseline_scaffold/configs/provenance_hgcn_order_ring_explicit_only_sweep_t42.json)",
+      "Bash(C:/ProgramData/anaconda3/envs/DLEnv/python.exe project_bootstrap/baseline_scaffold/src/run_relation_seed_sweep.py --config project_bootstrap/baseline_scaffold/configs/provenance_hgcn_order_ring_synthesized_only_sweep_t42.json)",
+      "Bash(C:/ProgramData/anaconda3/envs/DLEnv/python.exe project_bootstrap/baseline_scaffold/src/run_relation_seed_sweep.py --config project_bootstrap/baseline_scaffold/configs/provenance_hgcn_order_ring_hierarchy_mixed_sweep_t42.json)",
+      "Bash(powershell -Command 'rg -n \"explicit_only|synthesized_only|hierarchy_mixed|GCN|HGCN|mean|std|Recall|MAP|nDCG|controlled diagnostic|reproducibility\" docs\\\\experiment_reports\\\\provenance_seed_sweeps.md')",
+      "Bash(powershell -Command 'rg -n \"explicit_only|synthesized_only|hierarchy_mixed\" artifacts\\\\baselines\\\\relation_seed_sweeps\\\\provenance_gcn_field_subfield_explicit_only_t42\\\\report.md artifacts\\\\baselines\\\\relation_seed_sweeps\\\\provenance_hgcn_order_ring_explicit_only_t42\\\\report.md artifacts\\\\baselines\\\\relation_seed_sweeps\\\\provenance_gcn_order_ring_synthesized_only_t42\\\\report.md artifacts\\\\baselines\\\\relation_seed_sweeps\\\\provenance_hgcn_field_subfield_hierarchy_mixed_t42\\\\report.md 2>$null')",
+      "Bash(rg -n \"explicit_only|synthesized_only|hierarchy_mixed\" artifacts/baselines/relation_seed_sweeps/provenance_*_t42/report.md)"
     ]
   }
 }

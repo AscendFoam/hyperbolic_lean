@@ -1,6 +1,6 @@
 ﻿# 04 Task Board
 
-> 更新时间：2026-05-17
+> 更新时间：2026-05-18（T51 review 后更新）
 >
 > Captain 原则：每轮只推进一个 `Current Unique Task`。Worker 不自动领取下一任务。
 
@@ -8,7 +8,7 @@
 
 - 2026-05-17 captain update: `T34` 已通过 milestone review，Milestone 3 收口完成。
 - 状态：Continue
-- 当前阶段：Milestone 4 relation provenance split；T41 已通过 adversarial review，当前唯一任务切换为 T42 provenance seed sweeps
+- 当前阶段：Milestone 5 已启动；`T50` 已通过 review 并收口，`T51` 已通过 review 并完成 MVP 选型，当前唯一任务切换为 `T52`
 - 当前主线：`benchmark / protocol / diagnostics`
 - 当前不主张：把“已经证明 HGCN 稳定优于 GCN”写成既成事实
 - 当前证据等级：已有真实实验与工程原型，但尚未冻结成正式 benchmark artifact
@@ -46,50 +46,50 @@
 
 - [x] T40: 冻结 `explicit-only / synthesized-only / mixed` 三类图的生成配置与输出位置
 - [x] T41: 生成三类 provenance 图并运行结构诊断，比较深度、叶子比例、连通性与 hyperbolicity proxy
-- [ ] T42: 对三类 provenance 图运行 grouped retrieval / parent prediction 的 GCN 与 HGCN seed sweep
-- [ ] T43: 汇总 provenance split 结果，回答 synthesized relation 是否削弱双曲优势
+- [x] T42: 对三类 provenance 图运行 grouped retrieval / parent prediction 的 GCN 与 HGCN seed sweep
+- [x] T43: 汇总 provenance split 结果，回答 synthesized relation 是否削弱双曲优势
 
 ## Milestone 5: Paper And Proof-Side Bridge
 
-- [ ] T50: 整理论文贡献骨架，围绕 pipeline / protocol / diagnostics / conditional hyperbolic conclusion
-- [ ] T51: 选择一个 proof-side utility MVP，例如 ancestor explanation 或 relation-aware declaration recommendation
+- [x] T50: 整理论文贡献骨架，围绕 pipeline / protocol / diagnostics / conditional hyperbolic conclusion
+- [x] T51: 选择一个 proof-side utility MVP，例如 ancestor explanation 或 relation-aware declaration recommendation
 - [ ] T52: 为 proof-side utility 写最小 demo 任务包，不承诺端到端 theorem proving
 - [ ] T53: 完成里程碑审查，判断项目进入 Continue / Narrow / Resume-ready
 
 ## Current Unique Task
 
-`T42`: 对三类 provenance 图运行 grouped retrieval / parent prediction 的 GCN 与 HGCN seed sweep。
+`T52`: 为已选定的 ancestor explanation proof-side MVP 编写最小 demo 实现任务包，不承诺端到端 theorem proving。
 任务包如下：
 
-`docs/tasks/M4_provenance/T42_provenance_seed_sweeps.md`
+`docs/tasks/M5_paper/T52_proof_side_demo_package.md`
 
 ## Why Now
 
-T41 已完成 provenance split 落盘、协议边数校验与 `hierarchy_mixed = full source graph` identity 验证。下一步应在不改动 T40/T41 语义的前提下，对三类 provenance 图运行正式 seed sweep，其中 `explicit_only` 是 primary split，`synthesized_only` 只作为 controlled diagnostic，`hierarchy_mixed` 只作为与 T32/T33 对齐的 reproducibility check。
+`T51` 已把 proof-side bridge 收束为 ancestor explanation MVP，并在 review 中证明它不是过轻的“列祖先列表”，而是 provenance-aware quality comparison tool。当前最缺的不是再讨论候选方向，而是把后续实现边界写成可直接派给 worker 的最小 demo 任务包，明确 CLI 入口、artifact 依赖、比较模式、验证命令与禁止事项，避免后续实现阶段发生 scope creep。
 ## Worker Package Summary
 
-- Task ID: `T42`
+- Task ID: `T52`
 - Allowed files:
-  - new artifacts under `artifacts/baselines/relation_seed_sweeps/`
-  - `docs/experiment_reports/provenance_seed_sweeps.md`
-  - relevant configs under `project_bootstrap/baseline_scaffold/configs/`
-  - relevant configs under `project_bootstrap/graph_diagnostics_package/configs/`
+  - `docs/tasks/M5_paper/T52a_ancestor_explanation_demo.md`
+  - `docs/05_decision_log.md`
   - `docs/04_task_board.md`
   - `docs/07_handoff.md`
   - `docs/08_risks_and_open_questions.md`
 - Forbidden scope:
-  - 不要修改 T40/T41 冻结的 provenance 语义、split 目录或结构诊断结论
-  - 不要把 `synthesized_only` 的结果写成 primary model comparison evidence
-  - 不要把 `hierarchy_mixed` 重新表述成新图族；它只作为 full source graph reproducibility check
-  - 不要覆盖已有 seed sweep 历史 artifact
-- T42-specific notes:
-  - 必须把 `explicit_only` 作为 primary provenance split，重点判断 HGCN 是否只在该 split 上出现结构性优势。
-  - `synthesized_only` 只允许作为 controlled diagnostic 报告，不得拿来支撑主结论；报告中必须明确 longest chain = 1 的 trivial-task 背景。
-  - `hierarchy_mixed` 结果必须与 T32/T33 的 full source graph 结果做并列复核，作为 reproducibility check，而不是新的发现。
-  - 若任务需要新增 runner/config 文件，必须限制在 task package 列出的 tool-side config 目录内。
+  - 不实现 demo，不新增实验，不修改代码
+  - 不承诺端到端 theorem proving，不把 proof-side MVP 写成“已证明可提升完整证明成功率”
+  - 不引入新的大型依赖，不把当前任务扩张成多条 proof-side 支线并行开发
+  - 不改写 T50 已确认的 provenance-conditional 论文口径，不忽略 `R28`/`R29`/`R31`
+- T51/T52 handoff notes:
+  - Authoritative `T52` scope is `docs/tasks/M5_paper/T52_proof_side_demo_package.md` and downstream package `docs/tasks/M5_paper/T52a_ancestor_explanation_demo.md`.
+  - 必须把 MVP 选择写成 paper bridge，而不是独立的新研究主线。
+  - 必须比较至少 paper outline 中已经列出的候选方向，并解释为何最终选择更适合当前证据和 venue fit。
+  - 若继续推荐 ancestor explanation，必须正面回应 `R31`：说明为何它不会轻到不足以支撑 CPP/工具演示叙事；否则应选择更强的 utility 方向。
+  - 必须明确输入、输出、验收标准、失败标准与不做事项，以便 `T52` 能把它拆成最小 demo 任务包。
 - Verification:
-  - `rg -n "explicit_only|synthesized_only|hierarchy_mixed|GCN|HGCN|mean|std|Recall|MAP|nDCG|controlled diagnostic|reproducibility" docs\experiment_reports\provenance_seed_sweeps.md`
-  - `rg -n "explicit_only|synthesized_only|hierarchy_mixed" artifacts\baselines\relation_seed_sweeps\**\report.md`
+  - `rg -n "Task ID|Goal|Why now|Allowed files|Forbidden scope|Inputs to read|Expected output|Verification|Docs to update|Reviewer type" docs\tasks\M5_paper\T52a_ancestor_explanation_demo.md`
+  - `rg -n "ancestor explanation|explicit_only|hierarchy_mixed|CLI|artifact|comparison|no new dependencies|no retraining" docs\tasks\M5_paper\T52a_ancestor_explanation_demo.md`
+  - `rg -n "T52|T52a|Current Unique Task|proof-side|demo" docs\04_task_board.md docs\05_decision_log.md docs\07_handoff.md docs\08_risks_and_open_questions.md docs\tasks\M5_paper\T52a_ancestor_explanation_demo.md`
 
 ## Execution Note
 - 2026-05-10：`T00` 已通过 review，根目录入口文档与相关 handoff 文档已收口。
@@ -161,6 +161,13 @@ T41 已完成 provenance split 落盘、协议边数校验与 `hierarchy_mixed =
 - 2026-05-17：`T41` 本轮已由 worker 完成执行。已运行 T40 冻结配置生成六个 provenance split 图目录，所有边数与协议预期一致；已程序化验证 `hierarchy_mixed = full source graph` identity（两组候选图均确认）；已对六个 split 图运行结构诊断，artifact 位于 `artifacts/diagnostics/provenance_split_t41/`；已产出 `docs/experiment_reports/provenance_diagnostics.md`。核心发现：`synthesized_only` 图在两组候选上均为 longest chain = 1、multi-parent = 0、cycle rank = 0 的浅层星状森林；所有层级深度和多父节点分支均来自 `explicit_only`（`extends`）边；混合图从 synthesized 边继承的是叶子膨胀和碎片化，不是深度。Worker 未运行模型训练，未覆盖已有 diagnostics，未改动 T40 冻结语义。随后进入 adversarial reviewer 只读审查。
 
 - 2026-05-17：`docs/review/T41_review.md` 结论为 `PASS`，无 blocking issues。Captain 判定 `T41` 完成并将当前唯一任务切换到 `T42`；reviewer 的非阻塞意见不要求返修，但已转成 `T42` 执行约束：`explicit_only` 作为 primary split，`synthesized_only` 作为 controlled diagnostic，`hierarchy_mixed` 作为 T32/T33 reproducibility check，同时任务包补入 tool-side config Allowed Files。
+- 2026-05-18：`T42` 本轮已由 worker 完成执行。已创建 24 份 provenance sweep config（12 base + 12 sweep），在两组候选图的三个 provenance split 上运行了 GCN 和 HGCN 各 5-seed grouped retrieval sweep（共 60 次训练，零失败）。核心发现：(1) `explicit_only` 上 HGCN 首次在两组候选图上均超过 GCN（Field.Subfield MAP +0.1247, Order.Ring MAP +0.0557），且优势随 hop 深度单调增长；(2) `synthesized_only` 上 GCN 反超 HGCN，确认 HGCN 的双曲归纳偏置在平坦结构上是劣势；(3) `hierarchy_mixed` 结果与 T32/T33 完全一致（精确匹配），验证了 reproducibility 和 `hierarchy_mixed = full source graph` identity。新增报告 `docs/experiment_reports/provenance_seed_sweeps.md`。Worker 未覆盖已有 sweep artifact，未修改 T40/T41 冻结语义。随后进入 adversarial reviewer 只读审查。
+- 2026-05-18：`docs/review/T42_review.md` 结论为 `PASS`，无 blocking issues。Captain 判定 `T42` 完成并将当前唯一任务切换到 `T43`；reviewer 的精度提醒不要求返修，但已转成 `T43` 的文稿约束：必须注明 `Field.Subfield explicit_only` 的 `hop_4_plus` 均值仅基于 4/5 seeds，必须登记 `synthesized_only` 中 GCN aggregate 与 per-seed 记录的口径差异，且 `.claude/settings.json` 继续 rejected/excluded from commit。
+- 2026-05-18：`T43` 本轮已由 worker 完成执行。已产出 `docs/experiment_reports/provenance_summary.md`，汇总 T41 结构诊断与 T42 provenance-aware seed sweeps 的核心发现。报告明确写入：(1) `explicit_only` 是 primary evidence，HGCN 在该 split 上稳定领先（FS MAP +0.1247, OR MAP +0.0557），优势随 hop 深度单调增长；(2) `synthesized_only` 是 controlled diagnostic，GCN 在该 split 上优于 HGCN，确认双曲归纳偏置在平坦结构上是劣势；(3) `hierarchy_mixed` 是 full source graph reproducibility check，结果与 T32/T33 完全一致；(4) synthesized 边的作用是结构性稀释，不贡献层级深度；(5) 项目结论精化为 provenance-conditional：GCN 在 mixed graph 上仍领先，HGCN 只在 explicit-only hierarchy 上显现优势。精度约束已满足：FS `hop_4_plus` 基于 4/5 seeds 已注明；`synthesized_only` aggregate/per-seed 口径差异已登记为待核清项。Worker 未新增训练或修改 T40/T41/T42 冻结语义。随后进入 review。
+- 2026-05-18：`docs/review/T43_review.md` 结论为 `PASS`，无 blocking issues。Captain 判定 `T43` 完成并闭环 Milestone 4，将当前唯一任务切换到 `T50`。reviewer 的非阻塞问题分类为：Field.Subfield `synthesized_only` 在 `docs/experiment_reports/provenance_summary.md` Section 5.1 的 GCN MAP 表格值错误记为 deferred publication-precision fix（写入 `R29`）；`.claude/settings.json` 自动权限 diff 继续记为 rejected/excluded from commit；R04 继续保留为 provenance-conditional `Mitigated` 记为 accepted classification judgment。
+- 2026-05-18：`T50` 本轮已由 worker 完成执行。已产出 `docs/paper_outline.md`，包含 working title、one-paragraph positioning、central claim 与 non-claim 边界、5 条 contributions、evidence ladder（Milestone 1~4）、figures/tables plan、threats to validity、venue fit（ITP/CPP/FM）、proof-side bridge 说明、provenance-precision boundaries 和 draft section outline。所有内容均保持 provenance-conditional 口径：`explicit_only` 为 primary evidence，`synthesized_only` 为 controlled diagnostic，`hierarchy_mixed` 为 reproducibility check；未新增实验、未改动 T40~T43 冻结语义、未将 mixed graph 结论改写为 HGCN 整体优势。已绕开 R28/R29 未闭环精度问题。同步更新治理文档。Worker 未标记任务完成，等待 reviewer 只读审查。
+- 2026-05-18：`T51` 本轮已由 worker 完成执行。已产出 `docs/proof_side_mvp.md`，比较了三个候选 MVP 方向（ancestor explanation / declaration recommendation / premise retrieval），选择 ancestor explanation 作为 proof-side utility MVP。核心理由：(1) 直接映射 C2 和 C4；(2) 零新依赖、零新训练；(3) 把 provenance-conditional quality difference 变成可体验的 hierarchy navigation 工具；(4) 与 ITP/CPP venue fit 高度对齐。已正面回应 R31：ancestor explanation 是 provenance-aware quality comparison tool，不是简单的"列出祖先"。已明确输入、输出、验收标准、失败标准和不做事项。同步更新治理文档。Worker 未标记任务完成，等待 reviewer 只读审查。
+- 2026-05-18：`docs/review/T51_review.md` 结论为 `PASS`。Captain 判定 `T51` 正式完成并将 `D031` 从 pending review 更新为 `Accepted`；当前唯一任务切换为 `T52`，目标是把 ancestor explanation MVP 进一步收敛成唯一的下游 worker demo package。`R31` 已在本轮审查中获得接受，但 `T52/T52a` 后续实现仍必须保留 provenance-aware comparison mode，不能退化成纯祖先列表。
 ## T33 Completion Update (2026-05-17)
 
 - Worker 已在 `T32` 所使用的 reviewed grouped runner / split / seed path 下，完成 `Field.Subfield` 与 `Order.Ring` 两组正式 HGCN grouped 5-seed sweep。
@@ -185,6 +192,3 @@ Worker 完成后需要 reviewer 只读审查。Captain 根据 review 结果更�
 - 报告明确写出：`T32` 与 `T33` 可直接比较，而早期 grouped-vs-binary gain 仅作为 alignment evidence，不可直接与 formal matched sweep 数值混排。
 - Worker 未改动任何 sweep artifact，也未重新打开 `T32` 或 `T33`。
 - Review 结论：`PASS`。Milestone 3 可以闭合，项目可切换到 `T40`。
-
-
-

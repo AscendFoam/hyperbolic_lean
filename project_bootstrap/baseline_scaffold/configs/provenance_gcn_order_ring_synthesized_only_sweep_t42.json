@@ -1,0 +1,6 @@
+{
+  "base_config": "provenance_gcn_order_ring_synthesized_only_t42.json",
+  "model_type": "grouped_gcn",
+  "output_root": "artifacts/baselines/relation_seed_sweeps/provenance_gcn_order_ring_synthesized_only_t42",
+  "seeds": [7, 42, 123, 2026, 3407]
+}

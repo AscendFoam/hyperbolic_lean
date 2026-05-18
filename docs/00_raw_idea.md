@@ -1,6 +1,6 @@
 ﻿# 00 Raw Idea
 
-> 更新时间：2026-05-17
+> 更新时间：2026-05-18
 >
 > 项目名称：形式化图谱双曲化
 >
@@ -85,5 +85,9 @@ Go，但主线已收束：
 - 2026-05-17：`M3_review` 判定为 `PASS_WITH_WARNINGS`；允许进入 Milestone 4，但不应把当前证据升级为“已完成 clean-room reproducibility”或“已证明 HGCN 整体优于 GCN”。
 - 2026-05-17：`T40` 已通过 adversarial reviewer 判定 `PASS`；provenance split 配置与协议冻结已完成，当前唯一任务切换为 `T41`，用于实际生成六个 provenance split 图目录、校验预期边数并运行结构诊断。
 - 2026-05-17：T41 已通过 adversarial reviewer 判定 PASS；六个 provenance split 图已真实落盘并完成结构诊断，结论表明 explicit_only 才承载层级深度，synthesized_only 是 trivial controlled diagnostic，hierarchy_mixed 只作为 full-graph reproducibility check；当前唯一任务切换为 T42。
+- 2026-05-18：T42 已通过 adversarial reviewer 判定 PASS；provenance-aware GCN/HGCN 5-seed sweeps 已完成，结论收束为“hyperbolic advantage is provenance-conditional”：HGCN 仅在 explicit_only 上稳定领先，synthesized_only 与 hierarchy_mixed 上不成立；当前唯一任务切换为 T43，用于汇总结构诊断与实验结果并收束里程碑叙事。
+- 2026-05-18：`T50_review` 判定 `PASS_WITH_WARNINGS`；`docs/paper_outline.md` 已把 Milestone 1~4 的 reviewed 证据整理成 paper skeleton，并保持 provenance-conditional 口径：mixed graph 上 GCN 仍领先，HGCN 只在 explicit-only hierarchy 上显出优势。当前唯一任务切换为 `T51`，用于在 paper story 的 proof-side bridge 中选择一个最小可行 utility MVP。
+- 2026-05-18：`T51_review` 判定 `PASS`；`docs/proof_side_mvp.md` 已正式选定 ancestor explanation 作为 proof-side MVP，并获得 reviewer 接受其对 `R31` 的回应。当前唯一任务切换为 `T52`，用于把该 MVP 进一步拆成可直接派发给 worker 的最小 demo 实现任务包。
+
 
 

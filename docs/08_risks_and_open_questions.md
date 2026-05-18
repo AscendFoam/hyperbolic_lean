@@ -1,6 +1,6 @@
 ﻿# 08 Risks and Open Questions
 
-> 更新时间：2026-05-17
+> 更新时间：2026-05-18（T51 review 后更新）
 
 ## 1. Active Risks
 
@@ -9,9 +9,9 @@
 | R01 | 项目叙事回退到“证明双曲必胜” | High | Active | 所有文档和任务包默认使用 benchmark / protocol / diagnostics 主线 |
 | R02 | grouped retrieval 与 hop bucket 报告入口已通过 T12/T13/T14 review 收口；剩余风险是后续误把 smoke artifact 当正式 benchmark 结果 | Low | Mitigated | 文档明确 smoke artifact 只用于输出链 spot-check；正式结果必须另走 seed sweep 与 diagnostics |
 | R03 | 数据快照、版本和 config 仍有部分 unknown，导致结果不可复现 | High | Active | T10 reviewed manifest 与 T11 reviewed data card 已保留 unknown 限制；后续只能用可复现实据关闭未知字段 |
-| R04 | relation layer 过浅，双曲价值不足 | High | Active | `T20` 已确认大多数 real-graph / hierarchy-focused relation layer 仍偏浅；后续优先转向 `mathlib_order_focus_v1` 中更深的模块级候选，但在训练验证前仍不把双曲设为主承诺 |
+| R04 | relation layer 过浅，双曲价值不足 | High | Mitigated | `T43` 已正式将 Milestone 4 结论收束为 provenance-conditional：GCN 在 mixed graph 上仍领先，HGCN 只在 `explicit_only` hierarchy 上显现优势（FS MAP +0.1247, OR MAP +0.0557）。该优势随 hop 深度单调增长（+0.03 at hop_2 → +0.25 at hop_4_plus），但在 `hierarchy_mixed` 与 `synthesized_only` 上不成立。R04 的缓解是 provenance-conditional 的，不是对整体 relation layer 的无条件结论。 |
 | R05 | full Mathlib trace 成本过高或再次卡住 | Medium | Active | 优先已有产物、模块级 probe、小仓库 trace |
-| R06 | synthesized relation 语义复杂，负采样或层级解释失真 | High | Mitigated | `T41` provenance diagnostics 已确认：`synthesized_only` 图在两组候选上均为 longest chain = 1、multi-parent = 0、cycle rank = 0 的浅层星状森林；synthesized 边不贡献层级深度，只贡献叶子膨胀和碎片化。该结构性发现替代了原先对"负采样失真"的泛化担忧，使风险从语义不确定收窄为明确的结构事实。剩余风险：synthesized 边在 T42 模型训练中是否仍可能通过 degree 或 degree-correlated pattern 间接影响 retrieval 性能 |
+| R06 | synthesized relation 语义复杂，负采样或层级解释失真 | High | Mitigated | `T42` provenance seed sweeps 已进一步确认：`synthesized_only` 上 GCN 在两组候选图上均优于 HGCN（FS MAP GCN 1.0000 vs HGCN 0.6857；OR MAP GCN 0.8453 vs HGCN 0.7560），且该 split 无 hop bucket 结构（longest chain = 1）。synthesized 边不贡献层级深度，且其存在在混合图中足以抵消 HGCN 在 explicit-only 层的优势。结构性风险已从语义不确定收窄为 provenance-composition 条件性事实 |
 | R07 | binary training 与 grouped retrieval 评测错配 | High | Mitigated | `T31` 已通过 adversarial review；reviewed grouped retrieval runner 已补入最小 query-grouped training 分支，并用 grouped val MAP 做 checkpoint selection。`T32` 也已在 `Field.Subfield` 与 `Order.Ring` 上用该路径完成真实 5-seed GCN grouped sweep。旧 BCE runners 仍保留为 legacy/auxiliary path，后续正式 grouped sweep 必须继续使用 grouped runner |
 | R08 | 后续 worker 越界修改或重复做历史任务 | Medium | Active | `docs/04_task_board.md`、`docs/tasks/` 与根目录入口文档明确 Allowed files 与 Forbidden scope |
 | R09 | 论文贡献被已有 Lean graph/export 工作稀释 | Medium | Active | 强调协议、诊断、条件性双曲结论和 proof-side bridge |
@@ -32,16 +32,20 @@
 | R24 | `T33` 协议不匹配风险已关闭：matched grouped HGCN sweep 已完成 | Low | Mitigated | `T33` 使用了与 `T32` 相同的 grouped runner、split、seed list 与参数预算；报告与 artifact bundle 已成功生成并通过 review。 |
 | R25 | Milestone 3 虽已有 smoke、正式 sweep 和 summary 报告，但尚未完成”从全新干净环境重新拉起正式 grouped benchmark”的独立复现闭环 | Medium | Active | 允许进入 T40/T41/T42，但对外结论继续保持”已有 reviewed 运行证据”而非”已完成 clean-room reproducibility”；后续需用环境锁定证据或 fresh-environment rerun 关闭该风险 |
 | R26 | T40 冻结了 provenance split 配置与协议，但 split 实际生成尚未执行 | Medium | Mitigated | `T41` 已运行 T40 冻结配置生成六个 provenance split 图目录；所有边数与协议预期一致；`hierarchy_mixed = full source graph` identity 已程序化验证 |
-| R27 | `synthesized_only` 图在两组候选上均为 longest chain = 1 的平坦星状森林，grouped retrieval 几乎无排序难度，T42 若在此图上训练模型可能导致退化为 trivial task | Medium | Active | `T41` 已经通过 review 并确认该结构事实；T42 必须把 `synthesized_only` sweep 视为 controlled diagnostic，不要期望其检索指标能支持模型对比结论；`explicit_only` 才是检验双曲优势的 primary provenance split |
+| R27 | `synthesized_only` 图在两组候选上均为 longest chain = 1 的平坦星状森林，grouped retrieval 几乎无排序难度，T42 若在此图上训练模型可能导致退化为 trivial task | Medium | Mitigated | `T42` 已把 `synthesized_only` sweep 作为 controlled diagnostic 完成：GCN 在 FS 上达到完美 1.0000（确认 trivial task），HGCN 反而低于 GCN（确认双曲偏置在平坦结构上是劣势）。该 split 结果不支持模型对比主结论，但作为 controlled diagnostic 已完成其使命 |
+| R28 | `T42` 的 synthesized_only 汇总口径仍有待核清，若在正式总结中把 aggregate 直接写成全部 per-seed 均为 1.0，会造成事实精度问题 | Medium | Active | `T43` 已在 `docs/experiment_reports/provenance_summary.md` Section 5.2 显式登记该差异：aggregate.json 显示 MAP = 1.0000 但 per_seed_results 中 seed 123 MAP = 0.8100, seed 2026 MAP = 0.9029。主结论不受影响（controlled diagnostic 定性不变），但外部发表前必须核清根因。 |
+| R29 | `docs/experiment_reports/provenance_summary.md` Section 5.1 中 Field.Subfield `synthesized_only` 的 GCN MAP 表格单元写错；若后续 paper-facing 文档直接引用该表，会与 T42 artifact 和 Section 5.2 叙述冲突 | Medium | Active | `docs/review/T43_review.md` 已确认这是 copy-paste 文稿错误，不推翻 Milestone 4 主结论，但外部发表前必须修正。T50 及后续 paper-facing 文档在 `R29` 关闭前不得把该错误单元当作权威数值，应沿用 provenance-conditional 定性结论并保留 `R28`/`R29` 精度边界。`docs/paper_outline.md` 已显式绕开该错误，注明使用 verified artifact values。 |
+| R30 | 论文 skeleton 贡献结构可能过宽，5 条 contributions 在 ITP/CPP 页数限制内难以充分展开 | Medium | Active | `T50_review` 已将该 warning 分类为 deferred；`docs/paper_outline.md` 当前保留 5 条 contributions 结构，但 `T51`/后续 drafting/T53 里应重新判断是否合并（如 C1+C5 合并为 pipeline+alignment），或把部分贡献降级为 appendix |
+| R31 | proof-side bridge 推荐的 ancestor explanation MVP 可能过于轻量，不足以支撑 CPP 的 tool/demo 要求 | Medium | Mitigated | `T51_review` 已以 `PASS` 接受 `docs/proof_side_mvp.md` Section 3.2 的回应：ancestor explanation 不是"列出祖先"而是 provenance-aware quality comparison tool——用户可直观看到同一 declaration 在 `explicit_only` vs `hierarchy_mixed` 上的 retrieval 质量差异和 hop-depth-dependent gradient。这满足 CPP tool demo 的 "artifact is functional and solves a real problem" 标准。后续 `T52`/实现阶段仍必须把 provenance-aware comparison mode 写成硬边界，避免 demo 退化为纯祖先列表。 |
 
 ## 2. Open Questions
 
 1. `docs/diagnostics_protocol.md` 中的经验阈值在 `T30+` / `T40+` 新证据进入后，是否仍应保持当前分层，还是需要重校准？
 2. `closure expansion ratio` 是否应继续作为主门控，还是在后续版本中改成更稳定的 closure-cost 组合指标？
-3. synthesized relation 是否真的降低 hierarchy 深度，还是主要改变候选分布和负采样难度？**Partially answered by T41**: synthesized 边在两组候选图上确实不贡献层级深度（longest chain = 1, multi-parent = 0），而是引入叶子膨胀和碎片化；对负采样和候选分布的影响仍需 T42 模型训练确认。
-4. provenance split 后，`explicit-only / synthesized-only / mixed` 是否会改变当前 “GCN 整体领先、HGCN 未建立优势” 的 grouped 结论？
-5. HGCN 若仍不赢，是否能在更深 hop bucket 或低维预算下形成局部价值？
-6. proof-side utility 应优先选择 ancestor explanation、declaration recommendation，还是 premise retrieval 正则化？
+3. synthesized relation 是否真的降低 hierarchy 深度，还是主要改变候选分布和负采样难度？**Answered by T41+T42**: synthesized 边不贡献层级深度（T41: longest chain = 1, multi-parent = 0）；T42 确认 synthesized_only 上 GCN 反超 HGCN，证明双曲偏置在平坦结构上确实是劣势。synthesized 边在混合图中的作用是结构性稀释——它们不贡献深度但膨胀叶子比例，足以抵消 HGCN 在 explicit 层的优势。
+4. provenance split 后，`explicit-only / synthesized-only / mixed` 是否会改变当前 “GCN 整体领先、HGCN 未建立优势” 的 grouped 结论？**Answered by T42+T43**: 结论随 provenance split 发生质变。explicit_only 上 HGCN 首次在两组候选图上均超过 GCN；synthesized_only 上 GCN 反超；hierarchy_mixed（等同 full source graph）上 GCN 仍领先。T43 已正式把 Milestone 4 结论改写为 provenance-conditional narrative：GCN 在 mixed graph 上仍领先，HGCN 只在 explicit-only hierarchy 上显现优势。原 Milestone 3 结论”GCN overall ahead”对混合图仍然成立，但不适用于 explicit-only split。
+5. HGCN 若仍不赢，是否能在更深 hop bucket 或低维预算下形成局部价值？**Partially answered by T42+T43**: 在 `explicit_only` 上，HGCN 的优势随 hop 深度单调增长（FS: +0.05 at hop_2 → +0.25 at hop_4_plus; OR: +0.03 at hop_2 → +0.27 at hop_4_plus），证明双曲几何确实在更深层祖先链上释放价值。但该优势是 provenance-conditional 的：在 hierarchy_mixed 上不存在，在 synthesized_only 上反而为负。低维预算下的对照尚未单独测试。
+6. proof-side utility 应优先选择 ancestor explanation、declaration recommendation，还是 premise retrieval 正则化？**Answered by T51**: 选择 ancestor explanation 作为 proof-side MVP。`docs/proof_side_mvp.md` 比较了三个候选方向并给出选择理由：ancestor explanation 直接映射 C2/C4、零新依赖零新训练、把 provenance-conditional finding 变成可体验的工具。Declaration recommendation 和 premise retrieval 分别因"需要新任务定义"和"引入 LeanDojo 依赖"被排除。R31 已正面回应。
 7. 是否需要把 `project_bootstrap/` 中的脚手架整理成正式 `src/` 包，还是继续以实验包形式维护？
 8. 哪一种可复现实据应被视为关闭 `T10` 剩余 unknowns 的规范来源：导出的 conda/pip lock、trace 元数据，还是单独的机器可读版本清单？
 9. `explicit-only / synthesized-only / mixed` 是否应在后续数据快照中成为 `edges.csv` 的一等字段，而不是继续依赖派生图目录名与诊断产物表达？
@@ -68,6 +72,7 @@
 | D15 | 在 grouped 汇总报告中补入显式 config diff 表与可比性声明 | Closed by `T34` review：`docs/experiment_reports/grouped_training_summary.md` 已补入 config diff 表与 matched grouped comparability statement | 若后续新增新的 grouped baseline family，需要重新维护可比性边界 |
 | D16 | 为 `grouped_training_summary.md` 的正式结果表补齐 Recall@1/3/5/10 汇总列 | T34 review 确认当前 MAP / nDCG / nDCG@10 已足以支持主结论；Recall 列缺失不阻塞里程碑关闭 | 下一次修改 grouped summary 报告，或需要把 Recall 作为主要展示面时 |
 | D17 | 为 `grouped_training_summary.md` Section 6 补入历史 binary 数值来源的具体文件路径 | T34 review 确认历史数值可追溯，但正文未直接写出源文件名 | 下一次修改 grouped summary 报告时，把 `docs/阶段总结（2026-05-02，grouped retrieval training）.md` 显式写入正文 |
+| D18 | 修正 `docs/experiment_reports/provenance_summary.md` Section 5.1 中 Field.Subfield `synthesized_only` 的错误 GCN MAP 表格单元 | T43 review 判定该问题不阻塞 Milestone 4 收口，但会影响外部发表级文稿精度 | 下一次允许修改 `docs/experiment_reports/provenance_summary.md` 或整理正式 paper-facing 图表时 |
 
 ## 4. Risk Handling Rules
 
@@ -85,5 +90,3 @@
   - 跨协议绝对数值不应被揉成一个平面排行榜。
 - 当前保留风险：
   - 读者仍可能把早期 grouped-vs-binary gain 误读成与 `T32` / `T33` 完全同口径的 formal sweep；`T34` 已显式提示，但后续文档精修仍应继续压缩这种误读空间。
-
-

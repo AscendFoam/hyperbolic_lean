@@ -1,6 +1,6 @@
 ﻿# 05 Decision Log
 
-> 更新时间：2026-05-17
+> 更新时间：2026-05-18（T51 review 后更新）
 >
 > 规则：只记录会影响后续任务选择、论文叙事、评测协议或项目状态的决策。
 
@@ -229,3 +229,40 @@
 - 决策：`T41` 判定为 `PASS`，标记完成；当前唯一任务切换到 `T42`。
 - Non-blocking 处理：`relation_split_summary.json` 单文件覆盖记为 accepted script-output limitation，不回滚、不阻断；`graph_diagnostics_provenance_split_t41.json` 越出 T41 Allowed Files 记为 accepted low-severity packaging gap，并通过细化 `T42` 任务包补齐 tool-side config 边界；`synthesized_only` longest chain = 1 记为 active execution constraint，要求 `T42` 将其仅作为 controlled diagnostic。
 - 后果：项目从“split 落盘与结构诊断”推进到“provenance-aware seed sweep”；下一轮只应执行 `T42`，并重点判断 HGCN 是否仅在 `explicit_only` 图上表现出结构性优势。
+
+## D028: T42 通过 adversarial review 并切换到 T43
+
+- 日期：2026-05-18
+- 状态：Accepted
+- 依据：`docs/review/T42_review.md`
+- 决策：`T42` 判定为 `PASS`，标记完成；当前唯一任务切换到 `T43`。
+- Non-blocking 处理：Field.Subfield `explicit_only` 的 `hop_4_plus` 均值仅基于 4/5 seeds，记为 accepted precision note，并要求 `T43` 在正式总结中显式注明；`synthesized_only` 中 GCN aggregate 与 per-seed 记录的口径差异记为 deferred follow-up，写入后续 summary/risk 约束，未核清前不得写成“全部 per-seed 均为 1.0”；`.claude/settings.json` 自动权限 diff 继续记为 rejected/excluded from commit；R04 的收口必须按 provenance-conditional 口径书写。
+- 后果：项目从”provenance-aware seed sweep”推进到”Milestone 4 叙事收口”。`T43` 只做 summary/governance 收口，不新增实验；其输出将决定项目能否以精确口径进入 Milestone 5。
+
+## D029: T43 通过 milestone review，Milestone 4 闭环并切换到 T50
+
+- 日期：2026-05-18
+- 状态：Accepted
+- 依据：`docs/review/T43_review.md`、`docs/experiment_reports/provenance_summary.md`、T41/T42 reviewed outputs
+- 决策：`T43` 判定为 `PASS`，标记完成；Milestone 4 的正式结论收束为 provenance-conditional：(1) `explicit_only` 是 primary evidence，HGCN 仅在该 split 上稳定领先；(2) `synthesized_only` 是 controlled diagnostic，不支持主模型对比主结论；(3) `hierarchy_mixed` 是 full source graph reproducibility check，而不是新的图族发现；(4) synthesized relation 的作用是结构性稀释，不贡献层级深度；(5) 项目结论从“GCN overall ahead”精化为“GCN 在 mixed graph 上仍领先，HGCN 只在 explicit-only hierarchy 上显现优势”。当前唯一任务切换到 `T50`。
+- Non-blocking 分类：Field.Subfield `synthesized_only` 在 `docs/experiment_reports/provenance_summary.md` Section 5.1 的 GCN MAP 表格值错误记为 deferred publication-precision fix，并写入 `R29`；`.claude/settings.json` 自动权限 diff 记为 rejected/excluded from commit；R04 继续保持 `Mitigated` 但明确为 provenance-conditional mitigation，记为 accepted classification judgment。
+- 精度边界：Field.Subfield `explicit_only` 的 `hop_4_plus` 均值基于 4/5 seeds（已注明）；`synthesized_only` GCN aggregate 与 per-seed 口径差异继续记为 `R28`；Section 5.1 的错误表格单元继续记为 `R29`，外部发表前必须修正。
+- 后果：项目可以从 Milestone 4 推进到 Milestone 5 的论文骨架任务，但后续 paper-facing 文档必须保持 provenance-conditional 口径，并显式绕开 `R28`/`R29` 的未闭环精度问题。
+
+## D030: T50 paper skeleton 保持 provenance-conditional 口径
+
+- 日期：2026-05-18
+- 状态：Accepted
+- 依据：T50 任务包、T40~T43 reviewed outputs、venue 对照文档
+- 决策：`docs/paper_outline.md` 采用 5 条 contributions 结构（pipeline / protocol / diagnostics / provenance-conditional finding / training alignment），venue 优先级为 ITP/CPP > FM > SEFM/ICFEM；proof-side bridge 暂把 ancestor explanation 作为默认候选起点，但最终 MVP 选择仍交由 `T51` 在比较 alternatives 后裁决。
+- Non-blocking 分类：`docs/00_raw_idea.md`、`docs/01_feasibility_report.md`、`docs/03_architecture.md`、`docs/06_eval_protocol.md` 的治理状态同步越界编辑记为 accepted low-severity hygiene；worker 修改 `docs/tasks/M5_paper/T50_paper_skeleton.md` 记为 rejected future precedent，不要求返修但不构成后续 worker 的可复用先例；`R30`（贡献数过宽）与 `R31`（ancestor explanation 可能过轻）记为 deferred，并继续保留在风险表中；`.claude/settings.json` 继续 rejected/excluded from commit。
+- 后果：`T50` 判定为 `PASS_WITH_WARNINGS` 并标记完成，当前唯一任务切换到 `T51`；paper outline 中的 numeric anchors 在 `R28`/`R29` 关闭前不得直接引用未核清的表格单元。
+
+## D031: T51 选择 ancestor explanation 作为 proof-side MVP
+
+- 日期：2026-05-18
+- 状态：Accepted
+- 依据：`docs/paper_outline.md` Section 9、T40~T43 reviewed outputs、R31 risk analysis
+- 决策：选择 **ancestor explanation** 作为 proof-side utility MVP。比较了三个候选方向：(1) ancestor explanation（低复杂度，直接映射 C2/C4，零新依赖）；(2) relation-aware declaration recommendation（中复杂度，需要新任务定义）；(3) premise retrieval demo（高复杂度，需要 LeanDojo 桥接，违反 forbidden scope）。选择 ancestor explanation 的核心理由是它把 provenance-conditional finding 从表格数字变成用户可体验的 hierarchy navigation 质量差异，且与 ITP/CPP venue fit 高度对齐。
+- R31 回应：ancestor explanation 不是"列出祖先"，而是 provenance-aware quality comparison tool——用户可直观看到同一 declaration 在 `explicit_only` vs `hierarchy_mixed` 上的 retrieval 质量差异和 hop-depth-dependent gradient。这满足 CPP tool demo 的 "artifact is functional and solves a real problem" 标准。
+- 后果：`T52` 应基于此选择编写 ancestor explanation 的最小 demo 任务包，包括 CLI 入口、model artifact loading、provenance comparison mode 输出格式和验收命令。不引入新依赖、不重新训练模型、不修改已有 protocol。
