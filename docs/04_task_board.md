@@ -1,6 +1,6 @@
 ﻿# 04 Task Board
 
-> 更新时间：2026-05-18（T52 review 后更新）
+> 更新时间：2026-05-19（T52a review PASS 后更新）
 >
 > Captain 原则：每轮只推进一个 `Current Unique Task`。Worker 不自动领取下一任务。
 
@@ -8,7 +8,7 @@
 
 - 2026-05-17 captain update: `T34` 已通过 milestone review，Milestone 3 收口完成。
 - 状态：Continue
-- 当前阶段：Milestone 5 已启动；`T50` 已通过 review 并收口，`T51` 已通过 review 并完成 MVP 选型，当前唯一任务切换为 `T52`
+- 当前阶段：Milestone 5 已启动；`T50`/`T51`/`T52`/`T52a` 已完成并通过审查，当前唯一任务切换为 `T53`
 - 当前主线：`benchmark / protocol / diagnostics`
 - 当前不主张：把“已经证明 HGCN 稳定优于 GCN”写成既成事实
 - 当前证据等级：已有真实实验与工程原型，但尚未冻结成正式 benchmark artifact
@@ -58,39 +58,37 @@
 
 ## Current Unique Task
 
-`T52a`: 实现 ancestor explanation proof-side demo CLI，直接加载 T42 reviewed embeddings，支持 single-query 与 `explicit_vs_mixed` provenance comparison。
+`T53`: 完成 Milestone 5 milestone review，根据已 reviewed 的 protocol / benchmark / provenance / proof-side evidence 判断项目进入 `Continue` / `Narrow` / `Resume-ready`。
 任务包如下：
 
-`docs/tasks/M5_paper/T52a_ancestor_explanation_demo.md`
+`docs/tasks/M5_paper/T53_milestone_review.md`
 
 ## Why Now
 
-`T52_review` 已判定 `PASS`，说明 proof-side demo 的实现边界已经冻结完成。当前最关键的是把这个已打包的设计真正落地成可运行脚本与 demo report，同时保留 provenance-aware comparison mode、node ordering sanity check 与 paper-bridge 叙事边界。
+`docs/review/T52a_review.md` 已给出 `PASS`，表明 ancestor explanation demo CLI 与 demo report 已真实落地。当前最关键的不再是继续开发 demo，而是做一次阶段性 milestone review，判断项目应继续推进、收窄叙事，还是进入 resume-ready 整理态。
 ## Worker Package Summary
 
-- Task ID: `T52a`
+- Task ID: `T53`
 - Allowed files:
-  - `project_bootstrap/baseline_scaffold/src/proof_side_ancestor_explanation.py`
-  - `docs/experiment_reports/ancestor_explanation_demo_report.md`
+  - `docs/review/T53_milestone_review.md`
   - `docs/05_decision_log.md`
   - `docs/04_task_board.md`
   - `docs/07_handoff.md`
   - `docs/08_risks_and_open_questions.md`
 - Forbidden scope:
-  - 不重新训练模型，不修改任何已有 runner 或 training 代码
-  - 不承诺端到端 theorem proving，不把 proof-side MVP 写成“已证明可提升完整证明成功率”
-  - 不引入新的大型依赖，不把当前任务扩张成多条 proof-side 支线并行开发
-  - 不改写 T43/T50/T51 已确认的 provenance-conditional 论文口径，不忽略 `R28`/`R29`/`R31`/`R32`
-- T52/T52a handoff notes:
-  - Authoritative implementation scope is `docs/tasks/M5_paper/T52a_ancestor_explanation_demo.md`.
-  - `comparison mode` 是硬边界，不是可选增强项。
-  - `--declaration-name` 必须与目标 graph 的 `declarations.csv` 精确匹配。
-  - embedding artifact path 必须使用 `provenance_{model}_{candidate}_{provenance}_t42/provenance_{model}_{candidate}_{provenance}_t42_seed{seed}` 精确模式。
-  - 必须做 node ordering sanity check；若对不齐就报错退出，不能输出伪结果。
+  - 不新增任何实验、seed sweep、trace、split 生成或新 demo
+  - 不修改任何 `project_bootstrap/`、`data/`、`artifacts/` 下的代码或产物
+  - 不重写 `docs/02_experiment_plan.md`
+  - 不推翻已经通过 review 的历史 verdict，只能基于 reviewed evidence 做 milestone 归纳
+  - 不把 `R28`/`R29`/`R30`/`R31` 写成已全部关闭
+- T52a/T53 handoff notes:
+  - `T52a` 已在 adversarial review 中被判定为 `PASS`，不再是 current task。
+  - `T53` 是只读 milestone review 任务，目标是裁决项目状态，不是继续实现新功能。
+  - proof-side demo 的关键事实必须直接继承 `T52a_review` 和 demo report，不重做未 review 的新分析。
 - Verification:
-  - `rg -n "Task ID|Goal|Why Now|Allowed Files|Forbidden Scope|Inputs to Read|Expected Output|Verification|Docs to Update|Reviewer Type" docs\tasks\M5_paper\T52a_ancestor_explanation_demo.md`
-  - `rg -n "declaration-name|declarations.csv|explicit_vs_mixed|node_embeddings.npy|run_manifest.json|sanity check|adversarial" docs\tasks\M5_paper\T52a_ancestor_explanation_demo.md`
-  - `python -m py_compile project_bootstrap\baseline_scaffold\src\proof_side_ancestor_explanation.py`
+  - `rg -n "Task ID|Goal|Why Now|Allowed Files|Forbidden Scope|Inputs to Read|Expected Output|Verification|Docs to Update|Reviewer Type" docs\tasks\M5_paper\T53_milestone_review.md`
+  - `rg -n "Continue|Narrow|Resume-ready|Evidence|Residual Risks|Recommended Next Task Shape" docs\review\T53_milestone_review.md`
+  - `rg -n "T52a|T53|Current Unique Task" docs\04_task_board.md docs\07_handoff.md docs\05_decision_log.md`
 
 ## Execution Note
 - 2026-05-10：`T00` 已通过 review，根目录入口文档与相关 handoff 文档已收口。
@@ -170,6 +168,8 @@
 - 2026-05-18：`T51` 本轮已由 worker 完成执行。已产出 `docs/proof_side_mvp.md`，比较了三个候选 MVP 方向（ancestor explanation / declaration recommendation / premise retrieval），选择 ancestor explanation 作为 proof-side utility MVP。核心理由：(1) 直接映射 C2 和 C4；(2) 零新依赖、零新训练；(3) 把 provenance-conditional quality difference 变成可体验的 hierarchy navigation 工具；(4) 与 ITP/CPP venue fit 高度对齐。已正面回应 R31：ancestor explanation 是 provenance-aware quality comparison tool，不是简单的"列出祖先"。已明确输入、输出、验收标准、失败标准和不做事项。同步更新治理文档。Worker 未标记任务完成，等待 reviewer 只读审查。
 - 2026-05-18：`docs/review/T51_review.md` 结论为 `PASS`。Captain 判定 `T51` 正式完成并将 `D031` 从 pending review 更新为 `Accepted`；当前唯一任务切换为 `T52`，目标是把 ancestor explanation MVP 进一步收敛成唯一的下游 worker demo package。`R31` 已在本轮审查中获得接受，但 `T52/T52a` 后续实现仍必须保留 provenance-aware comparison mode，不能退化成纯祖先列表。
 - 2026-05-18：`T52` 本轮已由 worker 完成执行。已重写 `docs/tasks/M5_paper/T52a_ancestor_explanation_demo.md`，作为唯一下游 demo 实现任务包。该包指定：(1) 新建 `proof_side_ancestor_explanation.py` CLI 脚本，加载 T42 reviewed artifacts 的 `node_embeddings.npy` 进行 ancestor retrieval；(2) 支持 single-query mode 和 provenance comparison mode（`explicit_only` vs `hierarchy_mixed`）；(3) 明确 CLI 参数（declaration-name、candidate-graph、provenance-mode、model-type、seed、comparison-mode、output-format）；(4) 包含 critical implementation note 关于 node ordering alignment；(5) 要求新建 demo report 文档；(6) Allowed files 限定为 2 个新文件 + 4 个治理文档，禁止修改任何已有代码。同步更新治理文档。Worker 未标记任务完成，等待 reviewer 只读审查。
+- 2026-05-18：`T52a` 本轮已由 worker 完成执行。已新建 `project_bootstrap/baseline_scaffold/src/proof_side_ancestor_explanation.py` CLI 脚本和 `docs/experiment_reports/ancestor_explanation_demo_report.md`。脚本支持：(1) single-query mode（给定 declaration name + candidate graph + provenance mode + model type，输出 ranked ancestor list 和 retrieval metrics）；(2) `explicit_vs_mixed` comparison mode（对比同一 declaration 在 explicit_only 和 hierarchy_mixed 上的 retrieval 质量）；(3) text 和 JSON 输出格式；(4) node ordering sanity check（embedding shape 与 declarations.csv 行数不匹配时报错退出）。已在 CommRing（Field.Subfield）和 StrictOrderedCommRing（Order.Ring）上验证通过，后者展示了戏剧性的 provenance quality difference（HGCN explicit_only MAP 0.6438 vs hierarchy_mixed MAP 0.1492）。Worker 未标记任务完成，等待 adversarial reviewer 只读审查。
+ - 2026-05-19：`docs/review/T52a_review.md` 结论为 `PASS`。Captain 判定 `T52a` 正式完成，`D033` 从 pending review 更新为 `Accepted`；当前唯一任务切换为 `T53`，目标是完成 Milestone 5 milestone review 并给出 `Continue` / `Narrow` / `Resume-ready` 裁决。
 ## T33 Completion Update (2026-05-17)
 
 - Worker 已在 `T32` 所使用的 reviewed grouped runner / split / seed path 下，完成 `Field.Subfield` 与 `Order.Ring` 两组正式 HGCN grouped 5-seed sweep。

@@ -1,6 +1,6 @@
 ﻿# 08 Risks and Open Questions
 
-> 更新时间：2026-05-18（T52 review 后更新）
+> 更新时间：2026-05-19（T52a review PASS 后更新）
 
 ## 1. Active Risks
 
@@ -37,7 +37,7 @@
 | R29 | `docs/experiment_reports/provenance_summary.md` Section 5.1 中 Field.Subfield `synthesized_only` 的 GCN MAP 表格单元写错；若后续 paper-facing 文档直接引用该表，会与 T42 artifact 和 Section 5.2 叙述冲突 | Medium | Active | `docs/review/T43_review.md` 已确认这是 copy-paste 文稿错误，不推翻 Milestone 4 主结论，但外部发表前必须修正。T50 及后续 paper-facing 文档在 `R29` 关闭前不得把该错误单元当作权威数值，应沿用 provenance-conditional 定性结论并保留 `R28`/`R29` 精度边界。`docs/paper_outline.md` 已显式绕开该错误，注明使用 verified artifact values。 |
 | R30 | 论文 skeleton 贡献结构可能过宽，5 条 contributions 在 ITP/CPP 页数限制内难以充分展开 | Medium | Active | `T50_review` 已将该 warning 分类为 deferred；`docs/paper_outline.md` 当前保留 5 条 contributions 结构，但 `T51`/后续 drafting/T53 里应重新判断是否合并（如 C1+C5 合并为 pipeline+alignment），或把部分贡献降级为 appendix |
 | R31 | proof-side bridge 推荐的 ancestor explanation MVP 可能过于轻量，不足以支撑 CPP 的 tool/demo 要求 | Medium | Mitigated | `T51_review` 已以 `PASS` 接受 `docs/proof_side_mvp.md` Section 3.2 的回应：ancestor explanation 不是"列出祖先"而是 provenance-aware quality comparison tool——用户可直观看到同一 declaration 在 `explicit_only` vs `hierarchy_mixed` 上的 retrieval 质量差异和 hop-depth-dependent gradient。这满足 CPP tool demo 的 "artifact is functional and solves a real problem" 标准。后续 `T52`/实现阶段仍必须把 provenance-aware comparison mode 写成硬边界，避免 demo 退化为纯祖先列表。 |
-| R32 | ancestor explanation demo 加载 T42 `node_embeddings.npy` 时节点顺序可能与图数据不一致，导致 retrieval 结果全部错位 | High | Active | `T52a` 任务包已写入 critical implementation note：必须复用 `common.load_declaration_graph()` 的节点顺序来对齐 embedding 行号。T52a worker 必须在首次加载后立即做 sanity check（验证 embedding 维度与节点数一致，且至少一个已知 ancestor 的排名在合理范围内）。 |
+| R32 | ancestor explanation demo 加载 T42 `node_embeddings.npy` 时节点顺序可能与图数据不一致，导致 retrieval 结果全部错位 | High | Mitigated | `T52a` 已实现 sanity check：加载 embedding 后立即验证 `len(declarations) == embeddings.shape[0]`，不匹配则报错退出。节点顺序通过 `common.load_declaration_graph()` 的 `declarations.csv` 行序对齐。已通过实际运行验证：89 节点（Field.Subfield explicit_only）、125 节点（Order.Ring explicit_only）、133 节点（Field.Subfield hierarchy_mixed）均通过 shape check，且 ground truth 祖先在 top-10 内有合理命中。 |
 
 ## 2. Open Questions
 

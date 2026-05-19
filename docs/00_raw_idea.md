@@ -88,7 +88,7 @@ Go，但主线已收束：
 - 2026-05-18：T42 已通过 adversarial reviewer 判定 PASS；provenance-aware GCN/HGCN 5-seed sweeps 已完成，结论收束为“hyperbolic advantage is provenance-conditional”：HGCN 仅在 explicit_only 上稳定领先，synthesized_only 与 hierarchy_mixed 上不成立；当前唯一任务切换为 T43，用于汇总结构诊断与实验结果并收束里程碑叙事。
 - 2026-05-18：`T50_review` 判定 `PASS_WITH_WARNINGS`；`docs/paper_outline.md` 已把 Milestone 1~4 的 reviewed 证据整理成 paper skeleton，并保持 provenance-conditional 口径：mixed graph 上 GCN 仍领先，HGCN 只在 explicit-only hierarchy 上显出优势。当前唯一任务切换为 `T51`，用于在 paper story 的 proof-side bridge 中选择一个最小可行 utility MVP。
 - 2026-05-18：`T51_review` 判定 `PASS`；`docs/proof_side_mvp.md` 已正式选定 ancestor explanation 作为 proof-side MVP，并获得 reviewer 接受其对 `R31` 的回应。当前唯一任务切换为 `T52`，用于把该 MVP 进一步拆成可直接派发给 worker 的最小 demo 实现任务包。
-- 2026-05-18：`T52_review` 判定 `PASS`；ancestor explanation demo 的实现边界已冻结为 `docs/tasks/M5_paper/T52a_ancestor_explanation_demo.md`。当前唯一任务切换为 `T52a`，用于真实实现 CLI demo 与 demo report，同时保留 provenance-aware comparison mode 与 node ordering sanity check 这两个硬边界。
+- 2026-05-19：`docs/review/T52a_review.md` 判定 `PASS`；ancestor explanation demo CLI 与 demo report 已完成并通过 adversarial review。当前唯一任务切换为 `T53`，用于基于 Milestone 1~5 的 reviewed evidence 完成 milestone review，判断项目应进入 `Continue` / `Narrow` / `Resume-ready`。
 
 
 

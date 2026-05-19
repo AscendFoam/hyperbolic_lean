@@ -1,6 +1,6 @@
 ﻿# 05 Decision Log
 
-> 更新时间：2026-05-18（T52 review 后更新）
+> 更新时间：2026-05-19（T52a review PASS 后更新）
 >
 > 规则：只记录会影响后续任务选择、论文叙事、评测协议或项目状态的决策。
 
@@ -274,3 +274,11 @@
 - 依据：`docs/proof_side_mvp.md`、`docs/paper_outline.md`、T42 reviewed artifacts 结构
 - 决策：`T52_review` 判定为 `PASS`，`T52` 正式完成。`T52a` 任务包作为唯一下一任务被接受并冻结以下设计决策：(1) **artifact loading 策略**：直接加载 T42 provenance sweep 的 `node_embeddings.npy`，不重新 inference 或加载 checkpoint；(2) **代码入口**：新建独立脚本 `proof_side_ancestor_explanation.py`，不修改已有 runner；(3) **node ordering 对齐**：必须复用 `common.load_declaration_graph()` 的节点顺序，否则 embedding 行号会错位；(4) **comparison mode 为硬边界**：`explicit_vs_mixed` comparison mode 不是可选增强项而是验收条件的一部分；(5) **reviewer type 为 adversarial**：因为涉及 artifact 数据对齐和 provenance narrative 正确性；(6) **artifact path pattern 必须精确**：使用 `provenance_{model}_{candidate}_{provenance}_t42/provenance_{model}_{candidate}_{provenance}_t42_seed{seed}`；(7) **declaration-name 必须精确匹配**：按 `declarations.csv` 中的完整字符串匹配，不做模糊匹配。
 - 后果：当前唯一任务切换为 `T52a`。后续 worker 按该任务包实现 demo，不引入新依赖、不重新训练、不修改已有代码；实现完成后进入 adversarial review。
+
+## D033: T52a ancestor explanation demo 实现决策
+
+- 日期：2026-05-19
+- 状态：Accepted
+- 依据：`docs/review/T52a_review.md`、T52a 任务包、T42 reviewed artifacts
+- 决策：Captain 根据 `docs/review/T52a_review.md` 将 `T52a` 判定为 `PASS`。review 没有 blocking issues，只给出非阻塞的可选改进与 missing-tests 提醒，不要求 worker 返修。因此 `T52a` 正式标记完成，并将当前唯一任务切换到 `T53` milestone review。`T53` 只负责基于已 reviewed 的 protocol / benchmark / provenance / proof-side evidence 做阶段性裁决，不新增实验或代码开发。
+- 后果：Milestone 5 当前状态从“proof-side demo 实现”推进到“milestone review 收口”。后续 worker 只应执行 `docs/tasks/M5_paper/T53_milestone_review.md`；git 提交仍需排除 `.claude/settings.json`。

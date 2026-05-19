@@ -94,7 +94,7 @@ No-Go 条件：
 - 若所有候选图都过浅且无法接 proof-side utility，则项目应转为纯经验报告或归档。
 - 若后续只剩“继续调 HGCN 直到赢”，则不应继续作为主线。
 
-当前下一步是执行 `T52a`：`T52` 已经通过 review，并把 ancestor explanation proof-side MVP 收敛成唯一的最小 demo 实现任务包。这个阶段应真实实现 CLI demo 与 demo report，不新增实验、不重训模型、不改写 T40~T43 与 T50/T51 已 reviewed 结论；同时必须保留 provenance-aware comparison mode、精确 artifact path、`declarations.csv` 精确匹配与 node ordering sanity check。对外叙事仍必须保留 `R28` 与 `R29` 的精度边界；clean-environment reproducibility 也仍未完全闭合。`T02` 已按用户裁决视为当前阶段完成。
+当前下一步是执行 `T53`：`T52a` 已经通过 review，ancestor explanation proof-side MVP 已真实落地为 CLI demo 与 demo report。这个阶段不应继续扩写实现，而应基于 Milestone 1~5 的 reviewed evidence 完成 milestone review，判断项目是继续推进、收窄范围，还是进入 resume-ready 整理状态。对外叙事仍必须保留 `R28` 与 `R29` 的精度边界；clean-environment reproducibility 也仍未完全闭合。`T02` 已按用户裁决视为当前阶段完成。
 
 
 

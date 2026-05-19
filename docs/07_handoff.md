@@ -1,6 +1,6 @@
 ﻿# 07 Handoff
 
-> 更新时间：2026-05-18（T52 review 后更新）
+> 更新时间：2026-05-19（T52a review PASS 后更新）
 >
 > 给下一位 Captain / Worker / Reviewer 的接手说明。
 
@@ -31,31 +31,15 @@
 
 ## 3. 当前唯一任务
 
-`T52a`: 实现 ancestor explanation proof-side demo CLI，直接加载 T42 reviewed embeddings，支持 single-query 与 `explicit_vs_mixed` provenance comparison。
+`T53`: 完成 Milestone 5 milestone review，根据已 reviewed 的 protocol / benchmark / provenance / proof-side evidence 判断项目进入 `Continue` / `Narrow` / `Resume-ready`。
 任务包如下：
 
 ```text
-docs/tasks/M5_paper/T52a_ancestor_explanation_demo.md
+docs/tasks/M5_paper/T53_milestone_review.md
 ```
 
-先读取 `docs/proof_side_mvp.md`、`docs/tasks/M5_paper/T52_proof_side_demo_package.md`、`docs/review/T52_review.md`、`docs/paper_outline.md`、`docs/06_eval_protocol.md` 与相关代码入口，再按 `T52a` 任务包实现 demo。必须保留 provenance-aware comparison mode、精确 artifact path、`declarations.csv` 精确 declaration 匹配，以及 node ordering sanity check。
+先读取 `docs/reference/AI_coding_workflow.md`、`docs/02_experiment_plan.md`、`docs/04_task_board.md`、`docs/05_decision_log.md`、`docs/08_risks_and_open_questions.md`，再补读 `docs/paper_outline.md`、`docs/proof_side_mvp.md`、`docs/experiment_reports/grouped_training_summary.md`、`docs/experiment_reports/provenance_summary.md`、`docs/experiment_reports/ancestor_explanation_demo_report.md` 与相关 review 文档。本轮只能做 milestone review 与治理同步，不继续开发新 demo 或新实验。
 
-## 8. 下一步
-
-`T50` 已通过 `PASS_WITH_WARNINGS` review 并标记完成。已产出 `docs/paper_outline.md`，包含：
-
-- Working title 与 one-paragraph positioning
-- Central claim（provenance-conditional）与 5 条 non-claim 边界
-- 5 条 paper contributions（C1–C5）
-- Evidence ladder：Milestone 1~4 各自提供的证据与角色
-- Figures/Tables plan（4 figures + 7 tables）
-- Threats to validity（internal / external / construct）
-- Venue fit（ITP / CPP / FM 优先级排序与适配分析）
-- Proof-side bridge：说明 T51 为何需要从 paper story 延伸到 utility MVP
-- Provenance-precision boundaries：R28/R29/R25/R04 的文稿约束
-- Draft section outline（11 sections）
-
-所有内容均保持 provenance-conditional 口径。`T50` 已正式收口；当前唯一任务已继续切换到 `T52`。
 ## 4. 当前已知事实
 
 1. 目前没有稳定证据证明 HGCN 在真实 traced Lean hierarchy 图上优于 GCN。
@@ -194,12 +178,19 @@ Reviewer 默认只读。高风险任务使用 adversarial review。
 74. `docs/review/T50_review.md` 已给出 `PASS_WITH_WARNINGS`。Captain 已完成 warning 分类：`docs/00_raw_idea.md`、`docs/01_feasibility_report.md`、`docs/03_architecture.md`、`docs/06_eval_protocol.md` 的治理状态同步越界编辑记为 accepted low-severity hygiene；worker 修改 `docs/tasks/**/*.md` 记为 rejected future precedent，不要求返修但后续不应再发生；`R30` 与 `R31` 记为 deferred 并继续保留在风险表中；`.claude/settings.json` 继续 excluded from commit。`T50` 已标记完成，当前唯一任务切换为 `T51`。
 75. `T51` 本轮已由 worker 完成执行。已产出 `docs/proof_side_mvp.md`，比较了三个候选 MVP 方向（ancestor explanation / declaration recommendation / premise retrieval），选择 ancestor explanation 作为 proof-side utility MVP。核心理由：直接映射 C2 和 C4、零新依赖零新训练、把 provenance-conditional finding 变成可体验的 hierarchy navigation 工具、与 ITP/CPP venue fit 高度对齐。已正面回应 R31：ancestor explanation 不是简单"列出祖先"而是 provenance-aware quality comparison tool，满足 CPP tool demo 标准。已明确 MVP 的输入、输出、验收标准、失败标准和不做事项。同步更新治理文档。Worker 未标记任务完成，等待 reviewer 只读审查。
 76. `T52` 本轮已由 worker 完成执行。已重写 `docs/tasks/M5_paper/T52a_ancestor_explanation_demo.md` 作为唯一下游 demo 实现任务包。该包明确：(1) 新建 `proof_side_ancestor_explanation.py` CLI 脚本；(2) 加载 T42 provenance sweep 的 `node_embeddings.npy`（不重训、不加载 checkpoint）；(3) 支持 single-query mode 和 `explicit_vs_mixed` provenance comparison mode；(4) 包含 critical implementation note 关于 node ordering alignment（必须复用 `common.load_declaration_graph()` 的节点顺序）；(5) 要求新建 demo report；(6) Allowed files 限定为 2 新文件 + 4 治理文档，禁止修改任何已有代码；(7) reviewer type 为 adversarial。同步更新治理文档。Worker 未标记任务完成，等待 reviewer 只读审查。
+77. `T52a` 本轮已由 worker 完成执行。已新建 `proof_side_ancestor_explanation.py` CLI 脚本和 `ancestor_explanation_demo_report.md`。脚本加载 T42 reviewed node embeddings，支持 single-query mode（ranked ancestor list + per-query metrics + hop breakdown）和 `explicit_vs_mixed` comparison mode（side-by-side provenance quality comparison）。核心实现：(1) 通过 `common.load_declaration_graph()` 加载图数据并构建 `declaration_id → row_index` 映射对齐 embedding 行序；(2) 从 extends 边 BFS 构建祖先 ground truth；(3) cosine similarity 排序并计算 MAP/Recall@k；(4) comparison mode 自动在 explicit_only 和 hierarchy_mixed 两个图上运行并对比。已在 CommRing（FS）和 StrictOrderedCommRing（OR）上验证：OR 上 HGCN 的 provenance quality difference 尤为显著（MAP 0.6438 vs 0.1492）。同步更新治理文档。Worker 未标记任务完成，等待 adversarial reviewer 只读审查。
 
 ## 8. 下一步
 
-`T52` 已通过 `PASS` review 并正式收口。已确认 `docs/tasks/M5_paper/T52a_ancestor_explanation_demo.md` 作为唯一下游 demo 实现任务包。
+`docs/review/T52a_review.md` 已给出 `PASS`，Captain 已将 `T52a` 标记完成，并将当前唯一任务切换到 `T53`（里程碑审查）。
 
-下一轮应推进 `T52a`：基于 `T52a` 任务包实现 ancestor explanation demo CLI 脚本，加载 T42 reviewed artifacts 的 node embeddings，提供 single-query 和 provenance comparison 两种模式，并新建 demo report 文档。实现中必须注意 node ordering alignment（复用 `common.load_declaration_graph()` 的节点顺序）、精确 artifact path、以及 `--declaration-name` 对 `declarations.csv` 的精确匹配；comparison mode 为硬边界而非可选增强。
+T52a 实现的关键事实：
+- 脚本路径：`project_bootstrap/baseline_scaffold/src/proof_side_ancestor_explanation.py`
+- 报告路径：`docs/experiment_reports/ancestor_explanation_demo_report.md`
+- 已在 CommRing（Field.Subfield）和 StrictOrderedCommRing（Order.Ring）上验证
+- Order.Ring StrictOrderedCommRing 展示了最显著的 provenance quality difference：HGCN explicit_only MAP 0.6438 vs hierarchy_mixed MAP 0.1492
+- `R32`（node ordering alignment）已从 Active 更新为 Mitigated
+- Demo 是 provenance-conditional finding 的 downstream manifestation，不是独立新贡献
 
 T50/T51 继承的核心事实边界：
 - `explicit_only` 是 primary evidence，HGCN 在该 split 上稳定领先（FS MAP +0.1247, OR MAP +0.0557）。
@@ -211,6 +202,13 @@ T50/T51 继承的核心事实边界：
 - `R30` 仍然活跃：5 条 contributions 可能对 ITP/CPP 页数预算过宽，后续 drafting 时可能需要合并。
 - `R31` 已缓解并获 `T51_review` 接受：但 `T52` 及后续实现仍不得把 demo 退化成纯祖先列表，必须保留 provenance-aware comparison mode。
 - commit 时继续排除 `.claude/settings.json`。
+
+T53 的直接目标：
+- 新建 `docs/review/T53_milestone_review.md`
+- 给出 `Continue` / `Narrow` / `Resume-ready` 三者之一的明确 verdict
+- 基于已 reviewed evidence 归纳 `Evidence`、`Residual Risks` 和 `Recommended Next Task Shape`
+- 同步 `docs/04_task_board.md`、`docs/05_decision_log.md`、`docs/07_handoff.md`、`docs/08_risks_and_open_questions.md`
+
 ## T33 Completion Note
 
 - HGCN grouped 5-seed sweeps 已在与 `T32` 相同的 grouped runner / split / seed path 下完成，覆盖 `Field.Subfield` 与 `Order.Ring`。
