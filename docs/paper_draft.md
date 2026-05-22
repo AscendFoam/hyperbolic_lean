@@ -2,7 +2,7 @@
 
 > Status: First draft — not yet submitted, not yet peer-reviewed.
 >
-> Updated: 2026-05-20 (T54 worker draft)
+> Updated: 2026-05-22 (T56 precision cleanup: R29 fixed, R28 resolved as metric naming confusion)
 >
 > Source: This draft inherits claim boundaries from `docs/paper_outline.md` and reviewed evidence from T32–T43, T50–T52a, and T53. All numeric anchors come from reviewed artifacts and must not be altered.
 
@@ -249,12 +249,12 @@ On `synthesized_only` graphs — which are structurally flat star forests — GC
 
 | Candidate | GCN MAP | HGCN MAP | Delta |
 | --- | ---: | ---: | ---: |
+| Field.Subfield | 1.0000 ± 0.0000 | 0.6857 ± 0.1140 | GCN +0.3143 |
 | Order.Ring | 0.8453 ± 0.0295 | 0.7560 ± 0.0761 | GCN +0.0893 |
-| Field.Subfield | *see note below* | 0.6857 ± 0.1140 | — |
 
 GCN matches or outperforms HGCN on the flat synthesized graphs. The hyperbolic inductive bias is a liability on structures with no hierarchy depth, confirming that HGCN's advantage on `explicit_only` is driven by geometry matching the graph structure, not by model capacity.
 
-**Why Field.Subfield is not presented as a verified table row.** The Field.Subfield `synthesized_only` GCN sweep shows aggregate MAP = 1.0000 (confirming a trivially solvable task on this flat structure), but per-seed records include values below 1.0 (seed 123 MAP = 0.8100, seed 2026 MAP = 0.9029). The root cause of this aggregate vs. per-seed discrepancy has not been resolved (R28). Because we cannot present a single verified numeric with confidence, we omit Field.Subfield GCN from the comparison table rather than presenting an unverified value or silently dropping the candidate. This omission is *not* to suppress a counterexample — the qualitative conclusion (GCN dominates HGCN on synthesized_only regardless) is robust for both candidates — but to avoid writing unverified precision into a table of precise numeric facts. Once the discrepancy is resolved, a verified row can be added.
+**Why Field.Subfield synthesized_only GCN MAP = 1.0000 is not surprising.** The `synthesized_only` graph is a flat star forest (longest chain = 1, multi-parent = 0). Each `(src, relation_type)` query has exactly one positive ancestor, and the candidate pool is small (mean = 31). GCN solves this trivially on all 5 seeds (`grouped_test_map` = 1.0 for every seed). Note that `test_average_precision` (sklearn `average_precision_score`, a per-query metric) shows seed-level variation (0.81–1.00, aggregate 0.9426 ± 0.0762) because it weights each query independently while `grouped_test_map` computes MAP across all test queries uniformly. Both metrics tell the same qualitative story: GCN dominates HGCN on synthesized_only. The previously reported "aggregate vs per-seed discrepancy" (R28) was traced to this metric naming confusion rather than a data pipeline bug — `grouped_test_map` is 1.0 in aggregate and all per-seed records; `test_average_precision` is 0.9426 in aggregate and varies across seeds, but both are internally consistent. Resolved via T56 artifact audit (2026-05-22).
 
 ### 5.5 Reproducibility Check: hierarchy_mixed
 
@@ -287,12 +287,12 @@ On `explicit_only`, HGCN retrieves true hierarchy ancestors (AddCommGroup, SubNe
 | Provenance Split | HGCN vs GCN (FS MAP) | HGCN vs GCN (OR MAP) | Structural Role |
 | --- | --- | --- | --- |
 | `explicit_only` (primary) | **HGCN +0.1247** | **HGCN +0.0557** | Deep hierarchy |
-| `synthesized_only` (diagnostic) | GCN dominates* | GCN +0.0893 | Flat star forest |
+| `synthesized_only` (diagnostic) | GCN +0.3143 | GCN +0.0893 | Flat star forest |
 | `hierarchy_mixed` (reproducibility) | GCN +0.0381 | GCN +0.0173 | Depth + leaf inflation |
 
 The question "does HGCN outperform GCN on formal-math graphs?" cannot be answered without specifying which provenance layer is being tested. Edge provenance composition is the decisive experimental variable.
 
-\* FS `synthesized_only` GCN numeric withheld pending R28 resolution (see Section 5.4); qualitative conclusion unchanged.
+\* FS `synthesized_only` GCN numeric verified via T56 artifact audit; all 5 seeds `grouped_test_map` = 1.0. The originally reported "aggregate vs per-seed discrepancy" (R28) was a metric naming confusion between `grouped_test_map` and `test_average_precision`; both metrics are correctly computed and internally consistent. See Section 5.4.
 
 ---
 
@@ -357,9 +357,9 @@ Our finding is consistent with the theoretical motivation for hyperbolic graph l
 
 4. **Heuristic diagnostics thresholds.** The shallow-forest / star-forest / hierarchy-rich classification thresholds are empirically calibrated from current reviewed artifacts, not theoretically derived. They may not transfer to graphs with different size or topology distributions.
 
-5. **Aggregate vs per-seed discrepancy.** Field.Subfield `synthesized_only` GCN shows aggregate MAP = 1.0000 but per-seed records include values below 1.0 (seed 123 MAP = 0.8100, seed 2026 MAP = 0.9029). Root cause has not been resolved (R28). The controlled-diagnostic conclusion is robust regardless, but the precise numeric values should not be quoted without noting this discrepancy.
+5. **Metric naming precision in synthesized_only diagnostics.** Field.Subfield `synthesized_only` GCN shows `grouped_test_map` = 1.0 for all 5 seeds (trivially solvable flat star forest), while `test_average_precision` varies across seeds (0.81–1.00, aggregate 0.9426). The two metrics differ in computation scope (per-query vs across-all-queries) and legitimately produce different numbers. A previously reported "aggregate vs per-seed discrepancy" (R28) was traced by T56 artifact audit to a naming confusion between these two metrics rather than a data pipeline bug; both are correctly computed and internally consistent. Resolved by T56 artifact audit (2026-05-22).
 
-6. **Table cell error in source report.** The Field.Subfield `synthesized_only` GCN MAP table cell in the provenance summary report (Section 5.1 of `docs/experiment_reports/provenance_summary.md`) contains a known copy-paste error (R29). This draft uses verified artifact values directly, not that table cell. The error must be corrected in the source report before external publication.
+6. **Table cell error in source report (fixed).** The Field.Subfield `synthesized_only` GCN MAP table cell in the original provenance summary report (Section 5.1 of `docs/experiment_reports/provenance_summary.md`) contained a copy-paste error — it showed the HGCN value (0.6857) in the GCN column (R29). Corrected by T56 precision cleanup (2026-05-22); the provenance summary now shows the verified GCN MAP = 1.0000 ± 0.0000.
 
 ### 7.2 External Validity
 
@@ -432,6 +432,10 @@ All numeric values in this paper come from reviewed T32/T33/T42/T43 artifacts. T
 | HGCN MAP, Order.Ring `explicit_only` | 0.6393 ± 0.0656 | T42 |
 | FS `explicit_only` hop_4_plus HGCN-GCN delta | +0.2471 (4/5 seeds) | T42 |
 | OR `explicit_only` hop_4_plus HGCN-GCN delta | +0.2708 (5/5 seeds) | T42 |
+| FS `synthesized_only` GCN MAP | 1.0000 ± 0.0000 | T42 (verified by T56 audit) |
+| FS `synthesized_only` HGCN MAP | 0.6857 ± 0.1140 | T42 |
+| OR `synthesized_only` GCN MAP | 0.8453 ± 0.0295 | T42 |
+| OR `synthesized_only` HGCN MAP | 0.7560 ± 0.0761 | T42 |
 | FS `synthesized_only` longest chain | 1 | T41 |
 | OR `synthesized_only` longest chain | 1 | T41 |
 | FS `explicit_only` longest chain | 9 | T41 |

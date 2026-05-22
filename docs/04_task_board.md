@@ -1,6 +1,6 @@
 ﻿# 04 Task Board
 
-> 更新时间：2026-05-22（T55 review 后更新）
+> 更新时间：2026-05-22（T56 review 后更新）
 >
 > Captain 原则：每轮只推进一个 `Current Unique Task`。Worker 不自动领取下一任务。
 
@@ -8,7 +8,7 @@
 
 - 2026-05-17 captain update: `T34` 已通过 milestone review，Milestone 3 收口完成。
 - 状态：Narrow（T53 milestone review 裁决：收窄为 paper-facing / packaging / cleanup）
-- 当前阶段：Milestone 5 已进入 Narrow 后的 paper-facing refinement / packaging / cleanup 轨道；`T55` 已通过 review，当前进入 publication-facing precision cleanup 阶段
+- 当前阶段：Milestone 5 已进入 Narrow 后的 paper-facing refinement / packaging / cleanup 轨道；`T56` 已通过 review，当前进入 figure/table source rendering 阶段
 - 当前主线：`benchmark / protocol / diagnostics`
 - 当前不主张：把“已经证明 HGCN 稳定优于 GCN”写成既成事实
 - 当前证据等级：已有真实实验与工程原型，但尚未冻结成正式 benchmark artifact
@@ -57,22 +57,25 @@
 - [x] T53: 完成里程碑审查，判断项目进入 Continue / Narrow / Resume-ready
 - [x] T54: 产出 paper-facing draft 首版，并保持 provenance-conditional claim boundary
 - [x] T55: 对 paper draft 做第二轮 refinement，收紧摘要并补齐 Background / Related Work 承接
-- [ ] T56: 在不新增实验的前提下核清并修正 `R28/R29` 的 publication-facing precision 边界
+- [x] T56: 在不新增实验的前提下核清并修正 `R28/R29` 的 publication-facing precision 边界
+- [ ] T57: 把已稳定的 reviewed 数值边界转成 publication-facing 的 figure/table source rendering
 
 ## Current Unique Task
 
-`T56`：在不新增实验的前提下，围绕 `R28/R29` 做 publication-facing precision cleanup。重点是核对 `docs/experiment_reports/provenance_summary.md` 与 reviewed T42 artifacts 的一致性，修正可确认的文稿级错误，明确仍无法关闭的 aggregate/per-seed 口径边界，并把这些精度状态同步到 paper-facing 文稿与治理入口，为后续 figure/table rendering 与 artifact packaging 打基础。
+`T57`：在不新增实验的前提下，把已稳定的 reviewed 数值边界转成 publication-facing 的 figure/table source rendering。重点是整理 `docs/paper_outline.md` 中的核心 tables/figures 计划，产出一个可直接支撑后续投稿排版的 source-of-truth 文档，并同步收紧 `paper_draft.md` 与 `provenance_summary.md` 的表格粒度和 caption/引用一致性。
 
 ## Why Now
 
-`docs/review/T55_review.md` 已给出 `PASS_WITH_WARNINGS`。其中 abstract 压缩、Background / Related Work 承接位置、以及 `D19` 关闭均被接受；唯一需要继续处理的 deferred warning 是连续第五次出现的 Allowed Files 越界同步模式，已写回 `R08`。在此基础上，当前最值得优先收口的是 `R28/R29`：它们不影响 provenance-conditional 主结论，但会直接影响后续 figure/table rendering、paper-facing 数值引用与 artifact packaging 的发表级精度。
+`docs/review/T56_review.md` 已给出 `PASS`。这意味着 `R28`/`R29` 的 publication-facing precision 风险已经收口，后续 figure/table rendering 不会继续继承错误数值。reviewer 留下的非阻塞项也与下一轮高度一致：`provenance_summary.md` Section 5 summary table 仍有一处 qualitative-only 粒度不统一，`paper_draft.md` Section 5.4 的解释段可以在不损失事实边界的前提下进一步压缩。这些都应在 `T57` 一并处理，然后再进入 artifact packaging。
 
 ## Worker Package Summary
 
-- Task ID: `T56`
+- Task ID: `T57`
 - Allowed files:
-  - `docs/experiment_reports/provenance_summary.md`
   - `docs/paper_draft.md`
+  - `docs/paper_outline.md`
+  - `docs/experiment_reports/provenance_summary.md`
+  - `docs/paper_figures_and_tables.md`
   - `docs/00_raw_idea.md`
   - `docs/01_feasibility_report.md`
   - `docs/03_architecture.md`
@@ -85,17 +88,17 @@
   - 不新增任何实验、seed sweep、trace、split 生成或新 demo
   - 不修改任何 `project_bootstrap/`、`data/`、`artifacts/` 下的代码或产物
   - 不重写 `docs/02_experiment_plan.md`
-  - 不修改 `docs/paper_outline.md`
-  - 不关闭 `R28`，除非仅基于现有 reviewed artifact 能严格说明 aggregate/per-seed 差异的根因
+  - 不引入未 review 的新数值、新图表结论或新 claim
   - 不把 `R25`、`R30` 写成已关闭
-  - 不新增 figure 渲染、图片资产或 artifact packaging 内容
-- T55/T56 handoff notes:
-  - `T55_review` 结论为 `PASS_WITH_WARNINGS`；warning 分类为：Allowed Files 越界同步模式 `deferred`，Background / Related Work 子节放置 `accepted`，abstract 压缩 `accepted`，`D19` 关闭 `accepted`。
-  - `T56` 的核心目标不是扩写 paper，而是清理 publication-facing precision：优先处理 `R29` 的已确认文稿单元错误，并核清 `R28` 在现有 artifact 下究竟能关闭到什么程度。
-  - 本轮任务包显式把 `docs/00/01/03/04/05/06/07/08` 全部纳入 Allowed Files，避免再次出现治理同步越界的隐含惯例。
+  - 不做 artifact packaging；该工作应留给后续单独任务
+- T56/T57 handoff notes:
+  - `T56_review` 结论为 `PASS`；无 blocking issue。precision cleanup 已确认 `R28` 关闭、`R29` 修正。
+  - `T57` 的核心目标不是再审计数字，而是把已稳定的数字组织成 publication-facing figure/table source。
+  - `T56_review` 的非阻塞点应并入本轮：统一 `provenance_summary.md` Section 5 summary table 粒度，并在不损失事实边界的前提下压缩 `paper_draft.md` Section 5.4 的长解释段。
 - Verification:
-  - `rg -n "Field\\.Subfield|synthesized_only|MAP|aggregate|per_seed|R28|R29" docs\\experiment_reports\\provenance_summary.md docs\\paper_draft.md`
-  - `rg -n "T55|T56|PASS_WITH_WARNINGS|R28|R29|R08|D19" docs\\00_raw_idea.md docs\\01_feasibility_report.md docs\\03_architecture.md docs\\04_task_board.md docs\\05_decision_log.md docs\\06_eval_protocol.md docs\\07_handoff.md docs\\08_risks_and_open_questions.md`
+  - `rg -n "^## |^### |Figure|Table|caption|source" docs\\paper_figures_and_tables.md docs\\paper_draft.md docs\\paper_outline.md`
+  - `rg -n "GCN \\+0\\.3143|1\\.0000 ± 0\\.0000|grouped_test_map|test_average_precision" docs\\experiment_reports\\provenance_summary.md docs\\paper_draft.md docs\\paper_figures_and_tables.md`
+  - `rg -n "T56|T57|PASS|R28|R29|D20" docs\\00_raw_idea.md docs\\01_feasibility_report.md docs\\03_architecture.md docs\\04_task_board.md docs\\05_decision_log.md docs\\06_eval_protocol.md docs\\07_handoff.md docs\\08_risks_and_open_questions.md`
 
 ## Execution Note
 - 2026-05-10：`T00` 已通过 review，根目录入口文档与相关 handoff 文档已收口。
@@ -183,6 +186,8 @@
 - 2026-05-20：`docs/review/T54_review.md` 判定 `PASS_WITH_WARNINGS`。Captain 已将 `T54` 正式标记完成；warning 分类为：`synthesized_only` 表格非对称呈现 accepted presentation choice，Allowed Files 越界同步模式与摘要长度、Background / Related Work 缺口均 deferred。当前唯一任务切换为 `T55`，用于 paper draft 第二轮 refinement，不新增实验。
 - 2026-05-20：T55 worker 已完成第二轮 paper refinement。主要变更：(1) abstract 从 ~180 词压缩至 ~140 词；(2) Introduction 新增 Section 3.2 Background；(3) Discussion 新增 Section 6.5 Related Work and Positioning；(4) Section 5.4 `synthesized_only` 表格新增 Field.Subfield 占位行并新增解释段；(5) Section 5.7 summary table 标注脚注。所有 provenance-conditional 口径与 R28/R29/R30/R25 边界保持不变。Worker 未标记任务完成，等待 reviewer 只读审查。
 - 2026-05-22：`docs/review/T55_review.md` 判定 `PASS_WITH_WARNINGS`。Captain 将 warnings 分类为：Allowed Files 越界同步模式 `deferred` 并写回 `R08`；Background / Related Work 以子节承接 `accepted`；abstract 压缩 `accepted`；`D19` 关闭 `accepted`。`T55` 正式标记完成，当前唯一任务切换为 `T56`，先清理 `R28/R29` 的 publication-facing precision 问题，再进入 figure/table rendering 或 artifact packaging。
+- 2026-05-22：T56 worker 已完成 precision cleanup。`R29` 已修正：`provenance_summary.md` Section 5.1 表格中 FS GCN synthesized_only MAP 从 HGCN copy-paste 值 `0.6857 ± 0.1140` 修正为 verified T42 value `1.0000 ± 0.0000`。`R28` 已解析并关闭：T56 重新审计 T42 artifact 三个输出文件，确认原始 "aggregate vs per-seed discrepancy" 是 metric naming confusion——被引用为 "per-seed MAP" 的 0.8100/0.9029 实为 `test_average_precision`，而非 `grouped_test_map`；两条指标均计算正确、内部一致。`paper_draft.md` Section 5.4 表格已补入 FS GCN verified row，Section 5.7/7.1.5/7.1.6 及 Numeric Anchors appendix 已同步。Worker 未标记任务完成，等待 reviewer 只读审查。
+- 2026-05-22：`docs/review/T56_review.md` 判定 `PASS`。Captain 将 `T56` 正式标记完成；无 blocking issue、无 warning 分类项。当前唯一任务切换为 `T57`，用于把已稳定的 reviewed 数值边界转成 publication-facing figure/table source rendering；`artifact packaging` 保持为后续单独任务。
 ## T33 Completion Update (2026-05-17)
 
 - Worker 已在 `T32` 所使用的 reviewed grouped runner / split / seed path 下，完成 `Field.Subfield` 与 `Order.Ring` 两组正式 HGCN grouped 5-seed sweep。

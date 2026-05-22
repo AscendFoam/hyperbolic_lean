@@ -1,6 +1,6 @@
 ﻿# 07 Handoff
 
-> 更新时间：2026-05-22（T55 review 后更新）
+> 更新时间：2026-05-22（T56 review 后更新）
 >
 > 给下一位 Captain / Worker / Reviewer 的接手说明。
 
@@ -31,9 +31,9 @@
 
 ## 3. 当前唯一任务
 
-`T56` 是当前唯一任务：在不新增实验的前提下，优先清理 `R28/R29` 的 publication-facing precision 问题。目标不是扩写 paper，而是核对 `docs/experiment_reports/provenance_summary.md` 与 reviewed T42 artifacts 的一致性，修正可确认的文稿级错误，并把仍然活跃的精度边界同步到治理入口，为后续 figure/table rendering 与 artifact packaging 打底。
+`T57` 是当前唯一任务：在不新增实验的前提下，把已经稳定的 reviewed 数值边界转成 publication-facing 的 figure/table source rendering。重点不是再审数字，而是把 `docs/paper_outline.md` 中的 figures/tables plan 落成一个可直接支撑后续投稿排版的 source-of-truth 文档，并同步收紧 `paper_draft.md` 与 `provenance_summary.md` 的表格粒度、caption 和引用一致性。
 
-先读取 `docs/review/T55_review.md`、`docs/review/T54_review.md`、`docs/paper_draft.md`、`docs/paper_outline.md`、`docs/04_task_board.md`、`docs/05_decision_log.md`、`docs/07_handoff.md`、`docs/08_risks_and_open_questions.md`，确认 `T55` 已正式收口、当前状态仍为 **Narrow**，以及 `R28/R29/R30/R25` 的 paper-facing 边界仍需保留，除非 `T56` 用现有 reviewed artifact 严格关闭其中某项。
+先读取 `docs/review/T56_review.md`、`docs/paper_draft.md`、`docs/paper_outline.md`、`docs/experiment_reports/provenance_summary.md`、`docs/04_task_board.md`、`docs/05_decision_log.md`、`docs/07_handoff.md`、`docs/08_risks_and_open_questions.md`，确认 `T56` 已正式收口、当前状态仍为 **Narrow**，以及 `R28/R29` 已关闭、`R25/R30` 仍需保留。`T57` 不是新实验任务，而是把已稳定的 evidence 组织成可投稿的图表源文档。
 
 ## 4. 当前已知事实
 
@@ -184,9 +184,12 @@ Reviewer 默认只读。高风险任务使用 adversarial review。
 
 82. `docs/review/T55_review.md` 已给出 `PASS_WITH_WARNINGS`。Captain 已将 `T55` 正式标记完成；warning 分类为：Allowed Files 越界同步模式 deferred 并写回 `R08`，Background / Related Work 子节承接 accepted，abstract 压缩 accepted，`D19` 关闭 accepted。当前唯一任务已切换为 `T56`，目标是清理 `R28/R29` 的 publication-facing precision 问题。
 
+83. T56 worker 已完成 precision cleanup。`R29` 已修正：`provenance_summary.md` Section 5.1 表格中 FS GCN synthesized_only MAP 从 HGCN copy-paste 值修正为 verified T42 value `1.0000 ± 0.0000`。`R28` 已解析并关闭：T56 重新审计 T42 artifact 三个输出文件，确认原始 "aggregate vs per-seed discrepancy" 是 metric naming confusion（`test_average_precision` vs `grouped_test_map`），两条指标均计算正确、内部一致。`paper_draft.md` Section 5.4 表格已补入 FS GCN verified row，Section 5.7/7.1.5/7.1.6 及 Numeric Anchors appendix 已同步。治理文档全部同步。Worker 未标记任务完成，等待 reviewer 只读审查。
+84. `docs/review/T56_review.md` 已给出 `PASS`。Captain 已将 `T56` 正式标记完成；无 blocking issue。reviewer 留下的 non-blocking notes 已直接并入下一轮 `T57` 任务设计：统一 `provenance_summary.md` Section 5 summary table 粒度、压缩 `paper_draft.md` Section 5.4 长解释段、并在治理文档中显式写清 `R28` closure 满足 `T56` 任务包的例外条件。当前唯一任务已切换为 `T57`。
+
 ## 8. 下一步
 
-`T56` 是当前唯一任务，目标是 publication-facing precision cleanup。
+`T57` 是当前唯一任务，目标是 publication-facing figure/table source rendering。
 
 T53 milestone review 的核心结论：
 - **Verdict: Narrow**（收窄为 paper-facing / packaging / cleanup）
@@ -194,27 +197,27 @@ T53 milestone review 的核心结论：
 - 核心 provenance-conditional finding 已确立：HGCN 仅在 `explicit_only` 上领先（FS MAP +0.1247, OR MAP +0.0557），`hierarchy_mixed` 上 GCN 仍领先
 - Proof-side bridge 已变成可运行 CLI demo（T52a adversarial PASS）
 - 当前不需要新实验、新模型、新数据源或新 demo
-- 最紧迫的工作是 paper drafting + figure/table rendering + precision fixes (R28/R29) + artifact packaging
+- 最紧迫的工作是 figure/table source rendering + artifact packaging + 最终 paper editing
 
-T55 review 后：
-- 当前状态：`T55` 已通过 review，当前唯一任务为 `T56`
-- 后续候选方向：figure/table rendering、artifact packaging
-- 当前优先：R28/R29 precision fixes
+T56 review 后：
+- 当前状态：`T56` 已通过 review，当前唯一任务为 `T57`
+- `R28` 已关闭：原始 "aggregate vs per-seed discrepancy" 经 T56 artifact 审计确认为 metric naming confusion（`test_average_precision` vs `grouped_test_map`），两条指标均计算正确、内部一致
+- `R29` 已修正：`provenance_summary.md` Section 5.1 表格已修正为 verified T42 value `1.0000 ± 0.0000`；`paper_draft.md` 已同步
+- 当前优先：figure/table source rendering
+- 后续候选方向：artifact packaging
 - 当前不推荐：新实验、新 demo、新模型、新数据源
 
 T50/T51 继承的核心事实边界（保持不变）：
 - `explicit_only` 是 primary evidence，HGCN 在该 split 上稳定领先（FS MAP +0.1247, OR MAP +0.0557）。
-- `synthesized_only` 是 controlled diagnostic，GCN 在该 split 上优于 HGCN。
+- `synthesized_only` 是 controlled diagnostic，GCN 在该 split 上优于 HGCN（FS +0.3143, OR +0.0893）。
 - `hierarchy_mixed` 是 full source graph reproducibility check，结果与 T32/T33 完全一致，且 mixed graph 上 GCN 仍领先。
 - 项目主结论必须保持 provenance-conditional。
-- `R28` 仍然活跃：Field.Subfield synthesized_only 的 aggregate/per-seed 口径差异尚未核清。
-- `R29` 仍然活跃：`docs/experiment_reports/provenance_summary.md` Section 5.1 中 Field.Subfield synthesized_only 的 GCN MAP 表格单元写错，外部发表前必须修正。
 - `R30` 仍然活跃：5 条 contributions 可能对 ITP/CPP 页数预算过宽，后续 drafting 时可能需要合并。
 - `R31` 已缓解并获 `T51_review` 接受。
+- `R25` 仍然活跃：clean-environment reproducibility 尚未完成。
 - commit 时继续排除 `.claude/settings.json`。
 
-T56 之后的候选方向：
-- figure/table rendering
+T57 之后的候选方向：
 - artifact packaging
 - 当前不推荐：新实验、新 demo、新模型、新数据源
 

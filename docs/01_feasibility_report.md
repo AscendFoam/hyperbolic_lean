@@ -1,6 +1,6 @@
 ﻿# 01 Feasibility Report
 
-> 更新时间：2026-05-22
+> 更新时间：2026-05-22（T56 review 后更新）
 >
 > 结论：Go，条件是先完成协议冻结、数据资产化和任务治理，再推进新实验。
 
@@ -94,7 +94,7 @@ No-Go 条件：
 - 若所有候选图都过浅且无法接 proof-side utility，则项目应转为纯经验报告或归档。
 - 若后续只剩“继续调 HGCN 直到赢”，则不应继续作为主线。
 
-当前下一步是执行 `T56`：`T55` 已经通过 review 并被判定为 `PASS_WITH_WARNINGS`，说明 paper draft 的结构性 refinement 已经到位。这个阶段不应回到新实验或新 demo，而应优先处理 publication-facing precision cleanup：审计并修正 `R28/R29` 相关的源文档数值与说明，确保后续 figure/table 渲染和 artifact packaging 建立在一致、可引用的数字边界之上；同时继续保留 `R30` 与 clean-environment reproducibility (`R25`) 的边界。`T02` 已按用户裁决视为当前阶段完成。
+当前下一步是执行 `T57`：`T56` 已经通过 review 并被判定为 `PASS`，说明 publication-facing precision cleanup 已经到位。`R29` 已修正，`R28` 已基于现有 reviewed artifact 的根因解释合法关闭。这个阶段不应回到新实验或新 demo，而应把稳定下来的数字边界转成 figure/table source rendering，并顺手处理 `T56_review` 留下的非阻塞表达精修（summary table 粒度统一、Section 5.4 长解释段压缩）。artifact packaging 继续作为下一步单独任务；`R30` 与 clean-environment reproducibility (`R25`) 边界继续保留。
 
 
 

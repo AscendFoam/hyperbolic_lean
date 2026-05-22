@@ -1,6 +1,6 @@
 ﻿# 08 Risks and Open Questions
 
-> 更新时间：2026-05-22（T55 review 后更新）
+> 更新时间：2026-05-22（T56 review 后更新：R28/R29 resolved，当前切换到 T57）
 
 ## 1. Active Risks
 
@@ -33,8 +33,8 @@
 | R25 | Milestone 3 虽已有 smoke、正式 sweep 和 summary 报告，但尚未完成”从全新干净环境重新拉起正式 grouped benchmark”的独立复现闭环 | Medium | Active | 允许进入 T40/T41/T42，但对外结论继续保持”已有 reviewed 运行证据”而非”已完成 clean-room reproducibility”；后续需用环境锁定证据或 fresh-environment rerun 关闭该风险 |
 | R26 | T40 冻结了 provenance split 配置与协议，但 split 实际生成尚未执行 | Medium | Mitigated | `T41` 已运行 T40 冻结配置生成六个 provenance split 图目录；所有边数与协议预期一致；`hierarchy_mixed = full source graph` identity 已程序化验证 |
 | R27 | `synthesized_only` 图在两组候选上均为 longest chain = 1 的平坦星状森林，grouped retrieval 几乎无排序难度，T42 若在此图上训练模型可能导致退化为 trivial task | Medium | Mitigated | `T42` 已把 `synthesized_only` sweep 作为 controlled diagnostic 完成：GCN 在 FS 上达到完美 1.0000（确认 trivial task），HGCN 反而低于 GCN（确认双曲偏置在平坦结构上是劣势）。该 split 结果不支持模型对比主结论，但作为 controlled diagnostic 已完成其使命 |
-| R28 | `T42` 的 synthesized_only 汇总口径仍有待核清，若在正式总结中把 aggregate 直接写成全部 per-seed 均为 1.0，会造成事实精度问题 | Medium | Active | `T43` 已在 `docs/experiment_reports/provenance_summary.md` Section 5.2 显式登记该差异：aggregate.json 显示 MAP = 1.0000 但 per_seed_results 中 seed 123 MAP = 0.8100, seed 2026 MAP = 0.9029。`T55` 没有越界关闭该风险，而是继续在 paper draft 中保留了该精度边界。当前唯一任务 `T56` 将优先核清它能否仅凭现有 reviewed artifact 被解释或降级；在此之前，外部文稿不得把 aggregate 直接写成“全部 per-seed 均为 1.0”。 |
-| R29 | `docs/experiment_reports/provenance_summary.md` Section 5.1 中 Field.Subfield `synthesized_only` 的 GCN MAP 表格单元写错；若后续 paper-facing 文档直接引用该表，会与 T42 artifact 和 Section 5.2 叙述冲突 | Medium | Active | `docs/review/T43_review.md` 已确认这是 copy-paste 文稿错误，不推翻 Milestone 4 主结论，但外部发表前必须修正。`T55` 继续绕开该错误单元、未将其写成权威数值。当前唯一任务 `T56` 将优先修正这类已确认的 publication-facing 文稿错误，并把修正后的引用边界同步到 paper-facing 文稿与治理入口。 |
+| R28 | `T42` 的 synthesized_only 汇总口径曾有疑似 aggregate/per-seed 差异，若在正式总结中把 aggregate 直接写成全部 per-seed 均为 1.0，会造成事实精度问题 | Medium | Resolved | `T56` 重新审计了 T42 artifact (`provenance_gcn_field_subfield_synthesized_only_t42/`) 的 aggregate.json、per_seed_results.json 与 per_seed_results.csv，确认没有数据差异。原始 T43 报告中的”discrepancy”是 metric naming confusion：被引用为 “per-seed MAP” 的 0.8100/0.9029 实为 `test_average_precision`（sklearn `average_precision_score`、per-query 聚合），而非 `grouped_test_map`（grouped retrieval MAP）。`grouped_test_map` 在所有 5 seeds 的三个输出文件中均为 1.0；`test_average_precision` 的 aggregate (0.9426) 也正确反映了 per-seed 值。两条指标均计算正确、内部一致。`docs/review/T56_review.md` 已确认这满足 `T56` 任务包中“仅基于现有 reviewed artifact 严格解释根因时才可关闭 R28”的例外条件。R28 关闭。 |
+| R29 | `docs/experiment_reports/provenance_summary.md` Section 5.1 中 Field.Subfield `synthesized_only` 的 GCN MAP 表格单元曾写错（copy-paste 了 HGCN 的 0.6857）；若后续 paper-facing 文档直接引用该表，会与 T42 artifact 和 Section 5.2 叙述冲突 | Medium | Resolved | `T56` 已将 Section 5.1 表格中 GCN MAP 修正为 verified T42 value `1.0000 ± 0.0000`，delta 修正为 `GCN +0.3143`，并移除悬空的 `*` 脚注。Section 5.2 同步更新为对 metric naming confusion 的正确诊断。paper_draft.md 已同步更新（Section 5.4 表格 + Section 5.7 summary + Section 7.1.5/7.1.6 + Numeric Anchors）。R29 关闭。 |
 | R30 | 论文 skeleton 贡献结构可能过宽，5 条 contributions 在 ITP/CPP 页数限制内难以充分展开 | Medium | Active | `T50_review` 已将该 warning 分类为 deferred；`docs/paper_outline.md` 当前保留 5 条 contributions 结构，但 `T54`/后续 paper drafting 应重新判断是否合并（如 C1+C5 合并为 pipeline+alignment），或把部分贡献降级为 appendix。`T54_review` 进一步提醒 abstract 已接近常见页数预算上界，说明正文压缩与贡献收束需要联动处理。 |
 | R31 | proof-side bridge 推荐的 ancestor explanation MVP 可能过于轻量，不足以支撑 CPP 的 tool/demo 要求 | Medium | Mitigated | `T51_review` 已以 `PASS` 接受 `docs/proof_side_mvp.md` Section 3.2 的回应：ancestor explanation 不是"列出祖先"而是 provenance-aware quality comparison tool——用户可直观看到同一 declaration 在 `explicit_only` vs `hierarchy_mixed` 上的 retrieval 质量差异和 hop-depth-dependent gradient。这满足 CPP tool demo 的 "artifact is functional and solves a real problem" 标准。后续 `T52`/实现阶段仍必须把 provenance-aware comparison mode 写成硬边界，避免 demo 退化为纯祖先列表。 |
 | R32 | ancestor explanation demo 加载 T42 `node_embeddings.npy` 时节点顺序可能与图数据不一致，导致 retrieval 结果全部错位 | High | Mitigated | `T52a` 已实现 sanity check：加载 embedding 后立即验证 `len(declarations) == embeddings.shape[0]`，不匹配则报错退出。节点顺序通过 `common.load_declaration_graph()` 的 `declarations.csv` 行序对齐。已通过实际运行验证：89 节点（Field.Subfield explicit_only）、125 节点（Order.Ring explicit_only）、133 节点（Field.Subfield hierarchy_mixed）均通过 shape check，且 ground truth 祖先在 top-10 内有合理命中。 |
@@ -74,8 +74,9 @@
 | D15 | 在 grouped 汇总报告中补入显式 config diff 表与可比性声明 | Closed by `T34` review：`docs/experiment_reports/grouped_training_summary.md` 已补入 config diff 表与 matched grouped comparability statement | 若后续新增新的 grouped baseline family，需要重新维护可比性边界 |
 | D16 | 为 `grouped_training_summary.md` 的正式结果表补齐 Recall@1/3/5/10 汇总列 | T34 review 确认当前 MAP / nDCG / nDCG@10 已足以支持主结论；Recall 列缺失不阻塞里程碑关闭 | 下一次修改 grouped summary 报告，或需要把 Recall 作为主要展示面时 |
 | D17 | 为 `grouped_training_summary.md` Section 6 补入历史 binary 数值来源的具体文件路径 | T34 review 确认历史数值可追溯，但正文未直接写出源文件名 | 下一次修改 grouped summary 报告时，把 `docs/阶段总结（2026-05-02，grouped retrieval training）.md` 显式写入正文 |
-| D18 | 修正 `docs/experiment_reports/provenance_summary.md` Section 5.1 中 Field.Subfield `synthesized_only` 的错误 GCN MAP 表格单元 | T43 review 判定该问题不阻塞 Milestone 4 收口，但会影响外部发表级文稿精度 | 下一次允许修改 `docs/experiment_reports/provenance_summary.md` 或整理正式 paper-facing 图表时 |
+| D18 | 修正 `docs/experiment_reports/provenance_summary.md` Section 5.1 中 Field.Subfield `synthesized_only` 的错误 GCN MAP 表格单元 | Closed by `T56`：表格单元已修正为 verified T42 value `1.0000 ± 0.0000`，delta 修正为 `GCN +0.3143`；paper_draft.md 已同步更新 | 已关闭，无需重新触发 |
 | D19 | 在 paper draft 中补齐更显式的 Background / Related Work 承接，并进一步压缩 abstract | Closed by `T55`：abstract 已从 ~180 词压缩至 ~140 词；Section 3.2 新增 Background；Section 6.5 新增 Related Work and Positioning | 若后续 venue 格式要求独立一级章节而非子节，需重新评估 |
+| D20 | 统一 `provenance_summary.md` Section 5 summary table 的粒度，并在最终 paper editing 中压缩 `paper_draft.md` Section 5.4 的长解释段 | `T56_review` 明确指出这两个问题都不影响 precision cleanup 正确性，只属于后续 publication-facing 表达精修 | 下一次 figure/table rendering 或最终 paper editing 时 |
 
 ## 4. Risk Handling Rules
 

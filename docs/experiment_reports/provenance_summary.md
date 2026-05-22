@@ -2,7 +2,7 @@
 
 > Task: T43
 >
-> Updated: 2026-05-18
+> Updated: 2026-05-22 (T56 precision cleanup: R29 fixed, R28 resolved as metric naming confusion)
 >
 > Purpose: Synthesize T41 structural diagnostics and T42 provenance-aware seed sweeps into a unified, provenance-conditional answer to whether synthesized relations dilute hyperbolic advantage, and refine the project's model-comparison conclusion accordingly.
 
@@ -129,14 +129,22 @@ HGCN's advantage grows monotonically with hop depth on both candidates: from ~+0
 
 | candidate | GCN MAP | HGCN MAP | delta |
 | --- | ---: | ---: | ---: |
-| Field.Subfield | 0.6857 ± 0.1140* | 0.6857 ± 0.1140 | — |
+| Field.Subfield | 1.0000 ± 0.0000 | 0.6857 ± 0.1140 | GCN +0.3143 |
 | Order.Ring | 0.8453 ± 0.0295 | 0.7560 ± 0.0761 | GCN +0.0893 |
 
 GCN matches or outperforms HGCN on the flat synthesized graphs. The hyperbolic inductive bias is a liability on structures with no hierarchy depth, confirming that HGCN's advantage on `explicit_only` is driven by geometry matching the graph structure, not by model capacity.
 
-### 5.2 Precision note: aggregate vs per-seed discrepancy
+### 5.2 Precision note: metric naming and the resolved "discrepancy"
 
-The Field.Subfield `synthesized_only` GCN sweep shows `aggregate.json` MAP mean = 1.0000, std = 0.0000, but `per_seed_results.json`/`per_seed_results.csv` records seed 123 MAP = 0.8100 and seed 2026 MAP = 0.9029. This discrepancy appears to arise from the aggregate computation reading a different metric field or evaluation split than the per-seed CSV export. The discrepancy does not affect the controlled-diagnostic conclusion (GCN dominates HGCN on synthesized_only regardless), but it must be resolved before external publication. This is registered as a follow-up item in `docs/08_risks_and_open_questions.md`.
+The T43 revision of this report described an "aggregate vs per-seed discrepancy" for the Field.Subfield `synthesized_only` GCN sweep: aggregate `grouped_test_map` = 1.0000, but per-seed records included seed 123 MAP = 0.8100 and seed 2026 MAP = 0.9029. T56 re-audited both `aggregate.json` and `per_seed_results.json`/`per_seed_results.csv` from the T42 artifact (`artifacts/baselines/relation_seed_sweeps/provenance_gcn_field_subfield_synthesized_only_t42/`) and found no data discrepancy.
+
+The root cause is a metric naming confusion, not a data pipeline bug:
+
+- **`grouped_test_map`** (the grouped retrieval MAP, which is the metric reported in Section 5.1): 1.0 for all 5 seeds in aggregate.json, per_seed_results.json, and per_seed_results.csv. No discrepancy.
+- **`test_average_precision`** (the sklearn `average_precision_score` per query, aggregated): varies across seeds (seed 7 = 1.0, seed 42 = 1.0, seed 123 = 0.8100, seed 2026 = 0.9029, seed 3407 = 1.0), with aggregate mean = 0.9426. The aggregate correctly reflects the per-seed values for this metric — also no discrepancy.
+- The values 0.8100 and 0.9029 cited in the original T43 report as "per-seed MAP" were `test_average_precision`, not `grouped_test_map`. The two metrics differ in computation scope (per-query vs across all queries), so they legitimately produce different numbers.
+
+The labeling of this as a "discrepancy" was itself the error: both fields are correctly computed; they are simply different metrics. The controlled-diagnostic conclusion remains unaffected — GCN (`grouped_test_map` = 1.0 on all seeds) dominates HGCN (`grouped_test_map` = 0.6857 ± 0.1140) on `synthesized_only` regardless of which metric is consulted. This finding is now closed (R28 resolved, R29 fixed) in `docs/08_risks_and_open_questions.md` via T56.
 
 ---
 
@@ -218,7 +226,7 @@ This refined conclusion does not contradict Milestone 3; it adds the provenance 
 
 1. **Field.Subfield explicit_only hop_4_plus**: The reported means are based on 4 of 5 seeds (seed 2026 produces no hop_4_plus queries). The comparison is valid because the missing seed is symmetric. This must be noted in any publication using these values.
 
-2. **synthesized_only GCN aggregate vs per-seed discrepancy**: The Field.Subfield GCN `synthesized_only` sweep shows aggregate MAP = 1.0000 but per-seed records include seeds with MAP < 1.0. The root cause has not been resolved; it may involve the aggregate computation reading a different metric field than the per-seed export. This does not affect any project conclusion (the controlled-diagnostic finding is robust regardless), but must be resolved before external publication.
+2. **synthesized_only GCN metric naming (resolved)**: The T43 revision of this report described an aggregate-vs-per-seed "discrepancy" for Field.Subfield GCN `synthesized_only` MAP. T56 re-audited the T42 artifact and found no data discrepancy. The values described as "per-seed MAP" (0.8100, 0.9029) were `test_average_precision`, not `grouped_test_map`. `grouped_test_map` = 1.0 for all 5 seeds in all three output files (aggregate.json, per_seed_results.json, per_seed_results.csv). Both metrics are correctly computed and correctly aggregated; the "discrepancy" was a metric naming confusion in the original report, now corrected in Section 5.2.
 
 3. **hierarchy_mixed = full source graph identity scope**: This identity holds for the current two candidate graphs because they contain only `extends` and `instance_of` edges (no `uses` edges). If future source graphs include `uses` edges, `hierarchy_mixed` will be a strict subset of the full graph, and the reproducibility check interpretation will need updating.
 

@@ -1,6 +1,6 @@
 ﻿# 05 Decision Log
 
-> 更新时间：2026-05-22（T55 review 后更新）
+> 更新时间：2026-05-22（T56 review 后更新）
 >
 > 规则：只记录会影响后续任务选择、论文叙事、评测协议或项目状态的决策。
 
@@ -330,3 +330,21 @@
 - 依据：`docs/review/T55_review.md`
 - 决策：`T55` 判定为 `PASS_WITH_WARNINGS`。warning 分类如下：(1) Allowed Files 越界同步模式为 deferred governance-risk，已写回 `R08`；(2) Background / Related Work 以子节承接为 accepted presentation choice；(3) abstract 压缩为 accepted；(4) `D19` 关闭为 accepted。
 - 后果：`T55` 正式标记完成，当前唯一任务切换到 `T56`。`T56` 不新增实验，而是优先清理 `R28/R29` 的 publication-facing precision 问题，并为后续 figure/table rendering 与 artifact packaging 建立可引用、可核对的数值边界。提交时继续排除 `.claude/settings.json`。
+
+## D040: T56 precision cleanup 完成 R28 关闭与 R29 修正
+
+- 日期：2026-05-22
+- 状态：Accepted
+- 依据：T42 artifact 审计 (`provenance_gcn_field_subfield_synthesized_only_t42/` 的 aggregate.json、per_seed_results.json、per_seed_results.csv)
+- 决策：
+  1. `R29` 修正：`provenance_summary.md` Section 5.1 表格中 FS GCN synthesized_only MAP 从 HGCN copy-paste 值 `0.6857 ± 0.1140` 修正为 verified T42 value `1.0000 ± 0.0000`，delta 修正为 `GCN +0.3143`。
+  2. `R28` 解析并关闭：原始 T43 报告中描述的 "aggregate vs per-seed discrepancy" 经重新审计确认是 metric naming confusion——被引用为 "per-seed MAP" 的 0.8100/0.9029 实为 `test_average_precision`（sklearn per-query metric），而非 `grouped_test_map`（grouped retrieval MAP across all queries）。`grouped_test_map` = 1.0 for all 5 seeds in aggregate.json、per_seed_results.json 和 per_seed_results.csv。`test_average_precision` aggregate (0.9426) 也正确反映 per-seed 值 (1.0, 1.0, 0.81, 0.9029, 1.0)。两条指标均计算正确、内部一致，不存在数据管线 bug。
+- 后果：`provenance_summary.md` 和 `paper_draft.md` 均已同步更新 precision 信息；`R28`/`R29` 在 `docs/08_risks_and_open_questions.md` 中从 Active 更新为 Resolved；`D18` 关闭。`docs/review/T56_review.md` 已确认这次关闭满足 `T56` 任务包中“仅基于现有 reviewed artifact 严格解释根因时才可关闭 R28”的例外条件。所有修改均基于已有 reviewed T42 artifact，未引入新实验或未 review 数值。
+
+## D041: T56 review 通过并切换到 T57 figure/table source rendering
+
+- 日期：2026-05-22
+- 状态：Accepted
+- 依据：`docs/review/T56_review.md`
+- 决策：`T56` 判定为 `PASS`。review 没有 blocking issue，也没有需要分类为 accepted/deferred/rejected 的 warning。reviewer 留下的三个 non-blocking notes 直接并入下一轮任务设计：`provenance_summary.md` Section 5 summary table 的粒度统一、`paper_draft.md` Section 5.4 长解释段的最终压缩、以及 `R28` closure 条件在治理文档中的显式可追溯性。
+- 后果：`T56` 正式标记完成，当前唯一任务切换到 `T57`。`T57` 负责把已经稳定的 reviewed 数值边界转成 publication-facing 的 figure/table source rendering，并吸收上述非阻塞表达精修；`artifact packaging` 保持为后续单独任务。提交时继续排除 `.claude/settings.json`。
