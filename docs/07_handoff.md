@@ -1,6 +1,6 @@
 ﻿# 07 Handoff
 
-> 更新时间：2026-05-19（T52a review PASS 后更新）
+> 更新时间：2026-05-22（T55 review 后更新）
 >
 > 给下一位 Captain / Worker / Reviewer 的接手说明。
 
@@ -31,14 +31,9 @@
 
 ## 3. 当前唯一任务
 
-`T53`: 完成 Milestone 5 milestone review，根据已 reviewed 的 protocol / benchmark / provenance / proof-side evidence 判断项目进入 `Continue` / `Narrow` / `Resume-ready`。
-任务包如下：
+`T56` 是当前唯一任务：在不新增实验的前提下，优先清理 `R28/R29` 的 publication-facing precision 问题。目标不是扩写 paper，而是核对 `docs/experiment_reports/provenance_summary.md` 与 reviewed T42 artifacts 的一致性，修正可确认的文稿级错误，并把仍然活跃的精度边界同步到治理入口，为后续 figure/table rendering 与 artifact packaging 打底。
 
-```text
-docs/tasks/M5_paper/T53_milestone_review.md
-```
-
-先读取 `docs/reference/AI_coding_workflow.md`、`docs/02_experiment_plan.md`、`docs/04_task_board.md`、`docs/05_decision_log.md`、`docs/08_risks_and_open_questions.md`，再补读 `docs/paper_outline.md`、`docs/proof_side_mvp.md`、`docs/experiment_reports/grouped_training_summary.md`、`docs/experiment_reports/provenance_summary.md`、`docs/experiment_reports/ancestor_explanation_demo_report.md` 与相关 review 文档。本轮只能做 milestone review 与治理同步，不继续开发新 demo 或新实验。
+先读取 `docs/review/T55_review.md`、`docs/review/T54_review.md`、`docs/paper_draft.md`、`docs/paper_outline.md`、`docs/04_task_board.md`、`docs/05_decision_log.md`、`docs/07_handoff.md`、`docs/08_risks_and_open_questions.md`，确认 `T55` 已正式收口、当前状态仍为 **Narrow**，以及 `R28/R29/R30/R25` 的 paper-facing 边界仍需保留，除非 `T56` 用现有 reviewed artifact 严格关闭其中某项。
 
 ## 4. 当前已知事实
 
@@ -179,35 +174,49 @@ Reviewer 默认只读。高风险任务使用 adversarial review。
 75. `T51` 本轮已由 worker 完成执行。已产出 `docs/proof_side_mvp.md`，比较了三个候选 MVP 方向（ancestor explanation / declaration recommendation / premise retrieval），选择 ancestor explanation 作为 proof-side utility MVP。核心理由：直接映射 C2 和 C4、零新依赖零新训练、把 provenance-conditional finding 变成可体验的 hierarchy navigation 工具、与 ITP/CPP venue fit 高度对齐。已正面回应 R31：ancestor explanation 不是简单"列出祖先"而是 provenance-aware quality comparison tool，满足 CPP tool demo 标准。已明确 MVP 的输入、输出、验收标准、失败标准和不做事项。同步更新治理文档。Worker 未标记任务完成，等待 reviewer 只读审查。
 76. `T52` 本轮已由 worker 完成执行。已重写 `docs/tasks/M5_paper/T52a_ancestor_explanation_demo.md` 作为唯一下游 demo 实现任务包。该包明确：(1) 新建 `proof_side_ancestor_explanation.py` CLI 脚本；(2) 加载 T42 provenance sweep 的 `node_embeddings.npy`（不重训、不加载 checkpoint）；(3) 支持 single-query mode 和 `explicit_vs_mixed` provenance comparison mode；(4) 包含 critical implementation note 关于 node ordering alignment（必须复用 `common.load_declaration_graph()` 的节点顺序）；(5) 要求新建 demo report；(6) Allowed files 限定为 2 新文件 + 4 治理文档，禁止修改任何已有代码；(7) reviewer type 为 adversarial。同步更新治理文档。Worker 未标记任务完成，等待 reviewer 只读审查。
 77. `T52a` 本轮已由 worker 完成执行。已新建 `proof_side_ancestor_explanation.py` CLI 脚本和 `ancestor_explanation_demo_report.md`。脚本加载 T42 reviewed node embeddings，支持 single-query mode（ranked ancestor list + per-query metrics + hop breakdown）和 `explicit_vs_mixed` comparison mode（side-by-side provenance quality comparison）。核心实现：(1) 通过 `common.load_declaration_graph()` 加载图数据并构建 `declaration_id → row_index` 映射对齐 embedding 行序；(2) 从 extends 边 BFS 构建祖先 ground truth；(3) cosine similarity 排序并计算 MAP/Recall@k；(4) comparison mode 自动在 explicit_only 和 hierarchy_mixed 两个图上运行并对比。已在 CommRing（FS）和 StrictOrderedCommRing（OR）上验证：OR 上 HGCN 的 provenance quality difference 尤为显著（MAP 0.6438 vs 0.1492）。同步更新治理文档。Worker 未标记任务完成，等待 adversarial reviewer 只读审查。
+78. `T53` 本轮已由 worker 完成执行。已产出 `docs/review/T53_milestone_review.md`，verdict 为 **Narrow**。审查了 M1–M5 全部 reviewed 证据链（24 个 task，11 个 adversarial review），确认：(1) protocol/governance 已闭环；(2) grouped benchmark 已 reviewed；(3) provenance-conditional conclusion 已 reviewed；(4) proof-side bridge 已从 paper story 变成可运行 demo。活跃风险 R01/R03/R10/R25/R28/R29/R30 均按真实状态记录，未夸大 closure。推荐下一阶段为 paper-facing / packaging / cleanup，不跑新实验。同步更新治理文档。Worker 未标记任务完成，等待 reviewer 只读审查。
+
+79. `docs/review/T53_review.md` 已给出 `PASS`。Captain 已将 `T53` 正式标记完成，并把 `D034` 从 `Pending Review` 更新为 `Accepted`。当前唯一任务已切换为 `T54`：先完成 `docs/paper_draft.md` 的首版正文草稿，严格继承 reviewed evidence 与 `docs/paper_outline.md` 的 claim boundary。
+
+80. `T54` worker 已完成 paper-facing draft 首版产出。`docs/paper_draft.md` 包含 8 个一级章节（Title, Abstract, Introduction, Experimental Setup, Results, Discussion, Limitations, Conclusion）和附录（Evidence Chain + Numeric Anchors）。草稿严格继承 `docs/paper_outline.md` 的 claim boundary，保持 provenance-conditional 口径，显式保留 R28/R29/R30/R25 精度边界。Worker 未修改任何 forbidden scope 文件，未标记任务完成，等待 reviewer 只读审查。
+
+81. `docs/review/T54_review.md` 已给出 `PASS_WITH_WARNINGS`。Captain 已将 `T54` 正式标记完成；warning 分类为：`synthesized_only` 表格非对称呈现 accepted presentation choice，Allowed Files 越界同步模式与摘要长度、Background / Related Work 缺口均 deferred，并已写回风险治理。当前唯一任务已切换为 `T55`：只对 `docs/paper_draft.md` 做第二轮 refinement，不新增实验、不修改 experiment reports。
+
+82. `docs/review/T55_review.md` 已给出 `PASS_WITH_WARNINGS`。Captain 已将 `T55` 正式标记完成；warning 分类为：Allowed Files 越界同步模式 deferred 并写回 `R08`，Background / Related Work 子节承接 accepted，abstract 压缩 accepted，`D19` 关闭 accepted。当前唯一任务已切换为 `T56`，目标是清理 `R28/R29` 的 publication-facing precision 问题。
 
 ## 8. 下一步
 
-`docs/review/T52a_review.md` 已给出 `PASS`，Captain 已将 `T52a` 标记完成，并将当前唯一任务切换到 `T53`（里程碑审查）。
+`T56` 是当前唯一任务，目标是 publication-facing precision cleanup。
 
-T52a 实现的关键事实：
-- 脚本路径：`project_bootstrap/baseline_scaffold/src/proof_side_ancestor_explanation.py`
-- 报告路径：`docs/experiment_reports/ancestor_explanation_demo_report.md`
-- 已在 CommRing（Field.Subfield）和 StrictOrderedCommRing（Order.Ring）上验证
-- Order.Ring StrictOrderedCommRing 展示了最显著的 provenance quality difference：HGCN explicit_only MAP 0.6438 vs hierarchy_mixed MAP 0.1492
-- `R32`（node ordering alignment）已从 Active 更新为 Mitigated
-- Demo 是 provenance-conditional finding 的 downstream manifestation，不是独立新贡献
+T53 milestone review 的核心结论：
+- **Verdict: Narrow**（收窄为 paper-facing / packaging / cleanup）
+- 五个 Milestone 的 reviewed 证据链已闭合（24 个 task 通过 review，11 个 adversarial review）
+- 核心 provenance-conditional finding 已确立：HGCN 仅在 `explicit_only` 上领先（FS MAP +0.1247, OR MAP +0.0557），`hierarchy_mixed` 上 GCN 仍领先
+- Proof-side bridge 已变成可运行 CLI demo（T52a adversarial PASS）
+- 当前不需要新实验、新模型、新数据源或新 demo
+- 最紧迫的工作是 paper drafting + figure/table rendering + precision fixes (R28/R29) + artifact packaging
 
-T50/T51 继承的核心事实边界：
+T55 review 后：
+- 当前状态：`T55` 已通过 review，当前唯一任务为 `T56`
+- 后续候选方向：figure/table rendering、artifact packaging
+- 当前优先：R28/R29 precision fixes
+- 当前不推荐：新实验、新 demo、新模型、新数据源
+
+T50/T51 继承的核心事实边界（保持不变）：
 - `explicit_only` 是 primary evidence，HGCN 在该 split 上稳定领先（FS MAP +0.1247, OR MAP +0.0557）。
-- `synthesized_only` 是 controlled diagnostic，GCN 在该 split 上优于 HGCN；它说明双曲偏置在平坦结构上是劣势，但不是主对比证据。
+- `synthesized_only` 是 controlled diagnostic，GCN 在该 split 上优于 HGCN。
 - `hierarchy_mixed` 是 full source graph reproducibility check，结果与 T32/T33 完全一致，且 mixed graph 上 GCN 仍领先。
-- 项目主结论必须保持 provenance-conditional：GCN 在 mixed graph 上仍领先，HGCN 只在 explicit-only hierarchy 上显现优势。
+- 项目主结论必须保持 provenance-conditional。
 - `R28` 仍然活跃：Field.Subfield synthesized_only 的 aggregate/per-seed 口径差异尚未核清。
 - `R29` 仍然活跃：`docs/experiment_reports/provenance_summary.md` Section 5.1 中 Field.Subfield synthesized_only 的 GCN MAP 表格单元写错，外部发表前必须修正。
 - `R30` 仍然活跃：5 条 contributions 可能对 ITP/CPP 页数预算过宽，后续 drafting 时可能需要合并。
-- `R31` 已缓解并获 `T51_review` 接受：但 `T52` 及后续实现仍不得把 demo 退化成纯祖先列表，必须保留 provenance-aware comparison mode。
+- `R31` 已缓解并获 `T51_review` 接受。
 - commit 时继续排除 `.claude/settings.json`。
 
-T53 的直接目标：
-- 新建 `docs/review/T53_milestone_review.md`
-- 给出 `Continue` / `Narrow` / `Resume-ready` 三者之一的明确 verdict
-- 基于已 reviewed evidence 归纳 `Evidence`、`Residual Risks` 和 `Recommended Next Task Shape`
-- 同步 `docs/04_task_board.md`、`docs/05_decision_log.md`、`docs/07_handoff.md`、`docs/08_risks_and_open_questions.md`
+T56 之后的候选方向：
+- figure/table rendering
+- artifact packaging
+- 当前不推荐：新实验、新 demo、新模型、新数据源
 
 ## T33 Completion Note
 

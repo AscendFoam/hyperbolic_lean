@@ -50,7 +50,13 @@
       "Bash(C:/ProgramData/anaconda3/envs/DLEnv/python.exe project_bootstrap/baseline_scaffold/src/proof_side_ancestor_explanation.py --declaration-name \"c211948581bde9846a99e32d97a03f0d5307c31e::StrictOrderedCommRing\" --candidate-graph order_ring --comparison-mode explicit_vs_mixed --model-type hgcn --seed 42 --output-format text)",
       "Bash(C:/ProgramData/anaconda3/envs/DLEnv/python.exe project_bootstrap/baseline_scaffold/src/proof_side_ancestor_explanation.py --declaration-name \"c211948581bde9846a99e32d97a03f0d5307c31e::StrictOrderedCommRing\" --candidate-graph order_ring --comparison-mode explicit_vs_mixed --model-type gcn --seed 42 --output-format text)",
       "Bash(C:/ProgramData/anaconda3/envs/DLEnv/python.exe project_bootstrap/baseline_scaffold/src/proof_side_ancestor_explanation.py --declaration-name \"c211948581bde9846a99e32d97a03f0d5307c31e::StrictOrderedCommRing\" --candidate-graph order_ring --provenance-mode explicit_only --model-type hgcn --seed 42 --output-format json)",
-      "Bash(C:/ProgramData/anaconda3/envs/DLEnv/python.exe -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\(json.dumps\\({k:v for k,v in d.items\\(\\) if k in ['query_name','metrics','manifest_info']}, indent=2\\)\\)\")"
+      "Bash(C:/ProgramData/anaconda3/envs/DLEnv/python.exe -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\(json.dumps\\({k:v for k,v in d.items\\(\\) if k in ['query_name','metrics','manifest_info']}, indent=2\\)\\)\")",
+      "Bash(wc -w docs/paper_draft.md)",
+      "Bash(powershell -Command \"\\(Get-Content 'docs\\\\paper_draft.md' -Raw\\).Length\")",
+      "Bash(wc -l docs/paper_draft.md)",
+      "Bash(powershell -Command \"Select-String -Path 'docs\\\\paper_draft.md' -Pattern 'provenance-conditional' | Measure-Object | Select-Object -ExpandProperty Count\")",
+      "Bash(powershell -Command \"Select-String -Path 'docs\\\\paper_draft.md' -Pattern 'explicit_only|synthesized_only|hierarchy_mixed' | Measure-Object | Select-Object -ExpandProperty Count\")",
+      "Bash(powershell -Command \"Select-String -Path 'docs\\\\paper_draft.md' -Pattern 'R28|R29|R30|R25' | Measure-Object | Select-Object -ExpandProperty Count\")"
     ]
   }
 }

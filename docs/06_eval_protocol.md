@@ -1,6 +1,6 @@
 ﻿# 06 Eval Protocol
 
-> 更新时间：2026-05-18（T52 review 后同步）
+> 更新时间：2026-05-22（T55 review 后同步）
 >
 > 状态：T12 grouped protocol freeze、T13 hop bucket reporting、T14 smoke check、T31A query-level split、T31 minimal query-grouped loss 与 T32 GCN grouped baseline 均已通过 review。Smoke artifact 只证明输出链可落盘，不是正式 benchmark 结果。
 
@@ -289,7 +289,7 @@ T10 将负责把这些要求落成 version manifest。
 - `T31A` 已通过 adversarial review，grouped ancestor retrieval 已改为 query-level split；run manifest 的 `query_split_summary` 记录 `split_strategy = query_level`、query overlap 为 0、`is_query_level_disjoint = true`。
 - `T31` 已通过 adversarial review，grouped retrieval runner 已实现最小 query-grouped loss，训练、split 与 eval 共用 `(src_id, relation_type)` query key，并用 grouped val MAP 做模型选择。
 - `T34` 已通过 milestone review，Milestone 3 的 grouped-vs-binary 诊断总结已收口。
-- `T41` 已通过 adversarial review，六个 provenance split 图已真实生成并完成边数与 identity 校验；`T42` 已通过 adversarial review，provenance-aware GCN/HGCN grouped seed sweeps 已完成，并确认 `explicit_only` 为 primary evidence、`synthesized_only` 为 controlled diagnostic、`hierarchy_mixed` 为 reproducibility check；`T43` 已通过 milestone review，Milestone 4 的正式结论固定为 provenance-conditional；`T50` 已通过 review 并产出 `docs/paper_outline.md`；`T51` 已通过 review 并正式选定 ancestor explanation 作为 proof-side MVP；`T52` 已通过 review 并把该 MVP 收敛成唯一的最小 demo implementation package；`T52a` 已通过 adversarial review，ancestor explanation demo CLI 与 demo report 已真实落地。当前唯一任务为 `T53`，负责基于这些 reviewed evidence 完成 milestone review。对外 paper-facing 文稿仍需保留 `R28`（aggregate/per-seed 口径差异）与 `R29`（T43 summary 表格单元错误）的精度边界。
+- `T41` 已通过 adversarial review，六个 provenance split 图已真实生成并完成边数与 identity 校验；`T42` 已通过 adversarial review，provenance-aware GCN/HGCN grouped seed sweeps 已完成，并确认 `explicit_only` 为 primary evidence、`synthesized_only` 为 controlled diagnostic、`hierarchy_mixed` 为 reproducibility check；`T43` 已通过 milestone review，Milestone 4 的正式结论固定为 provenance-conditional；`T50` 已通过 review 并产出 `docs/paper_outline.md`；`T51` 已通过 review 并正式选定 ancestor explanation 作为 proof-side MVP；`T52` 已通过 review 并把该 MVP 收敛成唯一的最小 demo implementation package；`T52a` 已通过 adversarial review，ancestor explanation demo CLI 与 demo report 已真实落地；`T53` 已通过 review，并把项目状态正式裁定为 **Narrow**；`T54` 已通过 review 并产出可继续修订的 paper-facing draft 首版；`T55` 已通过 review 并完成第二轮文稿结构 refinement。当前唯一任务为 `T56`，负责在不新增实验的前提下审计和修正 `R28/R29` 的 publication-facing 精度问题。对外 paper-facing 文稿仍需保留 `R28`（aggregate/per-seed 口径差异）与 `R29`（T43 summary 表格单元错误）的精度边界，除非 `T56` 用现有 reviewed artifact 成功关闭它们。
 - 不得把 T14 的 smoke output 写成正式 benchmark 结果。
 
 

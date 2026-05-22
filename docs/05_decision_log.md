@@ -1,6 +1,6 @@
 ﻿# 05 Decision Log
 
-> 更新时间：2026-05-19（T52a review PASS 后更新）
+> 更新时间：2026-05-22（T55 review 后更新）
 >
 > 规则：只记录会影响后续任务选择、论文叙事、评测协议或项目状态的决策。
 
@@ -281,4 +281,52 @@
 - 状态：Accepted
 - 依据：`docs/review/T52a_review.md`、T52a 任务包、T42 reviewed artifacts
 - 决策：Captain 根据 `docs/review/T52a_review.md` 将 `T52a` 判定为 `PASS`。review 没有 blocking issues，只给出非阻塞的可选改进与 missing-tests 提醒，不要求 worker 返修。因此 `T52a` 正式标记完成，并将当前唯一任务切换到 `T53` milestone review。`T53` 只负责基于已 reviewed 的 protocol / benchmark / provenance / proof-side evidence 做阶段性裁决，不新增实验或代码开发。
-- 后果：Milestone 5 当前状态从“proof-side demo 实现”推进到“milestone review 收口”。后续 worker 只应执行 `docs/tasks/M5_paper/T53_milestone_review.md`；git 提交仍需排除 `.claude/settings.json`。
+- 后果：Milestone 5 当前状态从”proof-side demo 实现”推进到”milestone review 收口”。后续 worker 只应执行 `docs/tasks/M5_paper/T53_milestone_review.md`；git 提交仍需排除 `.claude/settings.json`。
+
+## D034: T53 milestone review 裁决 Narrow
+
+- 日期：2026-05-20
+- 状态：Accepted
+- 依据：`docs/review/T53_milestone_review.md`、M1–M5 全部 reviewed evidence、`docs/08_risks_and_open_questions.md` 当前风险状态
+- 决策：T53 worker 已完成 milestone review，verdict 为 **Narrow**。核心理由：(1) 五个 Milestone 的 reviewed 证据链已闭合（24 个 task 通过 review，其中 11 个 adversarial review）；(2) 核心 provenance-conditional finding 已由 T42 的 60 次训练确立，经 T43 收口、T50 保持、T52a demo 验证；(3) proof-side bridge 已从 paper story 变成可运行 CLI demo 并通过 adversarial review；(4) 当前不需要新实验、新模型、新数据源或新 demo；(5) 最紧迫的工作是把已有证据整理成可投稿论文和 artifact package。活跃风险（R01/R03/R10/R25/R28/R29/R30）是 paper-facing 收窄工作中的待处理项。
+- 后果：项目应从”继续开发实验“收窄为”paper-facing / packaging / cleanup“。下一任务形态应为 paper drafting、figure/table rendering、precision fixes (R28/R29)、artifact packaging。不跑新实验、不扩展 demo、不修改已冻结的 protocol 语义、不引入新模型或新依赖。
+
+## D035: T53 review 通过并切换到 T54 paper draft
+
+- 日期：2026-05-20
+- 状态：Accepted
+- 依据：`docs/review/T53_review.md`、`docs/review/T53_milestone_review.md`
+- 决策：Captain 根据 `docs/review/T53_review.md` 将 `T53` 判定为 `PASS`。review 没有 blocking issues，也没有需要返工的 `PASS_WITH_WARNINGS` 分类项；仅指出了若干 captain 侧治理同步问题。Captain 已同步修正治理文档，并将当前唯一任务切换为 `T54`，目标是基于 `docs/paper_outline.md` 与全部 reviewed evidence 产出 paper-facing draft 首版。
+- 后果：Milestone 5 正式收口，worker 可以继续推进下一任务，但只能执行 `T54`。git 可以提交当前 captain 同步结果与 reviewer 文档；提交时继续排除 `.claude/settings.json`。`T54` 之后再分拆 figure/table rendering、R28/R29 precision fixes 与 artifact packaging，保持单任务推进。
+
+## D036: T54 paper draft 首版产出
+
+- 日期：2026-05-20
+- 状态：Accepted
+- 依据：T54 任务包、`docs/paper_outline.md`、T32–T43/T50–T53 全部 reviewed evidence
+- 决策：T54 worker 已产出 `docs/paper_draft.md` 首版，包含 8 个一级章节（Title, Abstract, Introduction, Experimental Setup, Results, Discussion, Limitations, Conclusion）和附录（Evidence Chain + Numeric Anchors）。草稿严格保持 provenance-conditional 口径：(1) `explicit_only` 是 primary evidence；(2) `synthesized_only` 是 controlled diagnostic；(3) `hierarchy_mixed` 是 reproducibility check，mixed graph 上 GCN 仍领先。草稿显式保留 R28（synthesized_only aggregate/per-seed 口径差异）、R29（provenance_summary.md 表格错误）、R30（contributions 过宽）、R25（clean-environment reproducibility 未闭合）的精度边界，未将任何活跃风险写成已关闭。所有数值来自 reviewed T32/T33/T42/T43 artifacts，未引入未 review 的新数字。
+- 后果：`docs/paper_draft.md` 首版被接受为 Narrow 阶段的正式 paper-facing 基线文稿，可继续进入第二轮 paper refinement，而不需要回头重开实验链路。
+
+## D037: T54 review 通过并切换到 T55 paper refinement
+
+- 日期：2026-05-20
+- 状态：Accepted
+- 依据：`docs/review/T54_review.md`
+- 决策：Captain 根据 `docs/review/T54_review.md` 将 `T54` 判定为 `PASS_WITH_WARNINGS`。warning 分类如下：(1) Allowed Files 范围外的治理同步编辑为 deferred governance-scope risk，写回 `R08`；(2) Section 5.4 中 `synthesized_only` 表格仅列 Order.Ring、Field.Subfield 仅以 prose note 说明，为 accepted presentation choice；(3) abstract 接近页数预算上界，为 deferred，并并入 `R30`；(4) 缺少 Related Work section，为 deferred；(5) 缺少 Background section，为 deferred；后两者并入新的 paper-structure risk `R33`。无 blocking issue，无 rejected warning。
+- 后果：`T54` 正式标记完成，当前唯一任务切换为 `T55`。`T55` 只负责对 `docs/paper_draft.md` 做第二轮 refinement：压缩摘要、补齐 Background / Related Work 承接、让受控诊断表述更显式，同时保持 provenance-conditional 边界。不新增实验、不修改 experiment reports。当前治理状态允许 git 提交，并允许 worker 继续推进，但仅能执行 `docs/tasks/M5_paper/T55_paper_refinement.md`；提交时继续排除 `.claude/settings.json`。
+
+## D038: T55 paper refinement 第二轮
+
+- 日期：2026-05-20
+- 状态：Accepted
+- 依据：T55 任务包、`docs/review/T54_review.md` deferred warnings、`docs/paper_draft.md` T54 首版
+- 决策：T55 worker 已完成第二轮 paper refinement，主要变更：(1) abstract 从 ~180 词压缩至 ~140 词，保留 C1-C5 核心信息与 provenance-conditional 主结论；(2) Introduction 新增 Section 3.2 Background 小节（Lean/Mathlib hierarchy semantics、hyperbolic GNN 理论动机、formal-math graph tooling 定位）；(3) Discussion 新增 Section 6.5 Related Work and Positioning 小节（hyperbolic embeddings 文献、formal-math graph 数据集与工具、proof assistant hierarchy navigation、本文差异化点）；(4) Section 5.4 `synthesized_only` 表格新增 Field.Subfield 占位行（`*see note below*`），并新增解释段说明省略原因（R28 精度边界），明确这不是为了隐藏反例；(5) Section 5.7 summary table 标注脚注引用 Section 5.4。所有 provenance-conditional 口径、R28/R29/R30/R25 精度边界和 8 个一级章节骨架保持不变。
+- 后果：`docs/paper_draft.md` 已进入第二轮 refinement 状态，等待 reviewer 只读审查。T55 未新增实验、未修改 experiment reports、未修改 forbidden scope 文件。
+
+## D039: T55 review 通过并切换到 T56 precision cleanup
+
+- 日期：2026-05-22
+- 状态：Accepted
+- 依据：`docs/review/T55_review.md`
+- 决策：`T55` 判定为 `PASS_WITH_WARNINGS`。warning 分类如下：(1) Allowed Files 越界同步模式为 deferred governance-risk，已写回 `R08`；(2) Background / Related Work 以子节承接为 accepted presentation choice；(3) abstract 压缩为 accepted；(4) `D19` 关闭为 accepted。
+- 后果：`T55` 正式标记完成，当前唯一任务切换到 `T56`。`T56` 不新增实验，而是优先清理 `R28/R29` 的 publication-facing precision 问题，并为后续 figure/table rendering 与 artifact packaging 建立可引用、可核对的数值边界。提交时继续排除 `.claude/settings.json`。

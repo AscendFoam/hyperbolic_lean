@@ -1,14 +1,14 @@
 ﻿# 04 Task Board
 
-> 更新时间：2026-05-19（T52a review PASS 后更新）
+> 更新时间：2026-05-22（T55 review 后更新）
 >
 > Captain 原则：每轮只推进一个 `Current Unique Task`。Worker 不自动领取下一任务。
 
 ## Project Status
 
 - 2026-05-17 captain update: `T34` 已通过 milestone review，Milestone 3 收口完成。
-- 状态：Continue
-- 当前阶段：Milestone 5 已启动；`T50`/`T51`/`T52`/`T52a` 已完成并通过审查，当前唯一任务切换为 `T53`
+- 状态：Narrow（T53 milestone review 裁决：收窄为 paper-facing / packaging / cleanup）
+- 当前阶段：Milestone 5 已进入 Narrow 后的 paper-facing refinement / packaging / cleanup 轨道；`T55` 已通过 review，当前进入 publication-facing precision cleanup 阶段
 - 当前主线：`benchmark / protocol / diagnostics`
 - 当前不主张：把“已经证明 HGCN 稳定优于 GCN”写成既成事实
 - 当前证据等级：已有真实实验与工程原型，但尚未冻结成正式 benchmark artifact
@@ -54,41 +54,48 @@
 - [x] T50: 整理论文贡献骨架，围绕 pipeline / protocol / diagnostics / conditional hyperbolic conclusion
 - [x] T51: 选择一个 proof-side utility MVP，例如 ancestor explanation 或 relation-aware declaration recommendation
 - [x] T52: 为 proof-side utility 写最小 demo 任务包，不承诺端到端 theorem proving
-- [ ] T53: 完成里程碑审查，判断项目进入 Continue / Narrow / Resume-ready
+- [x] T53: 完成里程碑审查，判断项目进入 Continue / Narrow / Resume-ready
+- [x] T54: 产出 paper-facing draft 首版，并保持 provenance-conditional claim boundary
+- [x] T55: 对 paper draft 做第二轮 refinement，收紧摘要并补齐 Background / Related Work 承接
+- [ ] T56: 在不新增实验的前提下核清并修正 `R28/R29` 的 publication-facing precision 边界
 
 ## Current Unique Task
 
-`T53`: 完成 Milestone 5 milestone review，根据已 reviewed 的 protocol / benchmark / provenance / proof-side evidence 判断项目进入 `Continue` / `Narrow` / `Resume-ready`。
-任务包如下：
-
-`docs/tasks/M5_paper/T53_milestone_review.md`
+`T56`：在不新增实验的前提下，围绕 `R28/R29` 做 publication-facing precision cleanup。重点是核对 `docs/experiment_reports/provenance_summary.md` 与 reviewed T42 artifacts 的一致性，修正可确认的文稿级错误，明确仍无法关闭的 aggregate/per-seed 口径边界，并把这些精度状态同步到 paper-facing 文稿与治理入口，为后续 figure/table rendering 与 artifact packaging 打基础。
 
 ## Why Now
 
-`docs/review/T52a_review.md` 已给出 `PASS`，表明 ancestor explanation demo CLI 与 demo report 已真实落地。当前最关键的不再是继续开发 demo，而是做一次阶段性 milestone review，判断项目应继续推进、收窄叙事，还是进入 resume-ready 整理态。
+`docs/review/T55_review.md` 已给出 `PASS_WITH_WARNINGS`。其中 abstract 压缩、Background / Related Work 承接位置、以及 `D19` 关闭均被接受；唯一需要继续处理的 deferred warning 是连续第五次出现的 Allowed Files 越界同步模式，已写回 `R08`。在此基础上，当前最值得优先收口的是 `R28/R29`：它们不影响 provenance-conditional 主结论，但会直接影响后续 figure/table rendering、paper-facing 数值引用与 artifact packaging 的发表级精度。
+
 ## Worker Package Summary
 
-- Task ID: `T53`
+- Task ID: `T56`
 - Allowed files:
-  - `docs/review/T53_milestone_review.md`
-  - `docs/05_decision_log.md`
+  - `docs/experiment_reports/provenance_summary.md`
+  - `docs/paper_draft.md`
+  - `docs/00_raw_idea.md`
+  - `docs/01_feasibility_report.md`
+  - `docs/03_architecture.md`
   - `docs/04_task_board.md`
+  - `docs/05_decision_log.md`
+  - `docs/06_eval_protocol.md`
   - `docs/07_handoff.md`
   - `docs/08_risks_and_open_questions.md`
 - Forbidden scope:
   - 不新增任何实验、seed sweep、trace、split 生成或新 demo
   - 不修改任何 `project_bootstrap/`、`data/`、`artifacts/` 下的代码或产物
   - 不重写 `docs/02_experiment_plan.md`
-  - 不推翻已经通过 review 的历史 verdict，只能基于 reviewed evidence 做 milestone 归纳
-  - 不把 `R28`/`R29`/`R30`/`R31` 写成已全部关闭
-- T52a/T53 handoff notes:
-  - `T52a` 已在 adversarial review 中被判定为 `PASS`，不再是 current task。
-  - `T53` 是只读 milestone review 任务，目标是裁决项目状态，不是继续实现新功能。
-  - proof-side demo 的关键事实必须直接继承 `T52a_review` 和 demo report，不重做未 review 的新分析。
+  - 不修改 `docs/paper_outline.md`
+  - 不关闭 `R28`，除非仅基于现有 reviewed artifact 能严格说明 aggregate/per-seed 差异的根因
+  - 不把 `R25`、`R30` 写成已关闭
+  - 不新增 figure 渲染、图片资产或 artifact packaging 内容
+- T55/T56 handoff notes:
+  - `T55_review` 结论为 `PASS_WITH_WARNINGS`；warning 分类为：Allowed Files 越界同步模式 `deferred`，Background / Related Work 子节放置 `accepted`，abstract 压缩 `accepted`，`D19` 关闭 `accepted`。
+  - `T56` 的核心目标不是扩写 paper，而是清理 publication-facing precision：优先处理 `R29` 的已确认文稿单元错误，并核清 `R28` 在现有 artifact 下究竟能关闭到什么程度。
+  - 本轮任务包显式把 `docs/00/01/03/04/05/06/07/08` 全部纳入 Allowed Files，避免再次出现治理同步越界的隐含惯例。
 - Verification:
-  - `rg -n "Task ID|Goal|Why Now|Allowed Files|Forbidden Scope|Inputs to Read|Expected Output|Verification|Docs to Update|Reviewer Type" docs\tasks\M5_paper\T53_milestone_review.md`
-  - `rg -n "Continue|Narrow|Resume-ready|Evidence|Residual Risks|Recommended Next Task Shape" docs\review\T53_milestone_review.md`
-  - `rg -n "T52a|T53|Current Unique Task" docs\04_task_board.md docs\07_handoff.md docs\05_decision_log.md`
+  - `rg -n "Field\\.Subfield|synthesized_only|MAP|aggregate|per_seed|R28|R29" docs\\experiment_reports\\provenance_summary.md docs\\paper_draft.md`
+  - `rg -n "T55|T56|PASS_WITH_WARNINGS|R28|R29|R08|D19" docs\\00_raw_idea.md docs\\01_feasibility_report.md docs\\03_architecture.md docs\\04_task_board.md docs\\05_decision_log.md docs\\06_eval_protocol.md docs\\07_handoff.md docs\\08_risks_and_open_questions.md`
 
 ## Execution Note
 - 2026-05-10：`T00` 已通过 review，根目录入口文档与相关 handoff 文档已收口。
@@ -170,6 +177,12 @@
 - 2026-05-18：`T52` 本轮已由 worker 完成执行。已重写 `docs/tasks/M5_paper/T52a_ancestor_explanation_demo.md`，作为唯一下游 demo 实现任务包。该包指定：(1) 新建 `proof_side_ancestor_explanation.py` CLI 脚本，加载 T42 reviewed artifacts 的 `node_embeddings.npy` 进行 ancestor retrieval；(2) 支持 single-query mode 和 provenance comparison mode（`explicit_only` vs `hierarchy_mixed`）；(3) 明确 CLI 参数（declaration-name、candidate-graph、provenance-mode、model-type、seed、comparison-mode、output-format）；(4) 包含 critical implementation note 关于 node ordering alignment；(5) 要求新建 demo report 文档；(6) Allowed files 限定为 2 个新文件 + 4 个治理文档，禁止修改任何已有代码。同步更新治理文档。Worker 未标记任务完成，等待 reviewer 只读审查。
 - 2026-05-18：`T52a` 本轮已由 worker 完成执行。已新建 `project_bootstrap/baseline_scaffold/src/proof_side_ancestor_explanation.py` CLI 脚本和 `docs/experiment_reports/ancestor_explanation_demo_report.md`。脚本支持：(1) single-query mode（给定 declaration name + candidate graph + provenance mode + model type，输出 ranked ancestor list 和 retrieval metrics）；(2) `explicit_vs_mixed` comparison mode（对比同一 declaration 在 explicit_only 和 hierarchy_mixed 上的 retrieval 质量）；(3) text 和 JSON 输出格式；(4) node ordering sanity check（embedding shape 与 declarations.csv 行数不匹配时报错退出）。已在 CommRing（Field.Subfield）和 StrictOrderedCommRing（Order.Ring）上验证通过，后者展示了戏剧性的 provenance quality difference（HGCN explicit_only MAP 0.6438 vs hierarchy_mixed MAP 0.1492）。Worker 未标记任务完成，等待 adversarial reviewer 只读审查。
  - 2026-05-19：`docs/review/T52a_review.md` 结论为 `PASS`。Captain 判定 `T52a` 正式完成，`D033` 从 pending review 更新为 `Accepted`；当前唯一任务切换为 `T53`，目标是完成 Milestone 5 milestone review 并给出 `Continue` / `Narrow` / `Resume-ready` 裁决。
+- 2026-05-20：T53 worker 已完成 milestone review。产出 `docs/review/T53_milestone_review.md`，verdict 为 **Narrow**。核心论据：五个 Milestone 的 reviewed 证据链已闭合，核心 provenance-conditional finding 已确立，proof-side bridge 已变成可运行 demo；当前不需要新实验，应收窄为 paper drafting + figure rendering + precision fixes + artifact packaging。Worker 未标记任务完成，等待 reviewer 只读审查。
+- 2026-05-20：`docs/review/T53_review.md` 判定 `PASS`。Captain 将 `T53` 正式标记完成，`D034` 从 pending review 更新为 `Accepted`，并把当前唯一任务切换为 `T54`：先完成 paper-facing draft 首版，后续再分拆 figure/table、precision fixes 与 artifact packaging。
+- 2026-05-20：T54 worker 已完成 paper-facing draft 首版产出。`docs/paper_draft.md` 包含 8 个一级章节（Title, Abstract, Introduction, Experimental Setup, Results, Discussion, Limitations, Conclusion）和附录（Evidence Chain + Numeric Anchors）。草稿严格继承 `docs/paper_outline.md` 的 claim boundary，保持 provenance-conditional 口径，显式保留 R28/R29/R30/R25 精度边界。Worker 未修改任何 forbidden scope 文件，未标记任务完成，等待 reviewer 只读审查。
+- 2026-05-20：`docs/review/T54_review.md` 判定 `PASS_WITH_WARNINGS`。Captain 已将 `T54` 正式标记完成；warning 分类为：`synthesized_only` 表格非对称呈现 accepted presentation choice，Allowed Files 越界同步模式与摘要长度、Background / Related Work 缺口均 deferred。当前唯一任务切换为 `T55`，用于 paper draft 第二轮 refinement，不新增实验。
+- 2026-05-20：T55 worker 已完成第二轮 paper refinement。主要变更：(1) abstract 从 ~180 词压缩至 ~140 词；(2) Introduction 新增 Section 3.2 Background；(3) Discussion 新增 Section 6.5 Related Work and Positioning；(4) Section 5.4 `synthesized_only` 表格新增 Field.Subfield 占位行并新增解释段；(5) Section 5.7 summary table 标注脚注。所有 provenance-conditional 口径与 R28/R29/R30/R25 边界保持不变。Worker 未标记任务完成，等待 reviewer 只读审查。
+- 2026-05-22：`docs/review/T55_review.md` 判定 `PASS_WITH_WARNINGS`。Captain 将 warnings 分类为：Allowed Files 越界同步模式 `deferred` 并写回 `R08`；Background / Related Work 以子节承接 `accepted`；abstract 压缩 `accepted`；`D19` 关闭 `accepted`。`T55` 正式标记完成，当前唯一任务切换为 `T56`，先清理 `R28/R29` 的 publication-facing precision 问题，再进入 figure/table rendering 或 artifact packaging。
 ## T33 Completion Update (2026-05-17)
 
 - Worker 已在 `T32` 所使用的 reviewed grouped runner / split / seed path 下，完成 `Field.Subfield` 与 `Order.Ring` 两组正式 HGCN grouped 5-seed sweep。

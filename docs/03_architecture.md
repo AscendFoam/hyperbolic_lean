@@ -1,6 +1,6 @@
 ﻿# 03 Architecture
 
-> 更新时间：2026-05-18
+> 更新时间：2026-05-22
 >
 > 范围：当前仓库的工程资产、数据产物、实验入口和治理文档结构。
 
@@ -123,9 +123,9 @@ Reviewer 默认只读，只检查 diff 是否完成任务、是否有伪实现�
 
 ## 7. 当前架构缺口
 
-1. T30 已形成 reviewed training alignment audit；T31A 已修复 grouped ancestor retrieval 的 query-level split completeness；T31 已在 grouped retrieval runner 中补入 reviewed 最小 query-grouped loss；T32/T33 已分别完成 matched GCN/HGCN grouped 5-seed 对照；T34 已把 grouped-vs-binary 与 matched GCN-vs-HGCN 结论收口成正式总结；T40 已把 provenance split 的配置与输出位置冻结成可复用协议入口；T41 已把 frozen config 真正落成六个 split 图目录并接通 diagnostics pipeline；T42 已在 provenance-aware split 上完成受约束的 GCN/HGCN 5-seed sweeps；T43 已把 provenance 结构诊断、seed sweep 结果、风险状态与项目叙事统一收口，并将 Milestone 4 结论固定为 provenance-conditional；T50 已把这些 reviewed artifact 提炼成 paper skeleton；T51 已从 proof-side bridge 中正式选定 ancestor explanation 作为 MVP；T52 已把该 MVP 收敛成 reviewed 的最小 demo implementation package；`T52a` 已实现并通过 review，把 proof-side bridge 落地为真实 demo CLI 与 demo report。下一架构缺口是 `T53`：基于这些 reviewed evidence 完成 milestone review，判断项目应继续扩展、收窄，还是进入 resume-ready 状态。
-2. relation provenance split 需要从“已冻结协议”推进到“已真实生成图并经结构诊断验证”的正式实验任务；per-edge provenance 字段边界仍保留为后续语义问题。
-3. proof-side utility 已完成 MVP 选型与 demo implementation 落地，但尚未做项目级 milestone 裁决；当前缺的是 `T53` 的阶段性 review 收口，而不是继续扩写 proof-side 功能面。
+1. T30 已形成 reviewed training alignment audit；T31A 已修复 grouped ancestor retrieval 的 query-level split completeness；T31 已在 grouped retrieval runner 中补入 reviewed 最小 query-grouped loss；T32/T33 已分别完成 matched GCN/HGCN grouped 5-seed 对照；T34 已把 grouped-vs-binary 与 matched GCN-vs-HGCN 结论收口成正式总结；T40 已把 provenance split 的配置与输出位置冻结成可复用协议入口；T41 已把 frozen config 真正落成六个 split 图目录并接通 diagnostics pipeline；T42 已在 provenance-aware split 上完成受约束的 GCN/HGCN 5-seed sweeps；T43 已把 provenance 结构诊断、seed sweep 结果、风险状态与项目叙事统一收口，并将 Milestone 4 结论固定为 provenance-conditional；T50 已把这些 reviewed artifact 提炼成 paper skeleton；T51 已从 proof-side bridge 中正式选定 ancestor explanation 作为 MVP；T52 已把该 MVP 收敛成 reviewed 的最小 demo implementation package；`T52a` 已实现并通过 review，把 proof-side bridge 落地为真实 demo CLI 与 demo report；`T53` 已完成 milestone review 并通过 review，正式将项目裁决为 **Narrow**；`T54` 已产出并通过 review 接受 paper-facing draft 首版；`T55` 已通过 review 并完成第二轮文稿结构 refinement。下一架构缺口是 `T56`：在不新增实验的前提下完成 `R28/R29` publication-precision 清理，为 figure/table 渲染和 artifact packaging 打基础。
+2. relation provenance split 已从“已冻结协议”推进到“已真实生成图并经结构诊断验证”的正式实验阶段，但 paper-facing 数值精度问题 `R28/R29` 仍需单独收口；per-edge provenance 字段边界仍保留为后续语义问题。
+3. proof-side utility 已完成 MVP 选型、demo implementation 与 milestone 级裁决，当前缺的不是继续扩写 proof-side 功能面，而是把已有证据转成可投稿叙事：publication-precision cleanup、figure/table 渲染、artifact packaging。
 4. `lean4-example`、LeanDojo、Python 环境等部分版本锚点仍需后续可复现实据补证。
 5. mathlib module scan 的 standalone checked-in config 仍缺失，当前只能从 `summary.json` 追踪 scan settings。
 
