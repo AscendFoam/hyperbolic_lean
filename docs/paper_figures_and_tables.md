@@ -20,7 +20,7 @@
   - GCN Order.Ring: `artifacts/baselines/relation_seed_sweeps/grouped_gcn_order_ring_t32/aggregate.json`
   - HGCN Field.Subfield: `artifacts/baselines/relation_seed_sweeps/grouped_hgcn_field_subfield_t33/aggregate.json`
   - HGCN Order.Ring: `artifacts/baselines/relation_seed_sweeps/grouped_hgcn_order_ring_t33/aggregate.json`
-  - Cross-validated by T42 hierarchy_mixed sweeps (byte-identical match confirmed in T42/T43)
+  - Cross-validated by T42 hierarchy_mixed sweeps (byte-identical match confirmed in T42/T43; T33 = primary, T42 = cross-check)
 - **Exact numbers**:
 
 | Graph | GCN MAP | HGCN MAP | Delta | GCN nDCG | HGCN nDCG |

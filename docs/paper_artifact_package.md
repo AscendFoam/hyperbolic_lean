@@ -106,14 +106,19 @@ All reviews are stored in `docs/review/` and serve as audit trail. Key adversari
 
 ## 4. Table/Figure-to-Source Mapping
 
-### Core Tables
+### Core Tables (T1–T4)
 
 | Paper Table | Source Doc Entry | Primary Data Source | Backing Evidence |
 | --- | --- | --- | --- |
-| Table T1 (hierarchy_mixed baseline) | `paper_figures_and_tables.md` Table T1 | T32/T33 aggregate.json (GCN), T33/T42 aggregate.json (HGCN) | T32 PASS, T33 PASS, T42 PASS (exact match) |
+| Table T1 (hierarchy_mixed baseline) | `paper_figures_and_tables.md` Table T1 | T32 aggregate.json (GCN); T33 aggregate.json (HGCN, primary); T42 hierarchy_mixed sweeps (cross-check) | T32 PASS, T33 PASS, T42 PASS (exact match) |
 | Table T2 (provenance-aware comparison) | `paper_figures_and_tables.md` Table T2 | T42 provenance sweep aggregate.json (12 sweep dirs) | T42 PASS |
 | Table T3 (hop-bucket delta) | `paper_figures_and_tables.md` Table T3 | T42 aggregate.json → ranking.test.grouped.hop_buckets | T42 PASS |
 | Table T4 (structural properties) | `paper_figures_and_tables.md` Table T4 | T41 provenance_split diagnostics | T41 PASS |
+
+### Summary Table (T5)
+
+| Paper Table | Source Doc Entry | Primary Data Source | Backing Evidence |
+| --- | --- | --- | --- |
 | Table T5 (provenance-conditional summary) | `paper_figures_and_tables.md` Table T5 | Synthesized from T1 and T2 | T42 PASS, T57 PASS |
 
 ### Core Figures
@@ -152,7 +157,7 @@ All reviews are stored in `docs/review/` and serve as audit trail. Key adversari
 | Risk | Description | Status | Handling |
 | --- | --- | --- | --- |
 | R25 | Clean-environment reproducibility not completed | Active | Write "reviewed single-environment evidence," never "independently reproduced" |
-| R30 | 5 contributions may exceed ITP/CPP page budget | Active | May need to merge contributions (e.g., C1+C5) or move partial content to appendix |
+| R30 | 5 contributions may exceed ITP/CPP page budget | Active | T59 decision: keep 5-contribution structure with page-budget-aware wording; C3 or C5 may relocate to appendix if needed |
 | R08 | Worker Allowed Files scope governance pattern | Active | Future tasks must explicitly list all allowed files in the task package |
 
 ### Resolved Precision Items (for Reference)

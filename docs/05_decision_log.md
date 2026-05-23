@@ -1,6 +1,6 @@
 ﻿# 05 Decision Log
 
-> 更新时间：2026-05-23（T58 review PASS，T59 当前）
+> 更新时间：2026-05-23（T59 review PASS；T60 当前）
 >
 > 规则：只记录会影响后续任务选择、论文叙事、评测协议或项目状态的决策。
 
@@ -389,3 +389,23 @@
 - 依据：`docs/review/T58_review.md`
 - 决策：`T58` 判定为 `PASS`。review 无 blocking issues，也无 `PASS_WITH_WARNINGS` 分类项。两个 non-blocking notes 不回头重开 `T58`，而是并入 `T59`：(1) `docs/paper_artifact_package.md` 中“5 core tables”与“4 core tables + 1 summary table”的术语统一；(2) Table T1 的 HGCN source mapping 从模糊的 `T33/T42` 改成“`T33` primary，`T42` cross-check”这类更精确的 submission-facing 口径。`T59` 同时负责 final paper editing / venue shaping，不新增实验、不新增数据、不新增 demo。
 - 后果：`T58` 正式标记完成，当前唯一任务切换到 `T59`。下一轮 worker 只应执行最终 paper-facing 文稿收束与 venue shaping；提交时继续避免把未授权的本地配置变更混入版本库。
+
+## D046: T59 final paper editing / venue shaping 完成
+
+- 日期：2026-05-23
+- 状态：Accepted
+- 依据：T59 任务包、`docs/review/T58_review.md` non-blocking notes、`docs/paper_draft.md`、`docs/paper_outline.md`、`docs/paper_figures_and_tables.md`、`docs/paper_artifact_package.md`、`docs/review/T59_review.md`
+- 决策：T59 worker 已完成最终 paper editing / venue shaping。三项核心产出：
+  1. **Contribution-count decision**：保持 5 条（C1–C5），加入 page-budget-aware 措辞。`paper_outline.md` 新增 Page Budget Note 子节；`paper_draft.md` Section 7.4 R30 更新为"keep C1–C5 with page-budget-aware wording; C3 or C5 may relocate to appendix"；`paper_artifact_package.md` R30 条目同步更新。
+  2. **Core-table 术语统一**：`paper_artifact_package.md` Section 4 从"### Core Tables"（含 T5）拆分为"### Core Tables (T1–T4)"与"### Summary Table (T5)"两个独立子节，消除"5 core tables"与"4 core tables + 1 summary table"的混用。
+  3. **Table T1 HGCN source mapping 精度**：`paper_artifact_package.md` Section 4 中 T1 的数据源从"T32/T33 aggregate.json (GCN), T33/T42 aggregate.json (HGCN)"改为"T32 aggregate.json (GCN); T33 aggregate.json (HGCN, primary); T42 hierarchy_mixed sweeps (cross-check)"。`paper_figures_and_tables.md` T1 条目的 cross-validation 行同步补入"T33 = primary, T42 = cross-check"。
+  Worker 未新增实验、未修改 artifact、未引入未 review 数值。
+- 后果：`docs/paper_artifact_package.md`、`docs/paper_figures_and_tables.md`、`docs/paper_draft.md`、`docs/paper_outline.md` 均已收束为 venue-shaped 提交前终态。后续方向为 venue-formatting / final submission asset shaping（仅当 T59 收口并经 review 后再决定）。
+
+## D047: T59 review 通过并切换到 T60 venue-formatting / final submission asset shaping
+
+- 日期：2026-05-23
+- 状态：Accepted
+- 依据：`docs/review/T59_review.md`
+- 决策：`T59` 判定为 `PASS`。review 无 blocking issues，也无 `PASS_WITH_WARNINGS` 分类项。两个 non-blocking notes 不回头重开 `T59`，而是并入 `T60`：(1) `paper_artifact_package.md` 提交检查清单中的 `R30 page budget check` 应和已完成的 page-budget 决策同步为完成状态；(2) `paper_outline.md` 的 Page Budget Note 还可进一步说明若压缩 C3 或 C5，正文主线如何保持自洽。`T60` 负责这两项收尾以及 venue-formatting / final submission asset shaping，不新增实验、不新增数据、不新增 demo。
+- 后果：`T59` 正式标记完成，当前唯一任务切换到 `T60`。下一轮 worker 只应执行 submission-facing 的最终资产整形；提交时继续排除 `.claude/settings.json`，并按仓库政策决定是否纳入 `docs/for_human/` 与 `docs/worker_summary/`。

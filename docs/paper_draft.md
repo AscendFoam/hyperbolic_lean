@@ -377,7 +377,7 @@ Our finding is consistent with the theoretical motivation for hyperbolic graph l
 
 ### 7.4 Scope Boundaries
 
-12. **Page budget consideration (R30).** The five contributions (C1–C5) may be too many for the page limits of target venues (ITP and CPP typically allow ~20 pages). During paper finalization, contributions may need to be merged (e.g., C1+C5 as pipeline+alignment) or partially moved to an appendix.
+12. **Page budget consideration (R30).** The five contributions (C1–C5) may be too many for the page limits of target venues (ITP and CPP typically allow ~20 pages). The current draft keeps C1–C5 as separate contributions with page-budget-aware wording; if further compression is needed, C3 or C5 can be condensed with full treatment deferred to the appendix.
 
 13. **Proof-side bridge scope.** The ancestor explanation tool is a proof-of-concept demonstration, not an end-to-end theorem prover. It demonstrates that provenance-conditional quality differences are tangible, but does not claim that this translates directly to proof completion rates.
 

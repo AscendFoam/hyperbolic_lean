@@ -144,6 +144,10 @@ T43 refines the Milestone 3 conclusion "GCN overall ahead, HGCN not established 
 2. Expand to FM version if multi-repo replication and proof-side utility are completed.
 3. Fall back to SEFM/ICFEM if additional evidence is needed.
 
+### Page Budget Note
+
+The five contributions (C1–C5) are scoped for ITP/CPP page limits (~20 pages). C3 or C5 can be condensed to appendix-level detail if budget pressure increases, but the current 5-contribution structure remains the default for venue submission.
+
 ## 9. Proof-Side Bridge
 
 ### Why T51 Must Extend the Paper Story to a Utility MVP

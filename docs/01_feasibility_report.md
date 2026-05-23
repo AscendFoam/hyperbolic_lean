@@ -1,6 +1,6 @@
 ﻿# 01 Feasibility Report
 
-> 更新时间：2026-05-23（T58 review PASS，T59 当前）
+> 更新时间：2026-05-23（T59 review PASS；T60 当前）
 >
 > 结论：Go，条件是先完成协议冻结、数据资产化和任务治理，再推进新实验。
 
@@ -94,7 +94,7 @@ No-Go 条件：
 - 若所有候选图都过浅且无法接 proof-side utility，则项目应转为纯经验报告或归档。
 - 若后续只剩“继续调 HGCN 直到赢”，则不应继续作为主线。
 
-当前下一步是执行 `T59`：`docs/review/T58_review.md` 已将 `T58` 判定为 `PASS`，说明 submission-facing artifact packaging 已收口。`docs/paper_artifact_package.md` 已建立为 source-to-claim / table-to-source 的投稿侧对照文档，`paper_figures_and_tables.md` 的 stale cross-reference rows 已修正，`paper_draft.md` Section 5.4 的 mechanistic detail 也已恢复到一句话版本。下一步不新增实验，而是进入最终 paper editing / venue shaping：统一 `paper_draft.md`、`paper_outline.md`、`paper_figures_and_tables.md` 与 `paper_artifact_package.md` 的贡献叙事、页数预算和 submission-facing 术语，并吸收 `T58_review` 的两个非阻塞点，即 artifact package 中 core-table 术语统一，以及 Table T1 的 HGCN source mapping 精度说明。`R30` 与 clean-environment reproducibility (`R25`) 边界继续保留。
+当前下一步是执行 `T60`：`docs/review/T59_review.md` 已将 `T59` 判定为 `PASS`，说明 final paper editing / venue shaping 已收口。`paper_draft.md`、`paper_outline.md`、`paper_figures_and_tables.md` 与 `paper_artifact_package.md` 已完成 contribution / table-inventory / source-mapping 统一，且未引入新实验或新数值。下一步不新增实验，而是进入 venue-formatting / final submission asset shaping：同步 `paper_artifact_package.md` 提交检查清单中 `R30 page budget check` 的完成状态，并把 `paper_outline.md` 的 Page Budget Note 写得更自洽，明确若压缩 C3 或 C5，正文主线如何保持完整。`R30` 与 clean-environment reproducibility (`R25`) 边界继续保留。
 
 
 
