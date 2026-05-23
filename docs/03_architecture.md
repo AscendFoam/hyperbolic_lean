@@ -1,6 +1,6 @@
 ﻿# 03 Architecture
 
-> 更新时间：2026-05-22（T56 review 后更新）
+> 更新时间：2026-05-23（T57 review PASS 后更新）
 >
 > 范围：当前仓库的工程资产、数据产物、实验入口和治理文档结构。
 
@@ -17,6 +17,7 @@ docs/
   06_eval_protocol.md
   07_handoff.md
   08_risks_and_open_questions.md
+  paper_figures_and_tables.md
   tasks/
   review/
 
@@ -110,6 +111,7 @@ traced Lean repo
 | `06_eval_protocol.md` | 数据、split、指标、验收协议 |
 | `07_handoff.md` | 给下一个 Captain / Worker 的接手说明 |
 | `08_risks_and_open_questions.md` | 风险、开放问题、缓解策略 |
+| `paper_figures_and_tables.md` | Publication-facing figure/table source-of-truth (T57) |
 | `data_manifest.md` | reviewed 数据资产与版本锚点清单，未知字段显式保留为 `unknown / needs verification` |
 | `data_card.md` | reviewed 数据卡，描述当前图资产字段、relation provenance、coverage-aware 处理和使用边界 |
 
@@ -123,9 +125,9 @@ Reviewer 默认只读，只检查 diff 是否完成任务、是否有伪实现�
 
 ## 7. 当前架构缺口
 
-1. T30 已形成 reviewed training alignment audit；T31A 已修复 grouped ancestor retrieval 的 query-level split completeness；T31 已在 grouped retrieval runner 中补入 reviewed 最小 query-grouped loss；T32/T33 已分别完成 matched GCN/HGCN grouped 5-seed 对照；T34 已把 grouped-vs-binary 与 matched GCN-vs-HGCN 结论收口成正式总结；T40 已把 provenance split 的配置与输出位置冻结成可复用协议入口；T41 已把 frozen config 真正落成六个 split 图目录并接通 diagnostics pipeline；T42 已在 provenance-aware split 上完成受约束的 GCN/HGCN 5-seed sweeps；T43 已把 provenance 结构诊断、seed sweep 结果、风险状态与项目叙事统一收口，并将 Milestone 4 结论固定为 provenance-conditional；T50 已把这些 reviewed artifact 提炼成 paper skeleton；T51 已从 proof-side bridge 中正式选定 ancestor explanation 作为 MVP；T52 已把该 MVP 收敛成 reviewed 的最小 demo implementation package；`T52a` 已实现并通过 review，把 proof-side bridge 落地为真实 demo CLI 与 demo report；`T53` 已完成 milestone review 并通过 review，正式将项目裁决为 **Narrow**；`T54` 已产出并通过 review 接受 paper-facing draft 首版；`T55` 已通过 review 并完成第二轮文稿结构 refinement；`T56` 已通过 review 并完成 precision cleanup：`R29` 修正、`R28` 基于 reviewed artifact 根因解释合法关闭。下一架构缺口是 `T57`：把已经稳定下来的 reviewed 数值边界转成 publication-facing 的 figure/table source rendering。
-2. relation provenance split 已从”已冻结协议”推进到”已真实生成图并经结构诊断验证”的正式实验阶段；paper-facing 数值精度问题 `R28`/`R29` 已由 `T56` cleanup 关闭/修正。后续优先 figure/table rendering，其后再做 artifact packaging。
-3. proof-side utility 已完成 MVP 选型、demo implementation 与 milestone 级裁决，当前缺的不是继续扩写 proof-side 功能面，而是把已有证据转成可投稿叙事：figure/table 渲染、最终 paper editing、artifact packaging。
+1. T30 已形成 reviewed training alignment audit；T31A 已修复 grouped ancestor retrieval 的 query-level split completeness；T31 已在 grouped retrieval runner 中补入 reviewed 最小 query-grouped loss；T32/T33 已分别完成 matched GCN/HGCN grouped 5-seed 对照；T34 已把 grouped-vs-binary 与 matched GCN-vs-HGCN 结论收口成正式总结；T40 已把 provenance split 的配置与输出位置冻结成可复用协议入口；T41 已把 frozen config 真正落成六个 split 图目录并接通 diagnostics pipeline；T42 已在 provenance-aware split 上完成受约束的 GCN/HGCN 5-seed sweeps；T43 已把 provenance 结构诊断、seed sweep 结果、风险状态与项目叙事统一收口，并将 Milestone 4 结论固定为 provenance-conditional；T50 已把这些 reviewed artifact 提炼成 paper skeleton；T51 已从 proof-side bridge 中正式选定 ancestor explanation 作为 MVP；T52 已把该 MVP 收敛成 reviewed 的最小 demo implementation package；`T52a` 已实现并通过 review，把 proof-side bridge 落地为真实 demo CLI 与 demo report；`T53` 已完成 milestone review 并通过 review，正式将项目裁决为 **Narrow**；`T54` 已产出并通过 review 接受 paper-facing draft 首版；`T55` 已通过 review 并完成第二轮文稿结构 refinement；`T56` 已通过 review 并完成 precision cleanup：`R29` 修正、`R28` 基于 reviewed artifact 根因解释合法关闭；`T57` 已通过 review，并把 `docs/paper_figures_and_tables.md` 建成 publication-facing 图表源文档。下一架构缺口是 artifact packaging。
+2. relation provenance split 已从“已冻结协议”推进到“已真实生成图并经结构诊断验证”的正式实验阶段；paper-facing 数值精度问题 `R28`/`R29` 已由 `T56` cleanup 关闭/修正；figure/table source rendering 已由 `T57` 收口。后续优先 artifact packaging，并顺手修正 `paper_figures_and_tables.md` 内部 cross-reference table 的 stale rows。
+3. proof-side utility 已完成 MVP 选型、demo implementation 与 milestone 级裁决，当前缺的不是继续扩写 proof-side 功能面，而是把已有证据转成可投稿叙事：artifact packaging、最终 paper editing，以及 submission-facing 的 source-to-claim 对照。
 4. `lean4-example`、LeanDojo、Python 环境等部分版本锚点仍需后续可复现实据补证。
 5. mathlib module scan 的 standalone checked-in config 仍缺失，当前只能从 `summary.json` 追踪 scan settings。
 

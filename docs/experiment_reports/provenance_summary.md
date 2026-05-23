@@ -195,7 +195,7 @@ Yes, at both the structural and empirical levels:
 | provenance split | HGCN vs GCN (Field.Subfield) | HGCN vs GCN (Order.Ring) | structural role |
 | --- | --- | --- | --- |
 | explicit_only (primary) | **HGCN wins** (+0.1247 MAP) | **HGCN wins** (+0.0557 MAP) | deep hierarchy |
-| synthesized_only (diagnostic) | GCN wins | GCN wins (+0.0893 MAP) | flat star forest |
+| synthesized_only (diagnostic) | GCN wins (+0.3143 MAP) | GCN wins (+0.0893 MAP) | flat star forest |
 | hierarchy_mixed (reproducibility) | GCN wins (+0.0381 MAP) | GCN wins (+0.0173 MAP) | depth + leaf inflation |
 
 ### 7.3 Refined project conclusion

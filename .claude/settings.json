@@ -56,7 +56,8 @@
       "Bash(wc -l docs/paper_draft.md)",
       "Bash(powershell -Command \"Select-String -Path 'docs\\\\paper_draft.md' -Pattern 'provenance-conditional' | Measure-Object | Select-Object -ExpandProperty Count\")",
       "Bash(powershell -Command \"Select-String -Path 'docs\\\\paper_draft.md' -Pattern 'explicit_only|synthesized_only|hierarchy_mixed' | Measure-Object | Select-Object -ExpandProperty Count\")",
-      "Bash(powershell -Command \"Select-String -Path 'docs\\\\paper_draft.md' -Pattern 'R28|R29|R30|R25' | Measure-Object | Select-Object -ExpandProperty Count\")"
+      "Bash(powershell -Command \"Select-String -Path 'docs\\\\paper_draft.md' -Pattern 'R28|R29|R30|R25' | Measure-Object | Select-Object -ExpandProperty Count\")",
+      "Bash(rg -n \"GCN \\\\\\\\+0\\\\\\\\.3143|1\\\\\\\\.0000 ± 0\\\\\\\\.0000|grouped_test_map|test_average_precision\" docs/experiment_reports/provenance_summary.md docs/paper_draft.md docs/paper_figures_and_tables.md)"
     ]
   }
 }

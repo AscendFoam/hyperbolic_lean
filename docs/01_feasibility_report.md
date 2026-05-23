@@ -1,6 +1,6 @@
 ﻿# 01 Feasibility Report
 
-> 更新时间：2026-05-22（T56 review 后更新）
+> 更新时间：2026-05-23（T57 review PASS 后更新）
 >
 > 结论：Go，条件是先完成协议冻结、数据资产化和任务治理，再推进新实验。
 
@@ -94,7 +94,7 @@ No-Go 条件：
 - 若所有候选图都过浅且无法接 proof-side utility，则项目应转为纯经验报告或归档。
 - 若后续只剩“继续调 HGCN 直到赢”，则不应继续作为主线。
 
-当前下一步是执行 `T57`：`T56` 已经通过 review 并被判定为 `PASS`，说明 publication-facing precision cleanup 已经到位。`R29` 已修正，`R28` 已基于现有 reviewed artifact 的根因解释合法关闭。这个阶段不应回到新实验或新 demo，而应把稳定下来的数字边界转成 figure/table source rendering，并顺手处理 `T56_review` 留下的非阻塞表达精修（summary table 粒度统一、Section 5.4 长解释段压缩）。artifact packaging 继续作为下一步单独任务；`R30` 与 clean-environment reproducibility (`R25`) 边界继续保留。
+当前下一步是执行 `T58`：`docs/review/T57_review.md` 已将 `T57` 判定为 `PASS`，说明 publication-facing 的 figure/table source rendering 已收口。`docs/paper_figures_and_tables.md` 已建立为 source-of-truth，`paper_draft.md`、`provenance_summary.md` 与 `paper_outline.md` 已完成同步。下一步不新增实验，而是进入 artifact packaging：整理投稿侧的 source-doc / outline / draft / provenance report 映射，并吸收 `T57_review` 留下的两个非阻塞点，即 source-doc cross-reference table 自洽性修正与最终 paper-editing 层的一句 mechanistic detail 取舍。`R30` 与 clean-environment reproducibility (`R25`) 边界继续保留。
 
 
 

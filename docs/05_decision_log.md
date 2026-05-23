@@ -1,6 +1,6 @@
 ﻿# 05 Decision Log
 
-> 更新时间：2026-05-22（T56 review 后更新）
+> 更新时间：2026-05-23（T57 review PASS 后更新）
 >
 > 规则：只记录会影响后续任务选择、论文叙事、评测协议或项目状态的决策。
 
@@ -348,3 +348,24 @@
 - 依据：`docs/review/T56_review.md`
 - 决策：`T56` 判定为 `PASS`。review 没有 blocking issue，也没有需要分类为 accepted/deferred/rejected 的 warning。reviewer 留下的三个 non-blocking notes 直接并入下一轮任务设计：`provenance_summary.md` Section 5 summary table 的粒度统一、`paper_draft.md` Section 5.4 长解释段的最终压缩、以及 `R28` closure 条件在治理文档中的显式可追溯性。
 - 后果：`T56` 正式标记完成，当前唯一任务切换到 `T57`。`T57` 负责把已经稳定的 reviewed 数值边界转成 publication-facing 的 figure/table source rendering，并吸收上述非阻塞表达精修；`artifact packaging` 保持为后续单独任务。提交时继续排除 `.claude/settings.json`。
+
+## D042: T57 figure/table source rendering 完成
+
+- 日期：2026-05-23
+- 状态：Accepted
+- 依据：T56 reviewed artifacts、`docs/paper_outline.md` Section 6 figures/tables plan、`docs/paper_draft.md`、`docs/experiment_reports/provenance_summary.md`
+- 决策：T57 worker 已完成 figure/table source rendering。核心产出：
+  1. 新建 `docs/paper_figures_and_tables.md` 作为 publication-facing 图表源文档，包含 4 个 core tables（mixed baseline、provenance-aware comparison、hop-bucket delta、structural properties）、2 个 core figure specs（provenance split/structure、hop-depth delta）和 1 个 summary table。
+  2. 压缩 `paper_draft.md` Section 5.4 长解释段（~120 词 → ~60 词），保留三要素事实：`grouped_test_map` 与 `test_average_precision` 是不同指标、两条指标均正确、R28 已由 T56 关闭。
+  3. 统一 `provenance_summary.md` Section 5 summary table 中 FS synthesized_only 的粒度（从 "GCN wins" 改为 "GCN wins (+0.3143 MAP)"）。
+  4. 更新 `paper_outline.md` 中 R28/R29 状态从 active 改为 resolved。
+  Worker 未新增实验、未修改 artifact、未引入未 review 新数值。
+- 后果：`docs/paper_figures_and_tables.md` 已成为 publication-facing 图表 source-of-truth；后续 artifact packaging 保持为单独任务。
+
+## D043: T57 review 通过并切换到 T58 artifact packaging
+
+- 日期：2026-05-23
+- 状态：Accepted
+- 依据：`docs/review/T57_review.md`
+- 决策：`T57` 判定为 `PASS`。review 无 blocking issues，也无 `PASS_WITH_WARNINGS` 分类项。三个 non-blocking notes 的处理为：(1) `docs/paper_figures_and_tables.md` Section 4 中 stale “Pending sync” rows 不回头重开 `T57`，而是并入 `T58` artifact packaging 顺手修正；(2) `paper_draft.md` Section 5.4 压缩后少掉的一句 mechanistic detail 作为最终 paper-editing 取舍项，亦并入 `T58`；(3) `.claude/settings.json` 自动权限变更继续 rejected/excluded from commit。
+- 后果：`T57` 正式标记完成，当前唯一任务切换到 `T58`。下一轮只做 artifact packaging 与 source-to-claim 对照整理，不新增实验、不修改 artifacts。

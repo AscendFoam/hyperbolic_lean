@@ -2,7 +2,7 @@
 
 > Status: Draft skeleton — not yet submitted, not yet peer-reviewed.
 >
-> Updated: 2026-05-18 (T50 worker draft)
+> Updated: 2026-05-23 (T57 figure/table source rendering: R28/R29 resolved, source doc linked)
 
 ---
 
@@ -92,7 +92,7 @@ T43 refines the Milestone 3 conclusion "GCN overall ahead, HGCN not established 
 | Table 6 | Structural properties by provenance split: longest chain, leaf ratio, multi-parent nodes, cycle rank, diameter | Connect structure to model performance (C3, C4) |
 | Table 7 | Diagnostics thresholds: heuristic classification criteria for shallow forest / star forest / hierarchy-rich | Codify the diagnostics framework for reuse (C3) |
 
-**Precision note for Table 4:** Field.Subfield `synthesized_only` GCN results involve an unresolved aggregate vs per-seed discrepancy (R28). The table will use per-seed verified values and note the discrepancy. Field.Subfield `synthesized_only` GCN MAP from `docs/experiment_reports/provenance_summary.md` Section 5.1 contains a known table-cell error (R29); the paper will use verified artifact values directly, not that table cell.
+**Precision note for Table 4 (resolved):** Field.Subfield `synthesized_only` GCN MAP = 1.0000 ± 0.0000 (verified T42 artifact, all 5 seeds `grouped_test_map` = 1.0). A previously reported "aggregate vs per-seed discrepancy" (R28) was resolved by T56 as a metric naming confusion between `grouped_test_map` and `test_average_precision`; both metrics are correctly computed and internally consistent. A table-cell error in `provenance_summary.md` Section 5.1 (R29) was also corrected by T56. Detailed figure/table specs are now in `docs/paper_figures_and_tables.md`.
 
 ## 7. Threats to Validity
 
@@ -102,7 +102,7 @@ T43 refines the Milestone 3 conclusion "GCN overall ahead, HGCN not established 
 2. **Single-environment execution.** All sweeps ran in one environment. Clean-room reproducibility has not been independently verified. Clean-environment reproduction remains an open risk (R25).
 3. **Hop_4_plus sample size.** On Field.Subfield `explicit_only`, hop_4_plus means are computed over 4 of 5 seeds (seed 2026 produces no hop_4_plus queries). The comparison is symmetric (both GCN and HGCN lack that seed), but statistical estimates at this bucket are less stable.
 4. **Heuristic diagnostics thresholds.** The shallow-forest / star-forest / hierarchy-rich classification thresholds are empirically calibrated from current reviewed artifacts, not theoretically derived. They may not transfer to graphs with different size or topology distributions (R17).
-5. **Aggregate vs per-seed discrepancy.** Field.Subfield `synthesized_only` GCN shows aggregate MAP = 1.0000 but per-seed records include values below 1.0. Root cause not yet resolved (R28). The controlled-diagnostic conclusion is robust regardless, but the precise numeric values should not be quoted without noting this discrepancy.
+5. **Metric naming precision in synthesized_only diagnostics (resolved).** Field.Subfield `synthesized_only` GCN shows `grouped_test_map` = 1.0 for all 5 seeds, while `test_average_precision` varies (0.81–1.00, aggregate 0.9426). A previously reported "aggregate vs per-seed discrepancy" (R28) was traced by T56 artifact audit to a naming confusion between these two metrics; both are correctly computed. The controlled-diagnostic conclusion is unaffected.
 
 ### External Validity
 
@@ -168,8 +168,8 @@ The ancestor explanation MVP is recommended as the default choice for T51 becaus
 
 The following constraints must be respected until the corresponding risks are formally closed:
 
-- **R28 (active):** Field.Subfield `synthesized_only` GCN aggregate vs per-seed discrepancy is unresolved. Do not write "all per-seed values equal 1.0" for this split. Quote per-seed verified values and note the discrepancy.
-- **R29 (active):** `docs/experiment_reports/provenance_summary.md` Section 5.1 contains a wrong GCN MAP table cell for Field.Subfield `synthesized_only`. Do not cite that cell as authoritative. Use verified artifact values from `artifacts/baselines/relation_seed_sweeps/`.
+- **R28 (resolved by T56):** Field.Subfield `synthesized_only` GCN "aggregate vs per-seed discrepancy" was traced to metric naming confusion (`grouped_test_map` vs `test_average_precision`). Both metrics are correct. The table cell in this outline now uses the verified T42 value 1.0000 ± 0.0000.
+- **R29 (resolved by T56):** The wrong GCN MAP table cell in `provenance_summary.md` Section 5.1 has been corrected to the verified T42 value 1.0000 ± 0.0000.
 - **R25 (active):** Clean-environment reproducibility is not closed. Write "reviewed single-environment evidence," not "independently reproduced."
 - **R04 (mitigated, provenance-conditional):** The hyperbolic advantage finding is conditional on provenance composition. Do not generalize it beyond the reviewed splits and candidate graphs.
 

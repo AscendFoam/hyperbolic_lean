@@ -1,6 +1,6 @@
 ﻿# 08 Risks and Open Questions
 
-> 更新时间：2026-05-22（T56 review 后更新：R28/R29 resolved，当前切换到 T57）
+> 更新时间：2026-05-23（T57 review PASS 后更新）
 
 ## 1. Active Risks
 
@@ -76,7 +76,8 @@
 | D17 | 为 `grouped_training_summary.md` Section 6 补入历史 binary 数值来源的具体文件路径 | T34 review 确认历史数值可追溯，但正文未直接写出源文件名 | 下一次修改 grouped summary 报告时，把 `docs/阶段总结（2026-05-02，grouped retrieval training）.md` 显式写入正文 |
 | D18 | 修正 `docs/experiment_reports/provenance_summary.md` Section 5.1 中 Field.Subfield `synthesized_only` 的错误 GCN MAP 表格单元 | Closed by `T56`：表格单元已修正为 verified T42 value `1.0000 ± 0.0000`，delta 修正为 `GCN +0.3143`；paper_draft.md 已同步更新 | 已关闭，无需重新触发 |
 | D19 | 在 paper draft 中补齐更显式的 Background / Related Work 承接，并进一步压缩 abstract | Closed by `T55`：abstract 已从 ~180 词压缩至 ~140 词；Section 3.2 新增 Background；Section 6.5 新增 Related Work and Positioning | 若后续 venue 格式要求独立一级章节而非子节，需重新评估 |
-| D20 | 统一 `provenance_summary.md` Section 5 summary table 的粒度，并在最终 paper editing 中压缩 `paper_draft.md` Section 5.4 的长解释段 | `T56_review` 明确指出这两个问题都不影响 precision cleanup 正确性，只属于后续 publication-facing 表达精修 | 下一次 figure/table rendering 或最终 paper editing 时 |
+| D20 | 统一 `provenance_summary.md` Section 5 summary table 的粒度，并在最终 paper editing 中压缩 `paper_draft.md` Section 5.4 的长解释段 | Closed by `T57`：summary table 粒度已统一（FS synthesized_only 从 "GCN wins" 改为 "GCN wins (+0.3143 MAP)"）；Section 5.4 长解释段已从 ~120 词压缩至 ~60 词 | 已关闭，无需重新触发 |
+| D21 | 修正 `docs/paper_figures_and_tables.md` Section 4 的 stale “Pending sync” rows，并决定是否在 `paper_draft.md` Section 5.4 补回一句 mechanistic detail | `T57_review` 明确这两项都不构成 blocking issue，且更适合与 artifact packaging / 最终 paper editing 一起收口，而不是重开 `T57` | 下一次执行 `T58` artifact packaging 或最终 venue-shaping paper edit 时 |
 
 ## 4. Risk Handling Rules
 
