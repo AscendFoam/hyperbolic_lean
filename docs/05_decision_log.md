@@ -1,6 +1,6 @@
 ﻿# 05 Decision Log
 
-> 更新时间：2026-05-23（T57 review PASS 后更新）
+> 更新时间：2026-05-23（T58 review PASS，T59 当前）
 >
 > 规则：只记录会影响后续任务选择、论文叙事、评测协议或项目状态的决策。
 
@@ -369,3 +369,23 @@
 - 依据：`docs/review/T57_review.md`
 - 决策：`T57` 判定为 `PASS`。review 无 blocking issues，也无 `PASS_WITH_WARNINGS` 分类项。三个 non-blocking notes 的处理为：(1) `docs/paper_figures_and_tables.md` Section 4 中 stale “Pending sync” rows 不回头重开 `T57`，而是并入 `T58` artifact packaging 顺手修正；(2) `paper_draft.md` Section 5.4 压缩后少掉的一句 mechanistic detail 作为最终 paper-editing 取舍项，亦并入 `T58`；(3) `.claude/settings.json` 自动权限变更继续 rejected/excluded from commit。
 - 后果：`T57` 正式标记完成，当前唯一任务切换到 `T58`。下一轮只做 artifact packaging 与 source-to-claim 对照整理，不新增实验、不修改 artifacts。
+
+## D044: T58 artifact packaging 完成
+
+- 日期：2026-05-23
+- 状态：Accepted
+- 依据：T57 reviewed artifacts、`docs/paper_figures_and_tables.md`、`docs/paper_draft.md`、`docs/paper_outline.md`、`docs/experiment_reports/provenance_summary.md`、T57 review non-blocking notes、`docs/review/T58_review.md`
+- 决策：T58 worker 已完成 artifact packaging。核心产出：
+  1. 新建 `docs/paper_artifact_package.md`，包含：(a) artifact package scope；(b) source documents inventory（paper-facing source-of-truth、backing evidence、review records）；(c) claim-to-source mapping（C1–C5 + central claim）；(d) table/figure-to-source mapping（5 core tables + 2 core figures + supplementary tables）；(e) known exclusions and active boundaries（R25、R30、R08 必须不写成已关闭）；(f) submission/handoff checklist。
+  2. 修正 `paper_figures_and_tables.md` Section 4 的 stale "Pending sync" rows，改为 "Aligned (T57): precision note updated to reflect R28/R29 resolved by T56"。
+  3. 在 `paper_draft.md` Section 5.4 补回一句 mechanistic detail："each `(src, relation_type)` query has exactly one positive ancestor, and the candidate pool is small"。决策理由是压缩版只说 "making retrieval trivial" 但未解释原因，补回一句可在不展开为长段的前提下恢复机理解释。未引入新数值或新 claim。
+  Worker 未新增实验、未修改 artifact、未引入未 review 新数值。
+- 后果：`docs/paper_artifact_package.md` 成为 submission-facing artifact 包装文档；T57 review 的两个非阻塞点已收口。后续方向为最终 paper editing / venue shaping。
+
+## D045: T58 review 通过并切换到 T59 final paper editing / venue shaping
+
+- 日期：2026-05-23
+- 状态：Accepted
+- 依据：`docs/review/T58_review.md`
+- 决策：`T58` 判定为 `PASS`。review 无 blocking issues，也无 `PASS_WITH_WARNINGS` 分类项。两个 non-blocking notes 不回头重开 `T58`，而是并入 `T59`：(1) `docs/paper_artifact_package.md` 中“5 core tables”与“4 core tables + 1 summary table”的术语统一；(2) Table T1 的 HGCN source mapping 从模糊的 `T33/T42` 改成“`T33` primary，`T42` cross-check”这类更精确的 submission-facing 口径。`T59` 同时负责 final paper editing / venue shaping，不新增实验、不新增数据、不新增 demo。
+- 后果：`T58` 正式标记完成，当前唯一任务切换到 `T59`。下一轮 worker 只应执行最终 paper-facing 文稿收束与 venue shaping；提交时继续避免把未授权的本地配置变更混入版本库。

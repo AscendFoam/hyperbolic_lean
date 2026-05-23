@@ -224,8 +224,8 @@
 
 | Source entry | paper_outline.md section | Current alignment status |
 | --- | --- | --- |
-| Section 6 Figures plan | Fig 2, Fig 3 | Pending sync: precision note for Table 4 must be updated (R28/R29 now resolved) |
-| Section 6 Tables plan | Table 3–6 | Pending sync: precision note must be removed |
+| Section 6 Figures plan | Fig 2, Fig 3 | Aligned (T57): precision note updated to reflect R28/R29 resolved by T56 |
+| Section 6 Tables plan | Table 3–6 | Aligned (T57): precision note updated to reflect R28/R29 resolved by T56 |
 
 ---
 

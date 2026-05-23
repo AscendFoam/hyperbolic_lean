@@ -1,6 +1,6 @@
 ﻿# 07 Handoff
 
-> 更新时间：2026-05-23（T57 review PASS 后更新）
+> 更新时间：2026-05-23（T58 review PASS，T59 当前）
 >
 > 给下一位 Captain / Worker / Reviewer 的接手说明。
 
@@ -31,9 +31,9 @@
 
 ## 3. 当前唯一任务
 
-`T58` 是当前唯一任务：在不新增实验的前提下，基于 `T57` 已建立的 publication-facing 图表 source-of-truth 做 artifact packaging。重点不是再跑实验或重写图表，而是把 `paper_draft`、`paper_outline`、`paper_figures_and_tables`、`provenance_summary` 和新增 packaging doc 之间的 source-to-claim 映射整理清楚，形成投稿侧可直接复查的交付清单。
+`T59` 是当前唯一任务：在不新增实验的前提下，对 `paper_draft`、`paper_outline`、`paper_figures_and_tables` 与 `paper_artifact_package` 做最终 paper editing / venue shaping。重点不是再补 packaging 资产，而是把已有 submission-facing 资产收束成同一套 venue-shaped 叙事：统一 contributions / page-budget 口径、统一 core-table 术语，并把 Table T1 的 HGCN source mapping 写成更精确的“`T33` primary，`T42` cross-check”。
 
-先读取 `docs/review/T57_review.md`、`docs/paper_artifact_package.md`（若不存在则按 `T58` 任务包创建）、`docs/paper_figures_and_tables.md`、`docs/paper_draft.md`、`docs/paper_outline.md`、`docs/experiment_reports/provenance_summary.md`、`docs/04_task_board.md`、`docs/05_decision_log.md`、`docs/07_handoff.md`、`docs/08_risks_and_open_questions.md`，确认 `T57` 已正式收口、当前状态仍为 **Narrow**，以及 `R28/R29` 已关闭、`R25/R30` 仍需保留。`T58` 不是新实验任务，而是把已稳定的 evidence 打包成投稿侧可核对的文档资产。
+先读取 `docs/review/T58_review.md`、`docs/paper_artifact_package.md`、`docs/paper_draft.md`、`docs/paper_outline.md`、`docs/paper_figures_and_tables.md`、`docs/04_task_board.md`、`docs/05_decision_log.md`、`docs/07_handoff.md`、`docs/08_risks_and_open_questions.md`，确认 `T58` 已正式收口、当前状态仍为 **Narrow**，以及 `R25/R30/R08` 仍需保留。`T59` 不是新实验任务，而是把已稳定的 evidence 压缩成更适合投稿的最终 paper-facing 文本资产。
 
 ## 4. 当前已知事实
 
@@ -188,10 +188,12 @@ Reviewer 默认只读。高风险任务使用 adversarial review。
 84. `docs/review/T56_review.md` 已给出 `PASS`。Captain 已将 `T56` 正式标记完成；无 blocking issue。reviewer 留下的 non-blocking notes 已直接并入下一轮 `T57` 任务设计：统一 `provenance_summary.md` Section 5 summary table 粒度、压缩 `paper_draft.md` Section 5.4 长解释段、并在治理文档中显式写清 `R28` closure 满足 `T56` 任务包的例外条件。当前唯一任务已切换为 `T57`。
 85. T57 worker 已完成 figure/table source rendering。新建 `docs/paper_figures_and_tables.md` 作为 publication-facing 图表源文档（4 core tables + 2 core figure specs + 1 summary table + 跨文档引用一致性记录）。同步压缩了 `paper_draft.md` Section 5.4 长解释段（~120 词 → ~60 词），统一了 `provenance_summary.md` Section 5 summary table 中 FS synthesized_only 的粒度，更新了 `paper_outline.md` 中 R28/R29 的状态。Worker 未标记任务完成，等待 adversarial reviewer 只读审查。
 86. `docs/review/T57_review.md` 已给出 `PASS`。Captain 已将 `T57` 正式标记完成，并把当前唯一任务切换为 `T58`。`T57_review` 的非阻塞点不回头重开 `T57`：`paper_figures_and_tables.md` Section 4 的 stale “Pending sync” rows 与 `paper_draft.md` Section 5.4 的一句 mechanistic detail 取舍并入 `T58` artifact packaging；`.claude/settings.json` 继续排除出提交。
+87. T58 worker 已完成 artifact packaging。新建 `docs/paper_artifact_package.md`，包含 source-to-claim 映射（C1–C5 + central claim）、table/figure-to-source 映射（5 core tables + 2 core figures）、已知排除项、活跃风险边界（R25/R30/R08）和提交检查清单。修正了 `paper_figures_and_tables.md` Section 4 的 stale “Pending sync” rows（改为 “Aligned (T57)”）。在 `paper_draft.md` Section 5.4 补回一句 mechanistic detail。未新增实验、未引入未 review 数值。
+88. `docs/review/T58_review.md` 已给出 `PASS`。Captain 已将 `T58` 正式标记完成，并把当前唯一任务切换为 `T59`。`T58_review` 的两个 non-blocking notes 不回头重开 `T58`：`paper_artifact_package.md` 中 core-table 术语统一，以及 Table T1 的 HGCN source mapping 精度说明，统一并入 `T59` 的最终 paper editing / venue shaping。
 
 ## 8. 下一步
 
-`T58` 是当前唯一任务，目标是 artifact packaging。
+`T59` 是当前唯一任务，目标是最终 paper editing / venue shaping。
 
 T53 milestone review 的核心结论：
 - **Verdict: Narrow**（收窄为 paper-facing / packaging / cleanup）
@@ -201,13 +203,14 @@ T53 milestone review 的核心结论：
 - 当前不需要新实验、新模型、新数据源或新 demo
 - 最紧迫的工作是 artifact packaging + 最终 paper editing
 
-T57 review 后：
-- 当前状态：`T57` 已通过 review，当前唯一任务为 `T58`
+T58 review 后：
+- 当前状态：`T58` 已通过 review，当前唯一任务为 `T59`
+- `docs/paper_artifact_package.md` 已建立为 submission-facing artifact package
 - `docs/paper_figures_and_tables.md` 已建立为 publication-facing 图表 source-of-truth
 - `R28` 已关闭：原始 "aggregate vs per-seed discrepancy" 经 T56 artifact 审计确认为 metric naming confusion（`test_average_precision` vs `grouped_test_map`），两条指标均计算正确、内部一致
 - `R29` 已修正：`provenance_summary.md` Section 5.1 表格已修正为 verified T42 value `1.0000 ± 0.0000`；`paper_draft.md` 已同步
-- 当前优先：artifact packaging
-- `T57_review` 的非阻塞点：修正 `paper_figures_and_tables.md` Section 4 的 stale rows；决定是否在 `paper_draft.md` Section 5.4 补回一句 mechanistic detail
+- 当前优先：最终 paper editing / venue shaping
+- `T58_review` 的非阻塞点：统一 `paper_artifact_package.md` 中 core-table 术语；把 Table T1 的 HGCN source mapping 写成“`T33` primary，`T42` cross-check”
 - 当前不推荐：新实验、新 demo、新模型、新数据源
 
 T50/T51 继承的核心事实边界（保持不变）：
@@ -220,8 +223,8 @@ T50/T51 继承的核心事实边界（保持不变）：
 - `R25` 仍然活跃：clean-environment reproducibility 尚未完成。
 - commit 时继续排除 `.claude/settings.json`。
 
-T58 之后的候选方向：
-- 最终 paper editing / venue shaping
+T59 之后的候选方向：
+- venue-formatting / final submission asset shaping（仅在 `T59` 收口并经 review 后再决定）
 - 当前不推荐：新实验、新 demo、新模型、新数据源
 
 ## T33 Completion Note

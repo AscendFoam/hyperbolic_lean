@@ -1,6 +1,6 @@
 ﻿# 00 Raw Idea
 
-> 更新时间：2026-05-23（T57 review PASS 后更新）
+> 更新时间：2026-05-23（T58 review PASS，T59 当前）
 >
 > 项目名称：形式化图谱双曲化
 >
@@ -94,6 +94,7 @@ Go，但主线已收束：
 - 2026-05-22：`docs/review/T55_review.md` 判定 `PASS_WITH_WARNINGS`；Captain 接受 `T55` 的第二轮文稿 refinement：Background / Related Work 子节放置、abstract 压缩与 D19 关闭均被接受；Allowed Files 越界同步模式继续记为 deferred governance risk。`T55` 正式标记完成，当前唯一任务切换为 `T56`，优先清理 `R28/R29` 的 publication-precision 问题，再进入 figure/table 渲染。
 - 2026-05-22：`docs/review/T56_review.md` 判定 `PASS`；Captain 接受 `T56` precision cleanup 完成：`R29` 已修正，`R28` 已基于现有 reviewed artifact 的根因解释合法关闭。当前唯一任务切换为 `T57`，进入 figure/table rendering 阶段；artifact packaging 保持为后续单独任务。
 - 2026-05-23：`docs/review/T57_review.md` 判定 `PASS`；Captain 接受 `T57` 完成：`docs/paper_figures_and_tables.md` 已成为 publication-facing 图表源文档，`paper_draft.md` / `provenance_summary.md` / `paper_outline.md` 的图表与 precision 状态已同步。当前唯一任务切换为 `T58`，用于 artifact packaging，并顺手收口 `T57_review` 提到的 source-doc 自洽性小缺口与最终 paper-editing 备注。
+- 2026-05-23：`docs/review/T58_review.md` 判定 `PASS`；Captain 接受 `T58` 完成：`docs/paper_artifact_package.md` 已把 source-to-claim mapping、table/figure-to-source mapping、known exclusions 与 submission checklist 收口为 submission-facing artifact package。reviewer 的两个非阻塞点不回头重开 `T58`：`paper_artifact_package.md` 中“5 core tables”措辞统一，以及 Table T1 的 HGCN source mapping 从模糊的 `T33/T42` 改成“`T33` primary，`T42` cross-check”这类更精确表述，统一并入下一轮 `T59`。当前唯一任务切换为 `T59`，进入最终 paper editing / venue shaping。
 
 
 

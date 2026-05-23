@@ -2,7 +2,7 @@
 
 > Status: First draft — not yet submitted, not yet peer-reviewed.
 >
-> Updated: 2026-05-23 (T57 figure/table source rendering: core table/figure specs centralized in docs/paper_figures_and_tables.md)
+> Updated: 2026-05-23 (T58 artifact packaging: source-to-claim mapping consolidated in docs/paper_artifact_package.md)
 >
 > Source: This draft inherits claim boundaries from `docs/paper_outline.md` and reviewed evidence from T32–T43, T50–T52a, and T53. All numeric anchors come from reviewed artifacts and must not be altered.
 
@@ -254,7 +254,7 @@ On `synthesized_only` graphs — which are structurally flat star forests — GC
 
 GCN matches or outperforms HGCN on the flat synthesized graphs. The hyperbolic inductive bias is a liability on structures with no hierarchy depth, confirming that HGCN's advantage on `explicit_only` is driven by geometry matching the graph structure, not by model capacity.
 
-**Note on FS synthesized_only GCN MAP = 1.0000.** The `synthesized_only` graph is a flat star forest (longest chain = 1, multi-parent = 0), making retrieval trivial. GCN achieves `grouped_test_map` = 1.0 on all 5 seeds. A previously reported "aggregate vs per-seed discrepancy" (R28) was traced by T56 to a naming confusion between `grouped_test_map` (1.0 for all seeds) and `test_average_precision` (a different per-query metric, aggregate 0.9426); both metrics are correctly computed and internally consistent.
+**Note on FS synthesized_only GCN MAP = 1.0000.** The `synthesized_only` graph is a flat star forest (longest chain = 1, multi-parent = 0), making retrieval trivial: each `(src, relation_type)` query has exactly one positive ancestor, and the candidate pool is small. GCN achieves `grouped_test_map` = 1.0 on all 5 seeds. A previously reported "aggregate vs per-seed discrepancy" (R28) was traced by T56 to a naming confusion between `grouped_test_map` (1.0 for all seeds) and `test_average_precision` (a different per-query metric, aggregate 0.9426); both metrics are correctly computed and internally consistent.
 
 ### 5.5 Reproducibility Check: hierarchy_mixed
 
