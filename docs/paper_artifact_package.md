@@ -179,7 +179,7 @@ All reviews are stored in `docs/review/` and serve as audit trail. Key adversari
 - [ ] All tables and figures have captions that reference the correct source doc entries
 - [ ] Figure F1 and F2 are rendered from specs in `paper_figures_and_tables.md`
 - [ ] R25 wording check: no claim of "independently reproduced" anywhere in the paper
-- [ ] R30 page budget check: contributions fit within target venue limits
+- [x] R30 page budget check: contributions fit within target venue limits (T59 decision synced; R30 risk remains active)
 - [ ] FS hop_4_plus footnote present (4/5 seeds)
 - [ ] FS synthesized_only footnote present (flat star forest, trivially solvable)
 - [ ] Metric naming clarification in Section 5.4 (or its absence is intentional)
@@ -224,3 +224,40 @@ All reviews are stored in `docs/review/` and serve as audit trail. Key adversari
 | **Protocol/audit documents** | `grouped_retrieval_protocol.md`, `provenance_split_protocol.md`, `diagnostics_protocol.md`, `training_alignment_audit.md` | Frozen protocol definitions. These define the experimental methodology that the evidence was produced under. |
 | **Review records** | `docs/review/*.md` | Audit trail. These verify that each piece of evidence was independently reviewed before being incorporated into source-of-truth docs. |
 | **Governance documents** | `docs/00–08` | Project management and state tracking. These do not contain experimental numbers but record decision history and task progression. |
+
+---
+
+## 9. Final Repo Package Boundary
+
+This section defines the boundary of the final repository handoff package as of T61. The intent is to make explicit which files constitute the committed handoff material, which are handoff-only explanatory aids, and which risks or boundaries remain open.
+
+### 9.1 Committed Handoff Material
+
+These files constitute the final submission-facing and paper-facing asset set. They should be treated as the authoritative source for any publication or submission workflow:
+
+| Category | Files |
+| --- | --- |
+| **Paper-facing source-of-truth** | `docs/paper_figures_and_tables.md`, `docs/paper_draft.md`, `docs/paper_outline.md`, `docs/experiment_reports/provenance_summary.md` |
+| **Artifact package** | `docs/paper_artifact_package.md` |
+| **Governance entry points** | `docs/00_raw_idea.md`, `docs/01_feasibility_report.md`, `docs/02_experiment_plan.md`, `docs/03_architecture.md`, `docs/04_task_board.md`, `docs/05_decision_log.md`, `docs/06_eval_protocol.md`, `docs/07_handoff.md`, `docs/08_risks_and_open_questions.md` |
+
+### 9.2 Handoff-Only Explanatory Aids
+
+These files are preserved in the repository as committed handoff-facing aids. They are **not** research artifacts: they do not introduce new claims, numbers, figures, or conclusions. Their purpose is to help future maintainers and reviewers understand the rationale behind past task outcomes and review verdicts.
+
+| File | Role |
+| --- | --- |
+| `docs/for_human/T60_review_explanation.md` | Plain-language explanation of the T60 review verdict. Explains what T60 changed and why the reviewer passed it. |
+| `docs/worker_summary/T60_worker_summary.md` | T60 worker's self-report: what changed, verification results, remaining risks. |
+
+These aids may reference the same evidence as research artifacts, but their explanatory framing does not constitute new evidence. Future workers and reviewers should cite the source-of-truth research artifacts (Section 2.1) for claims, not these explanatory summaries.
+
+### 9.3 Still-Active Risks
+
+The following risks remain open and must not be written as closed:
+
+| Risk | Description | Handling |
+| --- | --- | --- |
+| R25 | Clean-environment reproducibility not completed | Write "reviewed single-environment evidence," never "independently reproduced" |
+| R30 | 5 contributions may exceed ITP/CPP page budget | Keep page-budget-aware wording; C3 or C5 may relocate to appendix |
+| R08 | Worker Allowed Files scope governance pattern | Future tasks must explicitly list all allowed files in the task package |

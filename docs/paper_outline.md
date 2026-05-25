@@ -146,7 +146,13 @@ T43 refines the Milestone 3 conclusion "GCN overall ahead, HGCN not established 
 
 ### Page Budget Note
 
-The five contributions (C1–C5) are scoped for ITP/CPP page limits (~20 pages). C3 or C5 can be condensed to appendix-level detail if budget pressure increases, but the current 5-contribution structure remains the default for venue submission.
+The five contributions (C1–C5) are scoped for ITP/CPP page limits (~20 pages). C3 (diagnostics framework) or C5 (training alignment correction) can be condensed to appendix-level detail if budget pressure increases, while the main narrative remains self-consistent:
+
+- **What stays in the main story**: C1 (pipeline), C2 (protocol), and C4 (provenance-conditional finding) form a complete narrative arc — build infrastructure, standardize evaluation, discover provenance-conditional result. The central claim (Section 3.5) and all core evidence tables (T1–T5) remain intact.
+- **What can move out**: If C3 is compressed, the full diagnostics protocol description and heuristic threshold table are deferred to the appendix, with only the structural properties table (Table T4) and a summary paragraph retained in the main text. If C5 is compressed, the training-alignment audit details and BCE-vs-grouped comparison are deferred, with only the training configuration table (Section 4.5) and a brief alignment note retained.
+- **Why the structure holds**: The provenance-conditional finding (C4) is the paper's central empirical contribution and is methodologically supported by C1 and C2 alone. C3 provides supporting structural context; C5 documents a necessary-but-not-sufficient correction. The core evidence chain (C1 → C2 → C4) is self-contained in the main text regardless of which supporting contribution is compressed.
+
+The current 5-contribution structure remains the default for venue submission.
 
 ## 9. Proof-Side Bridge
 

@@ -1,6 +1,6 @@
 ﻿# 08 Risks and Open Questions
 
-> 更新时间：2026-05-23（T59 review PASS；T60 当前）
+> 更新时间：2026-05-25（T63 review PASS_WITH_WARNINGS；T63 complete；T64 current unique task: core figure QA / regeneration）
 
 ## 1. Active Risks
 
@@ -13,7 +13,7 @@
 | R05 | full Mathlib trace 成本过高或再次卡住 | Medium | Active | 优先已有产物、模块级 probe、小仓库 trace |
 | R06 | synthesized relation 语义复杂，负采样或层级解释失真 | High | Mitigated | `T42` provenance seed sweeps 已进一步确认：`synthesized_only` 上 GCN 在两组候选图上均优于 HGCN（FS MAP GCN 1.0000 vs HGCN 0.6857；OR MAP GCN 0.8453 vs HGCN 0.7560），且该 split 无 hop bucket 结构（longest chain = 1）。synthesized 边不贡献层级深度，且其存在在混合图中足以抵消 HGCN 在 explicit-only 层的优势。结构性风险已从语义不确定收窄为 provenance-composition 条件性事实 |
 | R07 | binary training 与 grouped retrieval 评测错配 | High | Mitigated | `T31` 已通过 adversarial review；reviewed grouped retrieval runner 已补入最小 query-grouped training 分支，并用 grouped val MAP 做 checkpoint selection。`T32` 也已在 `Field.Subfield` 与 `Order.Ring` 上用该路径完成真实 5-seed GCN grouped sweep。旧 BCE runners 仍保留为 legacy/auxiliary path，后续正式 grouped sweep 必须继续使用 grouped runner |
-| R08 | 后续 worker 越界修改或重复做历史任务 | Medium | Active | `docs/04_task_board.md`、`docs/tasks/` 与根目录入口文档明确 Allowed files 与 Forbidden scope。`T55_review` 再次将 worker 顺手同步未列入 Allowed Files 的治理文档（`00/01/03/06`）记为 deferred，并指出这已是连续第五次复发。该模式目前虽仍属低风险 hygiene，但正在侵蚀治理契约。`T56` 已显式扩大 Allowed Files 覆盖 `docs/00~08`（除 `02`）以停止继续依赖隐含惯例；后续任务仍需在“严格限改”与“显式放开”之间二选一。 |
+| R08 | 后续 worker 越界修改或重复做历史任务 | Medium | Active | `docs/04_task_board.md`、`docs/tasks/` 与根目录入口文档明确 Allowed files 与 Forbidden scope。`T55_review` 再次将 worker 顺手同步未列入 Allowed Files 的治理文档（`00/01/03/06`）记为 deferred，并指出这已是连续第五次复发。该模式目前虽仍属低风险 hygiene，但正在侵蚀治理契约。`T63_review` 则把 `.claude/settings.json` 记为 rejected/excluded from commit，并把 F1/F2 的视觉收口递交给 `T64`；后续仍必须坚持只改允许范围内文件。 |
 | R09 | 论文贡献被已有 Lean graph/export 工作稀释 | Medium | Active | 强调协议、诊断、条件性双曲结论和 proof-side bridge |
 | R10 | `lean4-example`、LeanDojo、Python 环境等精确版本尚未从可复现实据锁定，若提前写成事实会削弱复现性声明 | High | Active | `docs/data_manifest.md` 继续将未证实字段标为 `unknown / needs verification`，待后续以环境清单或 trace 元数据补证 |
 | R11 | provenance split 目前主要通过派生图家族与诊断报告表达，而不是 `edges.csv` 中的一等字段，若直接下游消费容易误解 relation 语义 | Medium | Mitigated | `T40` 已通过 `docs/provenance_split_protocol.md` 冻结 provenance split 配置、origin_map 与输出目录约定；provenance split 现在有正式协议入口，不再仅靠派生图目录名表达。`edges.csv` 一等字段问题仍保留为 Open Question 9 |
@@ -35,10 +35,12 @@
 | R27 | `synthesized_only` 图在两组候选上均为 longest chain = 1 的平坦星状森林，grouped retrieval 几乎无排序难度，T42 若在此图上训练模型可能导致退化为 trivial task | Medium | Mitigated | `T42` 已把 `synthesized_only` sweep 作为 controlled diagnostic 完成：GCN 在 FS 上达到完美 1.0000（确认 trivial task），HGCN 反而低于 GCN（确认双曲偏置在平坦结构上是劣势）。该 split 结果不支持模型对比主结论，但作为 controlled diagnostic 已完成其使命 |
 | R28 | `T42` 的 synthesized_only 汇总口径曾有疑似 aggregate/per-seed 差异，若在正式总结中把 aggregate 直接写成全部 per-seed 均为 1.0，会造成事实精度问题 | Medium | Resolved | `T56` 重新审计了 T42 artifact (`provenance_gcn_field_subfield_synthesized_only_t42/`) 的 aggregate.json、per_seed_results.json 与 per_seed_results.csv，确认没有数据差异。原始 T43 报告中的”discrepancy”是 metric naming confusion：被引用为 “per-seed MAP” 的 0.8100/0.9029 实为 `test_average_precision`（sklearn `average_precision_score`、per-query 聚合），而非 `grouped_test_map`（grouped retrieval MAP）。`grouped_test_map` 在所有 5 seeds 的三个输出文件中均为 1.0；`test_average_precision` 的 aggregate (0.9426) 也正确反映了 per-seed 值。两条指标均计算正确、内部一致。`docs/review/T56_review.md` 已确认这满足 `T56` 任务包中“仅基于现有 reviewed artifact 严格解释根因时才可关闭 R28”的例外条件。R28 关闭。 |
 | R29 | `docs/experiment_reports/provenance_summary.md` Section 5.1 中 Field.Subfield `synthesized_only` 的 GCN MAP 表格单元曾写错（copy-paste 了 HGCN 的 0.6857）；若后续 paper-facing 文档直接引用该表，会与 T42 artifact 和 Section 5.2 叙述冲突 | Medium | Resolved | `T56` 已将 Section 5.1 表格中 GCN MAP 修正为 verified T42 value `1.0000 ± 0.0000`，delta 修正为 `GCN +0.3143`，并移除悬空的 `*` 脚注。Section 5.2 同步更新为对 metric naming confusion 的正确诊断。paper_draft.md 已同步更新（Section 5.4 表格 + Section 5.7 summary + Section 7.1.5/7.1.6 + Numeric Anchors）。R29 关闭。 |
-| R30 | 论文 skeleton 贡献结构可能过宽，5 条 contributions 在 ITP/CPP 页数限制内难以充分展开 | Medium | Active | `T50_review` 已将该 warning 分类为 deferred；`docs/paper_outline.md` 当前保留 5 条 contributions 结构，但后续 paper drafting / venue shaping 应重新判断是否合并（如 C1+C5 合并为 pipeline+alignment），或把部分贡献降级为 appendix。`T54_review` 进一步提醒 abstract 已接近常见页数预算上界，说明正文压缩与贡献收束需要联动处理。`T59` 已执行：保持 5 条不变（C1–C5）并加入 page-budget-aware 措辞；C3 或 C5 可在页数紧张时降级至 appendix。`T60` 将把这一决策同步到 submission checklist，并补强 Page Budget Note 的自洽说明。 |
+| R30 | 论文 skeleton 贡献结构可能过宽，5 条 contributions 在 ITP/CPP 页数限制内难以充分展开 | Medium | Active | `T50_review` 已将该 warning 分类为 deferred；`docs/paper_outline.md` 当前保留 5 条 contributions 结构，但后续 paper drafting / venue shaping 应重新判断是否合并（如 C1+C5 合并为 pipeline+alignment），或把部分贡献降级为 appendix。`T54_review` 进一步提醒 abstract 已接近常见页数预算上界，说明正文压缩与贡献收束需要联动处理。`T59` 已执行：保持 5 条不变（C1–C5）并加入 page-budget-aware 措辞；C3 或 C5 可在页数紧张时降级至 appendix。`T60` 已完成 checklist 同步与 Page Budget Note 自洽性补强；R30 本身仍然 active，只是“提交前页面预算同步”这一步已收口。 |
 | R31 | proof-side bridge 推荐的 ancestor explanation MVP 可能过于轻量，不足以支撑 CPP 的 tool/demo 要求 | Medium | Mitigated | `T51_review` 已以 `PASS` 接受 `docs/proof_side_mvp.md` Section 3.2 的回应：ancestor explanation 不是"列出祖先"而是 provenance-aware quality comparison tool——用户可直观看到同一 declaration 在 `explicit_only` vs `hierarchy_mixed` 上的 retrieval 质量差异和 hop-depth-dependent gradient。这满足 CPP tool demo 的 "artifact is functional and solves a real problem" 标准。后续 `T52`/实现阶段仍必须把 provenance-aware comparison mode 写成硬边界，避免 demo 退化为纯祖先列表。 |
 | R32 | ancestor explanation demo 加载 T42 `node_embeddings.npy` 时节点顺序可能与图数据不一致，导致 retrieval 结果全部错位 | High | Mitigated | `T52a` 已实现 sanity check：加载 embedding 后立即验证 `len(declarations) == embeddings.shape[0]`，不匹配则报错退出。节点顺序通过 `common.load_declaration_graph()` 的 `declarations.csv` 行序对齐。已通过实际运行验证：89 节点（Field.Subfield explicit_only）、125 节点（Order.Ring explicit_only）、133 节点（Field.Subfield hierarchy_mixed）均通过 shape check，且 ground truth 祖先在 top-10 内有合理命中。 |
 | R33 | 当前 paper draft 仍不是最终 venue-shaped 文稿：Background / Related Work 承接不够显式，读者可能误解为这些内容被省略或刻意回避 | Medium | Mitigated | `T55` 已在 Introduction 新增 Section 3.2 Background 小节（Lean/Mathlib hierarchy semantics、hyperbolic GNN 理论动机、formal-math graph tooling 定位）并在 Discussion 新增 Section 6.5 Related Work and Positioning 小节（hyperbolic embeddings 文献、formal-math graph 数据集与工具、proof assistant hierarchy navigation、本文差异化点）。读者现在可以明确看到背景与相关工作承接。该风险从 Active 降为 Mitigated，但最终 venue 格式化仍可能要求独立章节而非子节。 |
+| R34 | ITP-targeted LaTeX source tree 已落盘，但如果下一轮同时追 `LIPIcs` / `LNCS` / 最终 bundle 三件事，任务范围会再次发散 | Medium | Active | `T63` 已产出一个 ITP-targeted source tree 与两张核心图，并在 `paper/itp/README.md` 记录模板假设、编译验证和剩余到最终 submission bundle 的差额；`T64` 只做 F1/F2 视觉 QA / regeneration，CPP bundle assembly 单独留给后续任务 |
+| R35 | F1/F2 的最终视觉 QA 尚未闭合，F1 面板尺度/label artifact 与 F2 的人工可视确认仍待收口 | Low | Active | `T64` 只允许 style / annotation 重渲染，不改数据值或 claim 边界；human inspection 必须在进入最终 bundle assembly 前完成 |
 
 ## 2. Open Questions
 
@@ -52,6 +54,8 @@
 8. 哪一种可复现实据应被视为关闭 `T10` 剩余 unknowns 的规范来源：导出的 conda/pip lock、trace 元数据，还是单独的机器可读版本清单？
 9. `explicit-only / synthesized-only / mixed` 是否应在后续数据快照中成为 `edges.csv` 的一等字段，而不是继续依赖派生图目录名与诊断产物表达？
 10. 是否要在后续版本中把 legacy `task = ancestor_ranking` 正式重命名为更不易混淆的 grouped 协议键，还是继续保留兼容别名？
+11. `T61` 已完成 repo freeze 之后，当前应优先按 `ITP`、`CPP` 还是 `FM` 路径整理 venue-specific 的 boilerplate、页数与提交资产？**Answered by T62**: 先按 `ITP` 主路径推进，`CPP` 作为 co-primary，`FM` 仅保留为 stretch target。
+12. `T64` 完成后，F1/F2 是否足够 submission-ready，还是仍需要一个单独的 final bundle assembly 任务来收口作者信息、CFP 确认和打包压缩？
 
 ## 3. Deferred Items
 
@@ -79,7 +83,7 @@
 | D20 | 统一 `provenance_summary.md` Section 5 summary table 的粒度，并在最终 paper editing 中压缩 `paper_draft.md` Section 5.4 的长解释段 | Closed by `T57`：summary table 粒度已统一（FS synthesized_only 从 "GCN wins" 改为 "GCN wins (+0.3143 MAP)"）；Section 5.4 长解释段已从 ~120 词压缩至 ~60 词 | 已关闭，无需重新触发 |
 | D21 | 修正 `docs/paper_figures_and_tables.md` Section 4 的 stale “Pending sync” rows，并决定是否在 `paper_draft.md` Section 5.4 补回一句 mechanistic detail | Closed by `T58`：stale rows 已修正为 “Aligned (T57)”；Section 5.4 已补回一句 mechanistic detail（”each query has exactly one positive ancestor, and the candidate pool is small”） | 已关闭，无需重新触发 |
 | D22 | T58_review non-blocking notes（`paper_artifact_package.md` 中 core-table 术语统一；Table T1 HGCN source mapping 精度说明） | Closed by `T59`：core-table 已统一为"4 core tables + 1 summary table"；T1 HGCN source 已改为"T33 primary，T42 cross-check" | 已关闭，无需重新触发 |
-| D23 | T59_review non-blocking notes（`paper_artifact_package.md` 中 `R30 page budget check` 勾选同步；`paper_outline.md` Page Budget Note 自洽性补强） | `T59_review` 判定为 `PASS`，问题仅属 submission-facing 收尾，不值得重开 `T59` | 下一轮 `T60` venue-formatting / final submission asset shaping |
+| D23 | T59_review non-blocking notes（`paper_artifact_package.md` 中 `R30 page budget check` 勾选同步；`paper_outline.md` Page Budget Note 自洽性补强） | 已由 `T60` worker 收口 | Closed by T60 |
 
 ## 4. Risk Handling Rules
 

@@ -1,6 +1,6 @@
 ﻿# 01 Feasibility Report
 
-> 更新时间：2026-05-23（T59 review PASS；T60 当前）
+> 更新时间：2026-05-25（T63 review PASS_WITH_WARNINGS；T63 complete；T64 current unique task: core figure QA / regeneration）
 >
 > 结论：Go，条件是先完成协议冻结、数据资产化和任务治理，再推进新实验。
 
@@ -94,7 +94,8 @@ No-Go 条件：
 - 若所有候选图都过浅且无法接 proof-side utility，则项目应转为纯经验报告或归档。
 - 若后续只剩“继续调 HGCN 直到赢”，则不应继续作为主线。
 
-当前下一步是执行 `T60`：`docs/review/T59_review.md` 已将 `T59` 判定为 `PASS`，说明 final paper editing / venue shaping 已收口。`paper_draft.md`、`paper_outline.md`、`paper_figures_and_tables.md` 与 `paper_artifact_package.md` 已完成 contribution / table-inventory / source-mapping 统一，且未引入新实验或新数值。下一步不新增实验，而是进入 venue-formatting / final submission asset shaping：同步 `paper_artifact_package.md` 提交检查清单中 `R30 page budget check` 的完成状态，并把 `paper_outline.md` 的 Page Budget Note 写得更自洽，明确若压缩 C3 或 C5，正文主线如何保持完整。`R30` 与 clean-environment reproducibility (`R25`) 边界继续保留。
+当前下一步是执行 `T64`：`docs/review/T63_review.md` 已将 `T63` 判定为 `PASS_WITH_WARNINGS`，说明单一 ITP-targeted source tree 已落盘，但 F1/F2 仍需最终视觉 QA / regeneration。`docs/venue_submission_plan.md` 已固定 ITP 为 primary、CPP 为 co-primary；`paper_draft.md`、`paper_outline.md`、`paper_figures_and_tables.md` 与 `paper_artifact_package.md` 继续作为 submission-facing source docs。下一步不新增实验，而是进入 `T64` core figure QA / regeneration；最终 submission bundle assembly 仍留给后续单独任务。`R30`、clean-environment reproducibility (`R25`) 与模板/编译链风险 (`R34`) 继续保留。
 
+`T63_review` 的非阻塞点不影响结论：`.claude/settings.json` 继续排除出提交；`paper_artifact_package.md`、`paper_draft.md`、`paper_outline.md` 的既有未提交修改已被确认早于 T62，不属于 T62 泄漏。当前状态转为 `T64`，目标是 core figure QA / regeneration。本阶段仍不新增实验、不修改 artifacts、不引入未 review 数值。
 
-
+T62 worker 已执行 venue-specific formatting / submission planning：`docs/venue_submission_plan.md` 已创建，确认 ITP 为主 venue（CPP 为 co-primary），6 类剩余格式差额（LaTeX 格式化、作者 boilerplate、图表渲染、参考文献、提交资产、叙事调整）已附带可选 asset delta note。`T62_review` 已确认该任务 `PASS`。当前治理状态已更新为：`T62` complete，`T63` complete，`T64` current。

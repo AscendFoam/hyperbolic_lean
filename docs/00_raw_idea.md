@@ -1,6 +1,6 @@
 ﻿# 00 Raw Idea
 
-> 更新时间：2026-05-23（T59 review PASS；T60 当前）
+> 更新时间：2026-05-25（T63 review PASS_WITH_WARNINGS；T63 complete；T64 current unique task: core figure QA / regeneration）
 >
 > 项目名称：形式化图谱双曲化
 >
@@ -97,6 +97,9 @@ Go，但主线已收束：
 - 2026-05-23：`docs/review/T58_review.md` 判定 `PASS`；Captain 接受 `T58` 完成。reviewer 的两个非阻塞点不回头重开 `T58`：`paper_artifact_package.md` 中”5 core tables”措辞统一，以及 Table T1 的 HGCN source mapping 从模糊的 `T33/T42` 改成”`T33` primary，`T42` cross-check”这类更精确表述，统一并入下一轮 `T59`。当前唯一任务切换为 `T59`，进入最终 paper editing / venue shaping。
 - 2026-05-23：T59 worker 已完成最终 paper editing / venue shaping。贡献结构决定保持 5 条（C1–C5）不变，加入 page-budget-aware 措辞；`paper_artifact_package.md` core-table 术语已统一为”4 core tables + 1 summary table”；Table T1 HGCN source mapping 已改为”T33 primary，T42 cross-check”。所有 paper-facing 文档已收束为 submission-facing 终态。
 - 2026-05-23：`docs/review/T59_review.md` 判定 `PASS`；Captain 接受 `T59` 完成：不重开文稿收束本身，两个 non-blocking notes 并入下一轮 `T60`。其一是 `paper_artifact_package.md` 提交检查清单中的 `R30 page budget check` 勾选状态需要和已完成决策同步；其二是 `paper_outline.md` 的 Page Budget Note 还可进一步说明若压缩 C3 或 C5，正文主线如何保持自洽。当前唯一任务切换为 `T60`，进入 venue-formatting / final submission asset shaping。
-
-
-
+- 2026-05-23：`docs/review/T60_review.md` 判定 `PASS`；Captain 已将 `T60` 正式标记完成，并把当前唯一任务切换为 `T61`，用于 final repo packaging / handoff freeze。`paper_artifact_package.md` 的 `R30 page budget check` 已与 T59 决策同步；`paper_outline.md` Page Budget Note 已补强自洽说明；`paper_draft.md` Section 7.4 已同步更新。`T60_review` 的收尾说明已收口。
+- 2026-05-23：`docs/review/T61_review.md` 判定 `PASS`；Captain 已将 `T61` 正式标记完成。最终 repo package 边界、handoff-facing 辅助文档角色与治理冻结均已收口。
+- 2026-05-23：当前唯一任务切换为 `T62`，用于 venue-specific formatting / submission planning：在不新增实验的前提下，明确主 venue 路径并列出剩余格式与提交资产清单。
+- 2026-05-23：T62 worker 已执行 venue-specific formatting / submission planning：`docs/venue_submission_plan.md` 已创建，确认 ITP 为主 venue、CPP 为 co-primary，并列出 6 类剩余格式与提交资产差额（LaTeX 格式化、作者 boilerplate、图表渲染、参考文献、提交资产、叙事调整）。治理文档已全部更新为 T62 worker 执行状态。未新增实验、未修改 artifact、未引入未 review 数值。
+- 2026-05-24：`docs/review/T62_review.md` 判定 `PASS`；Captain 接受 `T62` 完成：venue 路径已固定为 ITP primary、CPP co-primary，`.claude/settings.json` 继续排除出提交，且 `paper_artifact_package.md` / `paper_draft.md` / `paper_outline.md` 的既有未提交修改被确认不是 T62 泄漏。当前唯一任务切换为 `T63`，进入 ITP-targeted LaTeX conversion / core figure rendering。
+- 2026-05-25：`docs/review/T63_review.md` 判定为 `PASS_WITH_WARNINGS`；Captain 已将 `T63` 标记完成。warning 分类如下：`.claude/settings.json` 为 rejected/excluded from commit；`F2` 视觉未验证与 `F1` 面板尺度/label artifact 为 deferred，并写回风险。当前唯一任务切换为 `T64`，先做 core figure QA / regeneration，再进入最终 submission bundle assembly。

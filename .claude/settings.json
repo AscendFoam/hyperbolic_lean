@@ -58,7 +58,24 @@
       "Bash(powershell -Command \"Select-String -Path 'docs\\\\paper_draft.md' -Pattern 'explicit_only|synthesized_only|hierarchy_mixed' | Measure-Object | Select-Object -ExpandProperty Count\")",
       "Bash(powershell -Command \"Select-String -Path 'docs\\\\paper_draft.md' -Pattern 'R28|R29|R30|R25' | Measure-Object | Select-Object -ExpandProperty Count\")",
       "Bash(rg -n \"GCN \\\\\\\\+0\\\\\\\\.3143|1\\\\\\\\.0000 ± 0\\\\\\\\.0000|grouped_test_map|test_average_precision\" docs/experiment_reports/provenance_summary.md docs/paper_draft.md docs/paper_figures_and_tables.md)",
-      "Bash(rg -rn \"5 core tables|4 core tables\" docs/paper_artifact_package.md docs/paper_figures_and_tables.md)"
+      "Bash(rg -rn \"5 core tables|4 core tables\" docs/paper_artifact_package.md docs/paper_figures_and_tables.md)",
+      "Read(//d/Docs/Math/hyperbolic_lean/docs/**)",
+      "Bash(conda env *)",
+      "Bash(python -c \"import matplotlib; print\\(matplotlib.__version__\\)\")",
+      "Bash(C:/ProgramData/anaconda3/envs/DLEnv/python.exe -c \"import matplotlib; print\\('matplotlib', matplotlib.__version__\\); import numpy; print\\('numpy', numpy.__version__\\)\")",
+      "Bash(kpsewhich lipics-v2021.cls)",
+      "Bash(kpsewhich llncs.cls)",
+      "Bash(kpsewhich article.cls)",
+      "Bash(kpsewhich lipics.cls)",
+      "Bash(pdflatex -interaction=nonstopmode main.tex)",
+      "Bash(bibtex main *)",
+      "Bash(rg -n \"documentclass|\\\\\\\\\\\\\\\\title|\\\\\\\\\\\\\\\\begin\\\\{abstract\\\\}|\\\\\\\\\\\\\\\\section|includegraphics|bibliography|ITP|R25|R30|F1|F2\" paper/itp/main.tex paper/itp/README.md paper/itp/references.bib docs/03_architecture.md docs/04_task_board.md docs/05_decision_log.md docs/07_handoff.md docs/08_risks_and_open_questions.md docs/venue_submission_plan.md)",
+      "Bash(rg -c \"\\\\\\\\\\\\\\\\section|\\\\\\\\\\\\\\\\subsection\" paper/itp/main.tex)",
+      "Read(//c/Users/26410/.claude/projects/d--Codes-Math-hyperbolic-lean/ad1f3a76-e36b-447a-abe0-fb9fa9d4d335/tool-results/**)",
+      "Bash(python3 -c \"from PIL import Image; img=Image.open\\('paper/itp/figures/F1_provenance_structure.png'\\); print\\(f'Size: {img.size}, DPI: {img.info.get\\(\\\\\"dpi\\\\\"\\)}, Mode: {img.mode}'\\)\")",
+      "Bash(python -c \"from PIL import Image; img=Image.open\\('paper/itp/figures/F1_provenance_structure.png'\\); print\\(f'Size: {img.size}, DPI: {img.info.get\\(\\\\\"dpi\\\\\"\\)}, Mode: {img.mode}'\\)\")",
+      "Bash(python3 -c \"from PIL import Image; img=Image.open\\('paper/itp/figures/F2_hop_depth_delta.png'\\); print\\(f'Size: {img.size}, DPI: {img.info.get\\(\\\\\"dpi\\\\\"\\)}, Mode: {img.mode}'\\)\")",
+      "Bash(python -c \"from PIL import Image; img=Image.open\\('paper/itp/figures/F2_hop_depth_delta.png'\\); print\\(f'Size: {img.size}, DPI: {img.info.get\\(\\\\\"dpi\\\\\"\\)}, Mode: {img.mode}'\\)\")"
     ]
   }
 }

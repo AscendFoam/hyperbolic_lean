@@ -1,6 +1,6 @@
 ﻿# 05 Decision Log
 
-> 更新时间：2026-05-23（T59 review PASS；T60 当前）
+> 更新时间：2026-05-25（T63 review PASS_WITH_WARNINGS；T63 complete；T64 current unique task: core figure QA / regeneration）
 >
 > 规则：只记录会影响后续任务选择、论文叙事、评测协议或项目状态的决策。
 
@@ -409,3 +409,87 @@
 - 依据：`docs/review/T59_review.md`
 - 决策：`T59` 判定为 `PASS`。review 无 blocking issues，也无 `PASS_WITH_WARNINGS` 分类项。两个 non-blocking notes 不回头重开 `T59`，而是并入 `T60`：(1) `paper_artifact_package.md` 提交检查清单中的 `R30 page budget check` 应和已完成的 page-budget 决策同步为完成状态；(2) `paper_outline.md` 的 Page Budget Note 还可进一步说明若压缩 C3 或 C5，正文主线如何保持自洽。`T60` 负责这两项收尾以及 venue-formatting / final submission asset shaping，不新增实验、不新增数据、不新增 demo。
 - 后果：`T59` 正式标记完成，当前唯一任务切换到 `T60`。下一轮 worker 只应执行 submission-facing 的最终资产整形；提交时继续排除 `.claude/settings.json`，并按仓库政策决定是否纳入 `docs/for_human/` 与 `docs/worker_summary/`。
+
+## D048: T60 venue-formatting / final submission asset shaping 完成
+
+- 日期：2026-05-23
+- 状态：Accepted
+- 依据：T60 任务包、`docs/review/T59_review.md` non-blocking notes、`docs/paper_artifact_package.md`、`docs/paper_outline.md`、`docs/paper_draft.md`
+- 决策：T60 worker 已完成 venue-formatting / final submission asset shaping。三项核心产出：
+  1. **Checklist 同步**：`paper_artifact_package.md` 提交检查清单中的 `R30 page budget check` 已标记为完成，并注明 "T59 decision synced; R30 risk remains active"。
+  2. **Page Budget Note 补强**：`paper_outline.md` 的 Page Budget Note 已扩展，明确若压缩 C3（diagnostics framework）或 C5（training alignment correction），C1/C2/C4 及中央 claim 仍保持自洽；核心证据链（C1 → C2 → C4）不依赖被压缩贡献存在于正文。
+  3. **一致性确认**：`paper_draft.md` Section 7.4 已同步更新，明确核心叙事链在压缩 scenario 下自洽；`paper_figures_and_tables.md` 与 `paper_artifact_package.md` 无需额外改动。
+  Worker 未新增实验、未修改 artifact、未引入未 review 数值。T59_review 的两个 non-blocking notes 已收口。
+- 后果：T59_review 的两个 non-blocking notes 已收口。当前唯一任务仍为 T60，等待 reviewer 审查。
+
+## D049: T60 review 通过并切换到 T61 final repo packaging / handoff freeze
+
+- 日期：2026-05-23
+- 状态：Accepted
+- 依据：`docs/review/T60_review.md`
+- 决策：`T60` 判定为 `PASS`。review 无 blocking issues，也无 `PASS_WITH_WARNINGS` 分类项。`R30 page budget check` 的同步状态与 `paper_outline.md` Page Budget Note 的自洽性已被确认，`T60` 不需要返修。当前唯一任务切换为 `T61`，进入 final repo packaging / handoff freeze。
+- 后果：`T60` 正式标记完成；下一轮 worker 只应处理最终 repo package、handoff bundle 以及 handoff-facing 辅助材料的边界，不应重开任何实验、数据或 paper-facing 数值修改。`docs/for_human/T60_review_explanation.md` 与 `docs/worker_summary/T60_worker_summary.md` 作为 committed handoff-facing aids 保留，不作为新的研究产物。
+
+## D050: T61 final repo packaging / handoff freeze 完成
+
+- 日期：2026-05-23
+- 状态：Accepted
+- 依据：T61 任务包、`docs/review/T61_review.md`、`docs/paper_artifact_package.md`、`docs/for_human/T60_review_explanation.md`、`docs/worker_summary/T60_worker_summary.md`
+- 决策：Captain 根据 `docs/review/T61_review.md` 将 `T61` 判定为 `PASS`。三项核心产出正式接受：
+  1. **Repo package boundary**: `paper_artifact_package.md` 新增 Section 9（Final Repo Package Boundary），将文件分为 committed handoff material（paper-facing source-of-truth 与 governance docs）、handoff-only explanatory aids（`for_human/T60_review_explanation.md`、`worker_summary/T60_worker_summary.md`）、以及 still-active risks（R25/R30/R08）。
+  2. **Handoff-facing aid role clarification**: 两份 helper 文档顶部已添加显式 header note，说明其 explanatory role、不构成新研究产物、仅用于帮助未来 maintainer 理解任务背景。
+  3. **Governance freeze**: 全部 8 份治理文档（`00_raw_idea.md` 至 `08_risks_and_open_questions.md`）已完成 T61 收口同步；`04_task_board.md` 已切出下一任务；`07_handoff.md` 已完成 T61 handoff 记录。
+  Worker 未新增实验、未修改 artifact、未引入未 review 数值。
+- 非阻塞说明：worker summary 对 `paper_draft.md` 与 `paper_outline.md` 的改动描述不够准确，但相关改动本身是正确且与 reviewed evidence 一致；`.claude/settings.json` 继续 excluded from commit，不构成 reopening 条件。
+- 后果：`T61` 正式标记完成，项目达到自然 handoff freeze 点。后续若继续推进，不应重开 repo boundary，而应进入 venue-specific formatting / submission planning。
+
+## D051: 创建 T62 venue-specific formatting / submission planning 任务包
+
+- 日期：2026-05-23
+- 状态：Accepted
+- 依据：`docs/review/T61_review.md`、`docs/tasks/M5_paper/T62_venue_specific_formatting_plan.md`、`docs/投稿路线图（FM-ITP-CPP-备选 venue 对照）.md`
+- 决策：在 `T61` 收口后，Captain 新建 `docs/tasks/M5_paper/T62_venue_specific_formatting_plan.md`，并将当前唯一任务切换为 `T62`。该任务只负责基于冻结后的 repo package 明确主 venue 路径与 venue-specific formatting / submission 清单，不新增实验、不新增二进制 submission assets、不修改 code/data/artifacts。
+- 后果：项目可以继续推进下一轮 worker，但仅限执行 `T62`。若提交当前工作树，应继续排除 `.claude/settings.json`，并谨慎处理未纳入 `T62` task package 的额外说明性文档。
+
+## D052: T62 venue-specific formatting / submission planning 完成
+
+- 日期：2026-05-23
+- 状态：Accepted
+- 依据：T62 任务包、`docs/review/T62_review.md`、`docs/投稿路线图（FM-ITP-CPP-备选 venue 对照）.md`、`docs/paper_artifact_package.md`、`docs/paper_outline.md`、`docs/paper_draft.md`、`docs/paper_figures_and_tables.md`
+- 决策：T62 worker 已完成 venue-specific formatting / submission planning。三项核心产出：
+  1. 新建 `docs/venue_submission_plan.md`，确认 ITP 为主 venue、CPP 为 co-primary（FM 作为 stretch 备选），并列出 6 类剩余格式化差额：LaTeX 文档格式化、作者 boilerplate、图表渲染（F1/F2）、参考文献、提交资产捆绑、叙事调整。
+  2. 资产差额说明：仅建议 3 处可选 wording 调整以提升 ITP venue fit（abstract 首句、short title、proof-side 入口），不涉及数值修改或 claim 边界扩张。
+  3. 治理同步：全部 8 份治理文档已更新为 T62 worker 执行状态。`R25`/`R30`/`R08` 继续保留为活跃风险。
+  未新增实验、未修改 artifact、未引入未 review 数值。
+- 非阻塞说明：`T62_review` 额外确认两点不需要 reopening：(1) `.claude/settings.json` 继续 excluded from commit；(2) `paper_artifact_package.md`、`paper_draft.md`、`paper_outline.md` 的既有未提交修改早于 T62，不属于 T62 泄漏。
+- 后果：`T62` 正式标记完成。venue path 不再开放重选；下一步进入单一 ITP-targeted LaTeX source tree 产出与 F1/F2 渲染，而不是直接做最终 submission bundle assembly。
+
+## D053: 创建 T63 ITP-targeted LaTeX conversion / core figure rendering 任务包
+
+- 日期：2026-05-24
+- 状态：Accepted
+- 依据：`docs/review/T62_review.md`、`docs/venue_submission_plan.md`、`docs/tasks/M5_paper/T63_itp_latex_conversion_and_core_figure_rendering.md`
+- 决策：Captain 新建 `docs/tasks/M5_paper/T63_itp_latex_conversion_and_core_figure_rendering.md`，并将当前唯一任务切换为 `T63`。该任务只负责三件事：(1) 将 `paper_draft.md` 落成单一 ITP-targeted LaTeX source tree；(2) 依据 `paper_figures_and_tables.md` 渲染 Figure F1 / F2；(3) 在 `paper/itp/README.md` 中记录模板假设、编译验证和剩余到最终 bundle 的差额。`submission bundle assembly` 单独留给后续任务，避免单轮同时处理模板迁移、图表渲染和最终打包。
+- 后果：下一轮 worker 只应执行 `T63`。提交时继续排除 `.claude/settings.json`；`paper_artifact_package.md`、`paper_draft.md`、`paper_outline.md` 的既有 carry-over 修改可以与 T62/T63 相关文档一起纳入提交，但不应误记为 T62 新改动。
+
+## D054: T63 ITP-targeted LaTeX conversion / core figure rendering 完成
+
+- 日期：2026-05-25
+- 状态：Accepted
+- 依据：T63 任务包、`docs/paper_draft.md`、`docs/paper_figures_and_tables.md`、`docs/venue_submission_plan.md`
+- 决策：T63 worker 已完成 ITP-targeted LaTeX conversion / core figure rendering。四项核心产出：
+  1. **LaTeX source tree**: `paper/itp/main.tex` 已创建，使用 LLNCS document class，忠实地将 `paper_draft.md` 转为 LaTeX 格式。全部数值保留自 reviewed T32/T33/T41/T42/T43 artifacts，未引入新数值或新 claim。编译成功，17 页，零错误。
+  2. **Bibliography**: `paper/itp/references.bib` 已创建，包含论文引用的所有文献条目。
+  3. **Core figures**: `paper/itp/figures/F1_provenance_structure.png` 和 `F2_hop_depth_delta.png` 已从 `paper_figures_and_tables.md` 中的 reviewed specs 渲染。F1 为 3-panel grouped bar chart（depth / branching / leaf ratio × 3 splits × 2 candidates）；F2 为 line chart with markers（hop_2/hop_3/hop_4_plus MAP delta，两条 series FS/OR）。
+  4. **README**: `paper/itp/README.md` 记录了模板假设（LLNCS）、编译验证（TeX Live 2024, 17 pages, 0 errors）和剩余到最终 bundle 的 8 项差额。
+  Worker 未新增实验、未修改 artifact、未引入未 review 数值、未修改 `paper_draft.md`/`paper_outline.md`/`paper_figures_and_tables.md`/`paper_artifact_package.md`。
+- 非阻塞说明：`T63_review` 额外确认两点不需要 reopening：(1) `.claude/settings.json` 继续 excluded from commit；(2) `F2` 可视化未能独立验证、`F1` 存在面板尺度/标签可读性问题，均 deferred 到 `T64`。
+- 后果：`T63` 正式标记完成。下一步进入 `T64`，只做 F1/F2 的视觉 QA / regeneration，不进入最终 submission bundle assembly。
+
+## D055: T63 review PASS_WITH_WARNINGS 并切换到 T64 figure QA / regeneration
+
+- 日期：2026-05-25
+- 状态：Accepted
+- 依据：`docs/review/T63_review.md`
+- 决策：`T63` 判定为 `PASS_WITH_WARNINGS`。warning 分类如下：`rejected` - `.claude/settings.json` excluded from commit；`deferred` - `F2` 视觉未验证；`deferred` - `F1` 面板尺度不一致与 `"1 1"` label artifact。`T63` 正式标记完成，当前唯一任务切换为 `T64`，仅做 core figure QA / regeneration，不进入最终 submission bundle assembly。
+- 后果：figure 层面的 remaining issue 已明确进入 `T64`，后续若要提交，只能在 figure 视觉收口后继续推进。

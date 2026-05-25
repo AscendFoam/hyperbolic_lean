@@ -1,0 +1,31 @@
+\begin{thebibliography}{1}
+\providecommand{\url}[1]{\texttt{#1}}
+\providecommand{\urlprefix}{URL }
+\providecommand{\doi}[1]{https://doi.org/#1}
+
+\bibitem{gauthier2017tactictoe}
+Gauthier, T., Kaliszyk, C., Urban, J.: {TacticToe}: Learning to reason with
+  {HOL4} tactics. In: Conference on Certified Programs and Proofs (CPP). ACM
+  (2017)
+
+\bibitem{irving2016deepmath}
+Irving, G., Szegedy, C., Alemi, A.A., E\'en, N., Chollet, F., Urban, J.:
+  Deepmath - deep sequence models for premise selection. In: Advances in Neural
+  Information Processing Systems (NeurIPS) (2016)
+
+\bibitem{liu2019hgcn}
+Liu, Q., Nickel, M., Kiela, D.: Hyperbolic graph neural networks. In: Advances
+  in Neural Information Processing Systems (NeurIPS). vol.~32 (2019)
+
+\bibitem{nickel2017poincare}
+Nickel, M., Kiela, D.: Poincar\'{e} embeddings for learning hierarchical
+  representations. In: Advances in Neural Information Processing Systems
+  (NeurIPS). vol.~30 (2017)
+
+\bibitem{yang2023leandojo}
+Yang, K., Swope, A., Gu, A., Chalamala, R., Song, P., Yu, S., Godil, S.,
+  Prenger, R.J., Anandkumar, A.: {LeanDojo}: Theorem proving with
+  retrieval-augmented language models. In: Conference on Neural Information
+  Processing Systems (NeurIPS) (2023)
+
+\end{thebibliography}

@@ -1,6 +1,6 @@
 ﻿# 07 Handoff
 
-> 更新时间：2026-05-23（T59 review PASS；T60 当前）
+> 更新时间：2026-05-25（T63 review PASS_WITH_WARNINGS；T63 complete；T64 current unique task: core figure QA / regeneration）
 >
 > 给下一位 Captain / Worker / Reviewer 的接手说明。
 
@@ -31,9 +31,9 @@
 
 ## 3. 当前唯一任务
 
-`T60` 是当前唯一任务：在不新增实验的前提下，对现有 submission-facing 文档集做 venue-formatting / final submission asset shaping。重点不是再改结论，而是把最后两处 submission-facing 收尾同步好：`paper_artifact_package.md` 中 `R30 page budget check` 的勾选状态，以及 `paper_outline.md` 中 Page Budget Note 对正文/appendix 取舍的自洽说明。
+`T64` 是当前唯一任务：在不新增实验、不改动 reviewed 数值边界的前提下，对 `paper/itp/figures/F1_provenance_structure.png` 和 `F2_hop_depth_delta.png` 做最终视觉 QA；若仍存在面向审稿人的排版/可读性问题，则只允许对图形样式与标注做重渲染，不改变数据值或 claim 边界。重点是把 `T63` 的输出打磨到可直接进入最终 submission bundle 的状态，而不是提前做 bundle assembly。
 
-先读取 `docs/review/T59_review.md`、`docs/paper_artifact_package.md`、`docs/paper_outline.md`、`docs/paper_draft.md`、`docs/paper_figures_and_tables.md`、`docs/04_task_board.md`、`docs/05_decision_log.md`、`docs/07_handoff.md`、`docs/08_risks_and_open_questions.md`，确认 `T59` 已正式收口、当前状态仍为 **Narrow**，以及 `R25/R30/R08` 仍需保留。`T60` 不是新实验任务，而是把已稳定的 paper-facing 文本资产推进到更可直接提交的终态。
+先读取 `docs/review/T63_review.md`、`docs/tasks/M5_paper/T64_core_figure_qa_and_regeneration.md`、`paper/itp/README.md`、`docs/venue_submission_plan.md`、`docs/04_task_board.md`、`docs/05_decision_log.md`、`docs/07_handoff.md`、`docs/08_risks_and_open_questions.md`，确认 `T63` 已正式收口、当前状态仍为 **Narrow**，以及 `R25/R30/R08/R34` 仍需保留。`T64` 不是新实验任务，而是把已生成的核心图打磨到可直接进入最终 submission bundle 的状态。
 
 ## 4. 当前已知事实
 
@@ -192,10 +192,21 @@ Reviewer 默认只读。高风险任务使用 adversarial review。
 88. `docs/review/T58_review.md` 已给出 `PASS`。Captain 已将 `T58` 正式标记完成，并把当前唯一任务切换为 `T59`。`T58_review` 的两个 non-blocking notes 不回头重开 `T58`：`paper_artifact_package.md` 中 core-table 术语统一，以及 Table T1 的 HGCN source mapping 精度说明，统一并入 `T59` 的最终 paper editing / venue shaping。
 89. T59 worker 已完成 final paper editing / venue shaping。Contribution-count decision: 保持 5 条（C1–C5），加入 page-budget-aware 措辞。`paper_artifact_package.md` core-table 术语统一为"4 core tables + 1 summary table"，Table T1 HGCN source mapping 已写成"T33 primary, T42 cross-check"。`paper_draft.md`、`paper_outline.md`、`paper_figures_and_tables.md` 已同步收束。治理文档全部更新。
 90. `docs/review/T59_review.md` 已给出 `PASS`。Captain 已将 `T59` 正式标记完成，并把当前唯一任务切换为 `T60`。`T59_review` 的两个 non-blocking notes 不回头重开 `T59`：`paper_artifact_package.md` 中 `R30 page budget check` 的勾选同步，以及 `paper_outline.md` Page Budget Note 的自洽性补强，统一并入 `T60` 的 venue-formatting / final submission asset shaping。
+91. `docs/review/T60_review.md` 结论为 `PASS`。Captain 已将 `T60` 正式标记完成，并把当前唯一任务切换为 `T61`：final repo packaging / handoff freeze。`paper_artifact_package.md` 的 `R30 page budget check` 已与 T59 决策同步；`paper_outline.md` Page Budget Note 已补强自洽说明；`paper_draft.md` Section 7.4 已同步更新。`T60_review` 的两个 non-blocking notes 已收口。
+
+92. `docs/review/T61_review.md` 结论为 `PASS`。Captain 已将 `T61` 正式标记完成，并把当前唯一任务切换为 `T62`：venue-specific formatting / submission planning。`paper_artifact_package.md` 的 final repo package boundary、handoff-facing helper 角色与治理冻结均已收口。
+
+93. T62 worker 已执行 venue-specific formatting / submission planning：`docs/venue_submission_plan.md` 已创建，确认 ITP 为主 venue（CPP 为 co-primary），并列出 6 类剩余格式差额（LaTeX 格式化、作者 boilerplate、图表渲染、参考文献、提交资产、叙事调整）。可选 asset delta note 记录 3 处 ITP-specific wording 调整建议，不涉及数值修改或 claim 边界扩张。`R25`/`R30`/`R08` 继续保留。未新增实验、未修改 artifact、未引入未 review 数值。
+
+94. `docs/review/T62_review.md` 结论为 `PASS`。Captain 已将 `T62` 正式标记完成，并把当前唯一任务切换为 `T63`：ITP-targeted LaTeX conversion / core figure rendering。reviewer 同时确认三点：(1) `.claude/settings.json` 继续 excluded from commit；(2) `paper_artifact_package.md` / `paper_draft.md` / `paper_outline.md` 的既有未提交修改早于 T62，不属于 T62 泄漏；(3) `docs/06_eval_protocol.md` 只有状态行变化，无协议语义改动。
+
+95. T63 worker 已执行 ITP-targeted LaTeX conversion / core figure rendering：`paper/itp/main.tex` 已创建（LLNCS document class，17 页，零编译错误），`paper/itp/figures/F1_provenance_structure.png`（3-panel grouped bar chart）和 `F2_hop_depth_delta.png`（line chart with markers）已从 `paper_figures_and_tables.md` reviewed specs 渲染，`paper/itp/references.bib` 和 `paper/itp/README.md` 已配套。全部数值保留自 reviewed artifacts，未引入新数值或新 claim。`R25`/`R30`/`R08`/`R34` 继续保留。
+
+96. `docs/review/T63_review.md` 结论为 `PASS_WITH_WARNINGS`。Captain 已将 `T63` 正式标记完成；warnings 分类为：`.claude/settings.json` 为 rejected/excluded from commit；`F2` 的视觉未验证与 `F1` 的面板尺度/标签问题为 deferred，并写回风险。当前唯一任务切换为 `T64`：core figure QA / regeneration。
 
 ## 8. 下一步
 
-`T60` 是当前唯一任务，目标是 venue-formatting / final submission asset shaping。
+`T64` 是当前唯一任务：先做 F1/F2 最终视觉 QA / 必要时重渲染，再把最终 submission bundle assembly 留给后续任务。
 
 T53 milestone review 的核心结论：
 - **Verdict: Narrow**（收窄为 paper-facing / packaging / cleanup）
@@ -203,16 +214,17 @@ T53 milestone review 的核心结论：
 - 核心 provenance-conditional finding 已确立：HGCN 仅在 `explicit_only` 上领先（FS MAP +0.1247, OR MAP +0.0557），`hierarchy_mixed` 上 GCN 仍领先
 - Proof-side bridge 已变成可运行 CLI demo（T52a adversarial PASS）
 - 当前不需要新实验、新模型、新数据源或新 demo
-- 最紧迫的工作已从 artifact packaging / final paper editing 切换为 final submission asset shaping
+- 最紧迫的工作已从 artifact packaging / final paper editing 切换为 ITP-targeted LaTeX conversion / core figure rendering
 
-T59 review 后：
-- 当前状态：`T59` 已通过 review，当前唯一任务为 `T60`
+T62 review 后：
+- 当前状态：`T59` 已通过 review，`T60` 已通过 review，`T61` 已通过 review，`T62` 已通过 review，`T63` 已通过 review（PASS_WITH_WARNINGS），当前唯一任务为 `T64`
 - `docs/paper_artifact_package.md` 已建立为 submission-facing artifact package
 - `docs/paper_figures_and_tables.md` 已建立为 publication-facing 图表 source-of-truth
+- `docs/venue_submission_plan.md` 已固定主路线：ITP primary、CPP co-primary、FM stretch
 - `R28` 已关闭：原始 "aggregate vs per-seed discrepancy" 经 T56 artifact 审计确认为 metric naming confusion（`test_average_precision` vs `grouped_test_map`），两条指标均计算正确、内部一致
 - `R29` 已修正：`provenance_summary.md` Section 5.1 表格已修正为 verified T42 value `1.0000 ± 0.0000`；`paper_draft.md` 已同步
-- 当前优先：venue-formatting / final submission asset shaping
-- `T59_review` 的非阻塞点：同步 `paper_artifact_package.md` 中 `R30 page budget check` 的勾选状态；补强 `paper_outline.md` Page Budget Note 对正文/appendix 取舍的自洽说明
+- 当前优先：core figure QA / regeneration
+- `T63_review` 的 non-blocking notes 已转入 `R34` 与 `T64`；`paper/itp/main.tex` 已可用，但图像仍需视觉收口
 - 当前不推荐：新实验、新 demo、新模型、新数据源
 
 T50/T51 继承的核心事实边界（保持不变）：
@@ -225,8 +237,8 @@ T50/T51 继承的核心事实边界（保持不变）：
 - `R25` 仍然活跃：clean-environment reproducibility 尚未完成。
 - commit 时继续排除 `.claude/settings.json`。
 
-T60 之后的候选方向：
-- final repo packaging / handoff freeze（仅在 `T60` 收口并经 review 后再决定）
+T64 之后的候选方向：
+- submission bundle assembly（在 `T64` 落成最终版 figures 后单独作为下一任务）
 - 当前不推荐：新实验、新 demo、新模型、新数据源
 
 ## T33 Completion Note

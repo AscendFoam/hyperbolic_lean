@@ -1,0 +1,84 @@
+\relax 
+\providecommand\hyper@newdestlabel[2]{}
+\providecommand\HyField@AuxAddToFields[1]{}
+\providecommand\HyField@AuxAddToCoFields[2]{}
+\@writefile{toc}{\contentsline {title}{Provenance-Conditional Hyperbolic Graph Learning\unskip \ \ignorespaces on Traced Formal-Math Hierarchies:\unskip \ \ignorespaces Pipeline, Protocol, Diagnostics, and Evidence Boundaries}{1}{chapter.1}\protected@file@percent }
+\@writefile{toc}{\authcount {1}}
+\@writefile{toc}{\contentsline {author}{Anonymous Author(s)}{1}{chapter.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{1}{section.1.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.1}Motivation}{1}{subsection.1.1.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.2}Background}{2}{subsection.1.1.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.3}The Problem}{3}{subsection.1.1.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.4}Our Approach}{3}{subsection.1.1.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.5}Central Claim}{4}{subsection.1.1.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.6}Non-Claims (Explicit Boundaries)}{4}{subsection.1.1.6}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.7}Contributions Summary}{4}{subsection.1.1.7}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {2}Experimental Setup}{4}{section.1.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.1}Data: Traced Lean/Mathlib Hierarchy Graphs}{4}{subsection.1.2.1}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Candidate graphs for formal evaluation.}}{5}{table.1.1}\protected@file@percent }
+\newlabel{tab:candidates}{{1}{5}{Candidate graphs for formal evaluation}{table.1.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2}Provenance Split Design}{5}{subsection.1.2.2}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces Provenance split design.}}{5}{table.1.2}\protected@file@percent }
+\newlabel{tab:provenance-split}{{2}{5}{Provenance split design}{table.1.2}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Structural contrast across provenance splits. Left: \texttt  {explicit\_only} graphs exhibit genuine hierarchy depth (longest chain 9--10, multi-parent 40--66). Right: \texttt  {synthesized\_only} graphs are flat star forests (longest chain 1, multi-parent 0). Center: \texttt  {hierarchy\_mixed} inherits depth from explicit edges but gains leaf inflation from synthesized edges.}}{6}{figure.1.1}\protected@file@percent }
+\newlabel{fig:provenance-structure}{{1}{6}{Structural contrast across provenance splits. Left: \texttt {explicit\_only} graphs exhibit genuine hierarchy depth (longest chain 9--10, multi-parent 40--66). Right: \texttt {synthesized\_only} graphs are flat star forests (longest chain 1, multi-parent 0). Center: \texttt {hierarchy\_mixed} inherits depth from explicit edges but gains leaf inflation from synthesized edges}{figure.1.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.3}Structural Properties by Provenance Split}{6}{subsection.1.2.3}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces Structural properties of candidate graphs by provenance split. \texttt  {synthesized\_only} graphs are flat star forests (longest chain = 1, multi-parent = 0, cycle rank = 0). All hierarchy depth comes from \texttt  {explicit\_only} edges.}}{6}{table.1.3}\protected@file@percent }
+\newlabel{tab:structural}{{3}{6}{Structural properties of candidate graphs by provenance split. \texttt {synthesized\_only} graphs are flat star forests (longest chain = 1, multi-parent = 0, cycle rank = 0). All hierarchy depth comes from \texttt {explicit\_only} edges}{table.1.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.4}Evaluation Protocol}{6}{subsection.1.2.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.5}Models and Training}{7}{subsection.1.2.5}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {4}{\ignorespaces Matched training configuration for all experiments.}}{7}{table.1.4}\protected@file@percent }
+\newlabel{tab:config}{{4}{7}{Matched training configuration for all experiments}{table.1.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.6}Experimental Design}{7}{subsection.1.2.6}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {3}Results}{8}{section.1.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Milestone 3 Baseline: Full Source Graph (hierarchy\_mixed)}{8}{subsection.1.3.1}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {5}{\ignorespaces Grouped retrieval results on \texttt  {hierarchy\_mixed} (full source graph). GCN vs HGCN, 5-seed mean $\pm $ std.}}{8}{table.1.5}\protected@file@percent }
+\newlabel{tab:baseline}{{5}{8}{Grouped retrieval results on \texttt {hierarchy\_mixed} (full source graph). GCN vs HGCN, 5-seed mean $\pm $ std}{table.1.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Primary Evidence: explicit\_only}{8}{subsection.1.3.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3}Hop-Bucket Analysis: Advantage Scales with Depth}{8}{subsection.1.3.3}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {6}{\ignorespaces Provenance-aware grouped retrieval results on \texttt  {explicit\_only} (primary evidence). 5-seed mean $\pm $ std.}}{9}{table.1.6}\protected@file@percent }
+\newlabel{tab:explicit}{{6}{9}{Provenance-aware grouped retrieval results on \texttt {explicit\_only} (primary evidence). 5-seed mean $\pm $ std}{table.1.6}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {7}{\ignorespaces Hop-bucket MAP comparison on \texttt  {explicit\_only}. HGCN advantage grows monotonically with ancestor chain depth. 5-seed mean $\pm $ std. FS hop\_4\_plus based on 4/5 seeds (seed 2026 produces no hop\_4\_plus queries; symmetric between GCN and HGCN).}}{9}{table.1.7}\protected@file@percent }
+\newlabel{tab:hop-bucket}{{7}{9}{Hop-bucket MAP comparison on \texttt {explicit\_only}. HGCN advantage grows monotonically with ancestor chain depth. 5-seed mean $\pm $ std. FS hop\_4\_plus based on 4/5 seeds (seed 2026 produces no hop\_4\_plus queries; symmetric between GCN and HGCN)}{table.1.7}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.4}Controlled Diagnostic: synthesized\_only}{9}{subsection.1.3.4}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {8}{\ignorespaces Provenance-aware results on \texttt  {synthesized\_only} (controlled diagnostic).}}{9}{table.1.8}\protected@file@percent }
+\newlabel{tab:synthesized}{{8}{9}{Provenance-aware results on \texttt {synthesized\_only} (controlled diagnostic)}{table.1.8}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces HGCN vs GCN MAP delta on \texttt  {explicit\_only}, decomposed by hop depth. HGCN's advantage grows monotonically from hop\_2 to hop\_4\_plus on both candidate graphs, confirming that hyperbolic geometry specifically benefits longer ancestor chains.}}{10}{figure.1.2}\protected@file@percent }
+\newlabel{fig:hop-delta}{{2}{10}{HGCN vs GCN MAP delta on \texttt {explicit\_only}, decomposed by hop depth. HGCN's advantage grows monotonically from hop\_2 to hop\_4\_plus on both candidate graphs, confirming that hyperbolic geometry specifically benefits longer ancestor chains}{figure.1.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.5}Reproducibility Check: hierarchy\_mixed}{10}{subsection.1.3.5}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {9}{\ignorespaces Byte-identical reproduction of Milestone 3 baseline by T42 provenance sweeps.}}{10}{table.1.9}\protected@file@percent }
+\newlabel{tab:repro}{{9}{10}{Byte-identical reproduction of Milestone 3 baseline by T42 provenance sweeps}{table.1.9}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.6}Proof-Side Bridge: Ancestor Explanation}{11}{subsection.1.3.6}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {10}{\ignorespaces Ancestor explanation quality comparison across provenance modes.}}{11}{table.1.10}\protected@file@percent }
+\newlabel{tab:proof-side}{{10}{11}{Ancestor explanation quality comparison across provenance modes}{table.1.10}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.7}Summary: Provenance-Conditional Conclusion}{11}{subsection.1.3.7}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {11}{\ignorespaces Provenance-conditional model comparison across all three splits. Edge provenance composition determines which geometry is favored.}}{11}{table.1.11}\protected@file@percent }
+\newlabel{tab:summary}{{11}{11}{Provenance-conditional model comparison across all three splits. Edge provenance composition determines which geometry is favored}{table.1.11}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {4}Discussion}{11}{section.1.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Why Provenance Matters}{11}{subsection.1.4.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}The Compositional Artifact}{12}{subsection.1.4.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.3}Implications for Future Work}{12}{subsection.1.4.3}\protected@file@percent }
+\citation{nickel2017poincare}
+\citation{liu2019hgcn}
+\citation{irving2016deepmath}
+\citation{gauthier2017tactictoe}
+\citation{yang2023leandojo}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.4}Related Work and Positioning}{13}{subsection.1.4.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {5}Limitations}{14}{section.1.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.1}Internal Validity}{14}{subsection.1.5.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.2}External Validity}{14}{subsection.1.5.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.3}Scope Boundaries}{14}{subsection.1.5.3}\protected@file@percent }
+\bibstyle{splncs04}
+\bibdata{references}
+\bibcite{gauthier2017tactictoe}{1}
+\bibcite{irving2016deepmath}{2}
+\bibcite{liu2019hgcn}{3}
+\bibcite{nickel2017poincare}{4}
+\bibcite{yang2023leandojo}{5}
+\@writefile{toc}{\contentsline {section}{\numberline {6}Conclusion}{15}{section.1.6}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {A}Evidence Chain}{16}{section.A.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {A.1}Reviewed Task Sequence}{16}{subsection.A.1.1}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {12}{\ignorespaces Reviewed task sequence across five milestones.}}{16}{table.A.12}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {A.2}Key Numeric Anchors (Reviewed, Frozen)}{16}{subsection.A.1.2}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {13}{\ignorespaces Key numeric anchors from reviewed artifacts.}}{17}{table.A.13}\protected@file@percent }
+\gdef \@abspage@last{17}
